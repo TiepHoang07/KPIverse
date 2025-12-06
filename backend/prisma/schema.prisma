@@ -15,31 +15,102 @@ datasource db {
 }
 
 model User {
-  id  Int  @id @default(autoincrement())
-  email String @unique
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
   passwordHash String
-  name String?
-  avatarUrl String?
-  bio String?
-  createdAt DateTime @default(now())
-  kpis KPI[]
+  name         String?
+  avatarUrl    String?
+  bio          String?
+  createdAt    DateTime      @default(now())
+  kpis         KPI[]
+  friendsSent  Friend[]      @relation("sent")
+  friendsRecv  Friend[]      @relation("recv")
+  memberships  GroupMember[]
+  activities   Activity[]
+  points       Int           @default(0)
+  groups       Group[]
+}
+
+model Friend {
+  id        Int          @id @default(autoincrement())
+  requester Int
+  receiver  Int
+  status    FriendStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+
+  requesterUser User @relation("sent", fields: [requester], references: [id])
+  receiverUser  User @relation("recv", fields: [receiver], references: [id])
+}
+
+model Group {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  adminId     Int
+  createdAt   DateTime @default(now())
+
+  admin     User          @relation(fields: [adminId], references: [id])
+  members   GroupMember[]
+  groupKpis KPI[]
+}
+
+model GroupMember {
+  id       Int      @id @default(autoincrement())
+  groupId  Int
+  userId   Int
+  joinedAt DateTime @default(now())
+
+  group Group @relation(fields: [groupId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+model Activity {
+  id        Int          @id @default(autoincrement())
+  userId    Int
+  type      ActivityType
+  payload   Json?
+  createdAt DateTime     @default(now())
+  user      User         @relation(fields: [userId], references: [id])
 }
 
 model KPI {
-  id Int @id @default(autoincrement())
-  name String
+  id          Int         @id @default(autoincrement())
+  name        String
   description String?
-  type String
-  userId Int
-  createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  records KPIrecord[]
+  type        String
+  userId      Int
+  createdAt   DateTime    @default(now())
+  user        User        @relation(fields: [userId], references: [id])
+  records     KPIrecord[]
+  group       Group?      @relation(fields: [groupId], references: [id])
+  groupId     Int?
 }
 
 model KPIrecord {
-  id Int @id @default(autoincrement())
+  id    Int      @id @default(autoincrement())
   kpiId Int
   value Int
-  date DateTime
-  kpi KPI @relation(fields: [kpiId], references: [id])
+  date  DateTime
+  kpi   KPI      @relation(fields: [kpiId], references: [id])
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+enum ActivityType {
+  KPI_LOG
+  KPI_CREATED
+  KPI_COMPLETED
+  LIKE
+  COMMENT
+  JOIN_GROUP
+  LEAVE_GROUP
+}
+
+enum Role {
+  USER
+  ADMIN
 }
