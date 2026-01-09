@@ -15,20 +15,21 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  passwordHash String
-  name         String?
-  avatarUrl    String?
-  bio          String?
-  createdAt    DateTime      @default(now())
-  kpis         KPI[]
-  friendsSent  Friend[]      @relation("sent")
-  friendsRecv  Friend[]      @relation("recv")
-  memberships  GroupMember[]
-  activities   Activity[]
-  points       Int           @default(0)
-  groups       Group[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  passwordHash  String
+  name          String?
+  avatarUrl     String?
+  bio           String?
+  createdAt     DateTime       @default(now())
+  kpis          KPI[]
+  friendsSent   Friend[]       @relation("sent")
+  friendsRecv   Friend[]       @relation("recv")
+  memberships   GroupMember[]
+  activities    Activity[]
+  points        Int            @default(0)
+  groups        Group[]
+  activityLikes ActivityLike[]
 }
 
 model Friend {
@@ -58,6 +59,7 @@ model GroupMember {
   id       Int      @id @default(autoincrement())
   groupId  Int
   userId   Int
+  points   Int      @default(0)
   joinedAt DateTime @default(now())
 
   group Group @relation(fields: [groupId], references: [id])
@@ -65,12 +67,24 @@ model GroupMember {
 }
 
 model Activity {
-  id        Int          @id @default(autoincrement())
+  id        Int            @id @default(autoincrement())
   userId    Int
+  targetId  Int?
   type      ActivityType
   payload   Json?
-  createdAt DateTime     @default(now())
-  user      User         @relation(fields: [userId], references: [id])
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id])
+  likes     ActivityLike[]
+}
+
+model ActivityLike {
+  id         Int      @id @default(autoincrement())
+  activityId Int
+  userId     Int
+  activity   Activity @relation(fields: [activityId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@unique([activityId, userId])
 }
 
 model KPI {
@@ -105,7 +119,6 @@ enum ActivityType {
   KPI_CREATED
   KPI_COMPLETED
   LIKE
-  COMMENT
   JOIN_GROUP
   LEAVE_GROUP
 }

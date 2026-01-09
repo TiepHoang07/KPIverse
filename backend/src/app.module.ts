@@ -7,9 +7,10 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { FriendsModule } from './friends/friends.module';
 import { GroupsModule } from './groups/groups.module';
+import { ActivityModule } from './activity/activity.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, FriendsModule, GroupsModule],
+  imports: [AuthModule, UsersModule, FriendsModule, GroupsModule, ActivityModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
