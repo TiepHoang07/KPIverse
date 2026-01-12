@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { multerOptions } from 'src/common/middleware/upload.middleware';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -39,7 +40,7 @@ export class UsersController {
   }
 
   @Patch('avatar')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', multerOptions))
   uploadAvatar(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
     const url = `uploads/${file.filename}`;
     return this.usersService.updateAvatar(req.user.id, url);

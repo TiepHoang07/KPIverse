@@ -8,9 +8,10 @@ import { UsersModule } from './users/users.module';
 import { FriendsModule } from './friends/friends.module';
 import { GroupsModule } from './groups/groups.module';
 import { ActivityModule } from './activity/activity.module';
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, FriendsModule, GroupsModule, ActivityModule],
+  imports: [AuthModule, UsersModule, FriendsModule, GroupsModule, ActivityModule, LeaderboardModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
