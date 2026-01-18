@@ -28,7 +28,6 @@ model User {
   memberships   GroupMember[]
   activities    Activity[]
   points        Int            @default(0)
-  groups        Group[]
   activityLikes ActivityLike[]
 }
 
@@ -47,10 +46,8 @@ model Group {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
-  adminId     Int
   createdAt   DateTime @default(now())
 
-  admin     User          @relation(fields: [adminId], references: [id])
   members   GroupMember[]
   groupKpis KPI[]
 }
@@ -60,6 +57,7 @@ model GroupMember {
   groupId  Int
   userId   Int
   points   Int      @default(0)
+  role     GroupRole @default(MEMBER)
   joinedAt DateTime @default(now())
 
   group Group @relation(fields: [groupId], references: [id])
@@ -125,7 +123,7 @@ enum ActivityType {
   LEAVE_GROUP
 }
 
-enum Role {
-  USER
+enum GroupRole {
   ADMIN
+  MEMBER
 }
