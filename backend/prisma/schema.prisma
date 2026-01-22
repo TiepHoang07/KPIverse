@@ -29,6 +29,7 @@ model User {
   activities    Activity[]
   points        Int            @default(0)
   activityLikes ActivityLike[]
+  kpilogs       KPILog[]
 }
 
 model Friend {
@@ -53,12 +54,12 @@ model Group {
 }
 
 model GroupMember {
-  id       Int      @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   groupId  Int
   userId   Int
-  points   Int      @default(0)
+  points   Int       @default(0)
   role     GroupRole @default(MEMBER)
-  joinedAt DateTime @default(now())
+  joinedAt DateTime  @default(now())
 
   group Group @relation(fields: [groupId], references: [id])
   user  User  @relation(fields: [userId], references: [id])
@@ -88,24 +89,47 @@ model ActivityLike {
 }
 
 model KPI {
-  id          Int         @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
-  type        String
-  userId      Int
-  createdAt   DateTime    @default(now())
-  user        User        @relation(fields: [userId], references: [id])
-  records     KPIrecord[]
-  group       Group?      @relation(fields: [groupId], references: [id])
-  groupId     Int?
+  type        KPIType
+  target      Int
+  scope       KPIScope
+
+  userId  Int?
+  groupId Int?
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  logs  KPILog[]
+  user  User?    @relation(fields: [userId], references: [id])
+  group Group?   @relation(fields: [groupId], references: [id])
+
+  @@index([userId])
+  @@index([groupId])
 }
 
-model KPIrecord {
-  id    Int      @id @default(autoincrement())
-  kpiId Int
-  value Int
-  date  DateTime
-  kpi   KPI      @relation(fields: [kpiId], references: [id])
+model KPILog {
+  id        Int      @id @default(autoincrement())
+  kpiId     Int
+  userId    Int
+  value     Int
+  date      DateTime
+  createdAt DateTime @default(now())
+  kpi       KPI      @relation(fields: [kpiId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+enum KPIType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum KPIScope {
+  PERSONAL
+  GROUP
 }
 
 enum FriendStatus {

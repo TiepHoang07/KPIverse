@@ -9,9 +9,10 @@ import { FriendsModule } from './friends/friends.module';
 import { GroupsModule } from './groups/groups.module';
 import { ActivityModule } from './activity/activity.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
+import { KpiModule } from './kpi/kpi.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, FriendsModule, GroupsModule, ActivityModule, LeaderboardModule],
+  imports: [AuthModule, UsersModule, FriendsModule, GroupsModule, ActivityModule, LeaderboardModule, KpiModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

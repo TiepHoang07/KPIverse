@@ -169,4 +169,57 @@ export class GroupsService {
       },
     });
   }
+
+  async transferAdmin(adminId: number, groupId: number, newAdminId: number) {
+    if (adminId == newAdminId) {
+      throw new BadRequestException('Cannot transfer admin to yourself');
+    }
+
+    const currentAdmin = await this.prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: {
+          groupId,
+          userId: adminId,
+        },
+      },
+    });
+
+    if (!currentAdmin || currentAdmin.role !== 'ADMIN') {
+      throw new ForbiddenException('Only admin can transfer admin role');
+    }
+
+    const newAdmin = await this.prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: {
+          groupId,
+          userId: newAdminId,
+        },
+      },
+    });
+
+    if (!newAdmin) {
+      throw new BadRequestException('Target user is not a member of the group');
+    }
+
+    return this.prisma.$transaction([
+      this.prisma.groupMember.update({
+        where: {
+          groupId_userId: {
+            groupId,
+            userId: adminId,
+          },
+        },
+        data: { role: 'MEMBER' },
+      }),
+      this.prisma.groupMember.update({
+        where: {
+          groupId_userId: {
+            groupId,
+            userId: newAdminId,
+          },
+        },
+        data: { role: 'ADMIN' },
+      }),
+    ]);
+  }
 }

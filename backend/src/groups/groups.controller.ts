@@ -56,4 +56,13 @@ export class GroupsController {
   ) {
     return this.svc.removeMember(groupId, req.user.id, userId);
   }
+
+  @Post(':groupId/transfer-admin/:userId')
+  transferAdmin(
+    @Req() req: any,
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Param('userId', ParseIntPipe) newAdminId: number,
+  ) {
+    return this.svc.transferAdmin(req.user.id, groupId, newAdminId);
+  }
 }
