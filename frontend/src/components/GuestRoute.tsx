@@ -1,8 +1,8 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
-export default function ProtectedRoute({
+export default function GuestRoute({
   children,
 }: {
   children: React.ReactNode;
@@ -13,8 +13,8 @@ export default function ProtectedRoute({
     return <div className="p-6">Loading...</div>;
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
