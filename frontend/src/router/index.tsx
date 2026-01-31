@@ -5,9 +5,10 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import GuestRoute from "../components/GuestRoute";
 import Navbar from "../components/Navbar";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import GroupsPage from "../pages/groups/GroupsPage";
+import GroupsPage from "../pages/groups/GroupsDashboardPage";
 import KpiPage from "../pages/kpi/KpiPage";
 import LeaderboardPage from "../pages/leaderboard/LeaderboardPage";
+import DashboardLayout from "../layouts/DashBoardLayout";
 
 export default function AppRouter() {
   return (
@@ -20,10 +21,12 @@ export default function AppRouter() {
         </Route>
 
         <Route element={<ProtectedRoute children={<Outlet />} />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="groups" element={<GroupsPage />} />
-          <Route path="kpi" element={<KpiPage />} />
-          <Route path="leaderboard" element={<LeaderboardPage />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="groups" element={<GroupsPage />} />
+            <Route path="kpi" element={<KpiPage />} />
+            <Route path="leaderboard" element={<LeaderboardPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
