@@ -11,11 +11,11 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ActivityService } from './activity.service';
 
 @UseGuards(JwtAuthGuard)
-@Controller('activity')
+@Controller('activities')
 export class ActivityController {
   constructor(private activityService: ActivityService) {}
 
-  @Get()
+  @Get('feed')
   getFeed(@Req() req: any) {
     return this.activityService.getFeed(req.user.id);
   }

@@ -16,18 +16,22 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    //check if user exists by email
+    console.log('➡️ register start');
+
     const existing = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
+    console.log('✅ findUnique done');
 
     if (existing) {
       throw new ConflictException('Email already used');
     }
 
-    //hash password and create user
+    console.log('➡️ hashing password');
     const hashed = await bcrypt.hash(dto.password, 5);
+    console.log('✅ hash done');
 
+    console.log('➡️ creating user');
     const user = await this.prisma.user.create({
       data: {
         email: dto.email,
@@ -35,7 +39,9 @@ export class AuthService {
         name: dto.name,
       },
     });
+    console.log('✅ user created');
 
+    console.log('➡️ generating tokens');
     return this.generateTokens(user);
   }
 
@@ -59,7 +65,7 @@ export class AuthService {
 
     return this.generateTokens(user);
   }
-  
+
   generateTokens(user: any) {
     const payload = { sub: user.id, email: user.email } as any;
 

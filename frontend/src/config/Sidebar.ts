@@ -1,7 +1,7 @@
 export const sidebarItems = [
   {
     label: 'Dashboard',
-    path: '/dashboard',
+    path: '/',
   },
   {
     label: 'Groups',

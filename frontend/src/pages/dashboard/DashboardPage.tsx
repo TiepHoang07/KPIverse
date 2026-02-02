@@ -17,7 +17,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/kpis/me')
+    api.get('/kpis/personal')
       .then((res) => setKpis(res.data))
       .finally(() => setLoading(false));
   }, []);

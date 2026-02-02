@@ -6,7 +6,8 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  // Generate into the default top-level location so require('@prisma/client') can load the generated runtime
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {

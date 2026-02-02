@@ -1,5 +1,7 @@
-import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { KPIType, KPIScope } from '@prisma/client';
+import { IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+
+export type KPIType = 'DAILY' | 'WEEKLY' | 'MONTHLY';
+export type KPIScope = 'PERSONAL' | 'GROUP';
 
 export class CreateKpiDto {
   @IsString()
@@ -9,10 +11,10 @@ export class CreateKpiDto {
   @IsString()
   description?: string;
 
-  @IsEnum(KPIType)
+  @IsIn(['DAILY', 'WEEKLY', 'MONTHLY'])
   type: KPIType;
 
-  @IsEnum(KPIScope)
+  @IsIn(['PERSONAL', 'GROUP'])
   scope: KPIScope;
 
   @IsInt()

@@ -7,14 +7,13 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateKpiDto } from './dto/create-kpi.dto';
 import { LogKpiDto } from './dto/log-kpi.dto';
-import { KPIScope } from '@prisma/client';
 
 @Injectable()
 export class KpiService {
   constructor(private prisma: PrismaService) {}
 
   async createPersonalKpi(userId: number, dto: CreateKpiDto) {
-    if (dto.scope !== KPIScope.PERSONAL) {
+    if (dto.scope !== 'PERSONAL') {
       throw new BadRequestException('Invalid KPI scope');
     }
 
@@ -96,7 +95,7 @@ export class KpiService {
   }
 
   async createGroupKpi(userId: number, groupId: number, dto: CreateKpiDto) {
-    if (dto.scope !== KPIScope.GROUP) {
+    if (dto.scope !== 'GROUP') {
       throw new BadRequestException('Scope must be GROUP');
     }
 
