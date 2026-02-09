@@ -12,6 +12,9 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   }
 
   async validate (payload: any) {
-    return payload;
+    return {
+      id: payload.sub,
+      email: payload.email,
+    };
   }
 }

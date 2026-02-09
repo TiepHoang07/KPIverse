@@ -6,7 +6,7 @@ import GroupActivityFeed from '../../components/group/GroupActivityFeed';
 import GroupLeaderboard from '../../components/group/GroupLeaderboard';
 import GroupHeader from '../../components/group/GroupHeader';
 
-export default function GroupDashboardPage() {
+export default function GroupsPage() {
   const { groupId } = useParams();
   const [group, setGroup] = useState<any>(null);
 

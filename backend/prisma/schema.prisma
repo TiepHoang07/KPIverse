@@ -7,7 +7,7 @@
 generator client {
   provider = "prisma-client"
   // Generate into the default top-level location so require('@prisma/client') can load the generated runtime
-  output   = "../node_modules/.prisma/client"
+  output   = "../../backend/generated/prisma"
 }
 
 datasource db {
@@ -90,37 +90,70 @@ model ActivityLike {
 }
 
 model KPI {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   description String?
   type        KPIType
-  target      Int
   scope       KPIScope
+  
+  userId      Int?
+  groupId     Int?
 
-  userId  Int?
-  groupId Int?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
 
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
+  tasks       KPITask[]
 
-  logs  KPILog[]
-  user  User?    @relation(fields: [userId], references: [id])
-  group Group?   @relation(fields: [groupId], references: [id])
+  user        User?   @relation(fields: [userId], references: [id])
+  group       Group?  @relation(fields: [groupId], references: [id])
 
+  @@index([scope])
   @@index([userId])
   @@index([groupId])
 }
 
-model KPILog {
+
+model KPITask {
   id        Int      @id @default(autoincrement())
   kpiId     Int
-  userId    Int
-  value     Int
-  date      DateTime
-  createdAt DateTime @default(now())
+  name      String
+  order     Int?
+  isActive  Boolean  @default(true)
+
+  scope     KPIScope
+  groupId   Int?
+
   kpi       KPI      @relation(fields: [kpiId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  logs      KPILog[]
+
+  @@index([kpiId])
+  @@index([scope])
+  @@index([groupId])
 }
+
+
+
+model KPILog {
+  id         Int       @id @default(autoincrement())
+  kpiTaskId  Int
+  userId     Int
+
+  scope      KPIScope
+  groupId    Int?
+
+  completed  Boolean
+  loggedAt   DateTime  @default(now())
+
+  task       KPITask   @relation(fields: [kpiTaskId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([groupId])
+  @@index([scope])
+  @@index([kpiTaskId])
+}
+
+
 
 enum KPIType {
   DAILY

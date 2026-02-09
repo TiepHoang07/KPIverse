@@ -29,7 +29,7 @@ export class KpiController {
 
   @Get('personal')
   getMyKpis(@Req() req: any) {
-    return this.kpiService.getMyKpis(req.user.id);
+    return this.kpiService.getMyPersonalKpis(req.user.id);
   }
 
   @Post(':id/log')
@@ -38,44 +38,11 @@ export class KpiController {
     @Param('id', ParseIntPipe) kpiId: number,
     @Body() dto: LogKpiDto,
   ) {
-    return this.kpiService.logKpi(req.user.id, kpiId, dto);
-  }
-
-  // ========================
-  // GROUP KPI
-  // ========================
-
-  @Post('group/:groupId')
-  createGroupKpi(
-    @Req() req: any,
-    @Param('groupId', ParseIntPipe) groupId: number,
-    @Body() dto: CreateKpiDto,
-  ) {
-    return this.kpiService.createGroupKpi(
-      req.user.id,
-      groupId,
-      dto,
-    );
-  }
-
-  @Get('group/:groupId')
-  getGroupKpis(
-    @Req() req: any,
-    @Param('groupId', ParseIntPipe) groupId: number,
-  ) {
-    return this.kpiService.getGroupKpis(req.user.id, groupId);
-  }
-
-   @Post('group/log/:kpiId')
-  logGroupKpi(
-    @Req() req: any,
-    @Param('kpiId', ParseIntPipe) kpiId: number,
-    @Body() dto: LogKpiDto,
-  ) {
-    return this.kpiService.logGroupKpi(
+    return this.kpiService.logPersonalTasks(
       req.user.id,
       kpiId,
-      dto,
+      dto.taskIds,
+      dto.completed,
     );
   }
 }
