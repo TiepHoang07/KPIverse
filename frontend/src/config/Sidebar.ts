@@ -4,12 +4,12 @@ export const sidebarItems = [
     path: '/',
   },
   {
-    label: 'Groups',
-    path: '/groups',
+    label: 'My KPI',
+    path: '/kpis',
   },
   {
-    label: 'My KPI',
-    path: '/kpi',
+    label: 'Groups',
+    path: '/groups',
   },
   {
     label: 'Leaderboard',

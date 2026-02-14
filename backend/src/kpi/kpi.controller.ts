@@ -22,14 +22,22 @@ export class KpiController {
   // PERSONAL KPI
   // ========================
 
-  @Post('personal')
+  @Post()
   createPersonal(@Req() req: any, @Body() dto: CreateKpiDto) {
     return this.kpiService.createPersonalKpi(req.user.id, dto);
   }
 
-  @Get('personal')
+  @Get()
   getMyKpis(@Req() req: any) {
     return this.kpiService.getMyPersonalKpis(req.user.id);
+  }
+
+  @Get(':id')
+  getOne(
+    @Req() req: any,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.kpiService.getOneByUser(req.user.id, id);
   }
 
   @Post(':id/log')

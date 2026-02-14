@@ -13,6 +13,7 @@ import LeaderboardPage from "../pages/leaderboard/LeaderboardPage";
 import DashboardLayout from "../layouts/DashBoardLayout";
 import FriendsPage from "../pages/friends/FriendsPage";
 import ProfilePage from "../pages/ProfilePage";
+import CreateKpi from "../pages/kpi/CreateKpi";
 
 export default function AppRouter() {
   return (
@@ -29,7 +30,8 @@ export default function AppRouter() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/groups" element={<GroupsDashboard />} />
             <Route path="/groups/create" element={<CreateGroup />} />
-            <Route path="/kpi" element={<KpiPage />} />
+            <Route path="/kpis" element={<KpiPage />} />
+            <Route path="/kpis/create" element={<CreateKpi />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/friends" element={<FriendsPage />} />

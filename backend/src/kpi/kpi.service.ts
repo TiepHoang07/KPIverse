@@ -46,6 +46,25 @@ export class KpiService {
     });
   }
 
+  async getOneByUser(userId: number, kpiId: number) {
+    const kpi = await this.prisma.kPI.findFirst({
+      where: {
+        id: kpiId,
+        userId,
+        groupId: null,
+      },
+      include: {
+        tasks: true,
+      },
+    });
+
+    if (!kpi) {
+      throw new NotFoundException('KPI not found');
+    }
+
+    return kpi;
+  }
+
   async logPersonalTasks(
     userId: number,
     kpiId: number,
