@@ -14,10 +14,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "paths": {
-      "@prisma/client": ["./generated/prisma/client"],
-      "@prisma/*": ["./generated/prisma/*"]
-    },
+    // "paths": {
+    //   "@prisma/generated/client": ["./generated/prisma/client"],
+    //   "@prisma/*": ["./generated/prisma/*"]
+    // },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -25,5 +25,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "generated"]
 }

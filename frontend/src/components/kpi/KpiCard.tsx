@@ -1,7 +1,5 @@
 // components/kpi/KpiCard.tsx
-import { useState } from 'react';
-import KpiTaskItem from './KpiTaskItem';
-import { logKpiTasks } from '../../api/kpi';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   kpi: {
@@ -11,64 +9,52 @@ type Props = {
     tasks: {
       id: number;
       name: string;
+      completed?: boolean;
     }[];
   };
 };
 
 export default function KpiCard({ kpi }: Props) {
-  const [checked, setChecked] = useState<number[]>([]);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleTask = (taskId: number) => {
-    setChecked((prev) =>
-      prev.includes(taskId)
-        ? prev.filter((id) => id !== taskId)
-        : [...prev, taskId],
-    );
-  };
-
-  const handleDone = async () => {
-    if (checked.length === 0) return;
-
-    setLoading(true);
-    try {
-      await logKpiTasks(kpi.id, {
-        logs: checked.map((taskId) => ({
-          kpiTaskId: taskId,
-          completed: true,
-        })),
-      });
-      setChecked([]); // reset UI
-    } finally {
-      setLoading(false);
-    }
+  const handleClick = () => {
+    navigate(`/kpis/${kpi.id}`);
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow mb-4">
-      <h3 className="font-semibold text-lg">{kpi.name}</h3>
-      {kpi.description && (
-        <p className="text-sm text-gray-500 mb-2">{kpi.description}</p>
-      )}
-
-      <div className="mb-3">
-        {kpi.tasks.map((task) => (
-          <KpiTaskItem
-            key={task.id}
-            task={task}
-            checked={checked.includes(task.id)}
-            onToggle={toggleTask}
-          />
-        ))}
+    <div 
+      onClick={handleClick}
+      className="bg-white p-4 rounded-xl shadow mb-4 cursor-pointer hover:shadow-lg transition"
+    >
+      {/* Header with title and task count */}
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="font-semibold text-lg">{kpi.name}</h3>
+        <span className="text-xs text-gray-400">
+          {kpi.tasks?.length || 0} tasks
+        </span>
       </div>
 
-      <button
-        disabled={loading}
-        onClick={handleDone}
-        className="bg-blue-600 text-white px-4 py-1 rounded disabled:opacity-50"
-      >
-        {loading ? 'Saving...' : 'Done'}
-      </button>
+      {/* Description */}
+      {kpi.description && (
+        <p className="text-sm text-gray-500 mb-3">{kpi.description}</p>
+      )}
+
+      {/* Progress Bar */}
+      <div className="mb-3">
+        <div className="flex justify-between text-sm text-gray-700 mb-1">
+          <span>Tasks:</span>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {kpi.tasks.map((task) => (
+          <ul key={task.id} className="flex items-center gap-2 text-sm list-disc ml-5">
+            <li className={task.completed ? 'line-through text-gray-400' : ''}>
+              {task.name}
+            </li>
+          </ul>
+        ))}
+      </div>
     </div>
   );
 }

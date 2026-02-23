@@ -7,7 +7,8 @@
 generator client {
   provider = "prisma-client"
   // Generate into the default top-level location so require('@prisma/client') can load the generated runtime
-  output   = "../../backend/generated/prisma"
+  output   = "../src/generated/prisma"
+  moduleFormat    = "cjs"
 }
 
 datasource db {
@@ -16,21 +17,19 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  email         String         @unique
-  passwordHash  String
-  name          String?
-  avatarUrl     String?
-  bio           String?
-  createdAt     DateTime       @default(now())
-  kpis          KPI[]
-  friendsSent   Friend[]       @relation("sent")
-  friendsRecv   Friend[]       @relation("recv")
-  memberships   GroupMember[]
-  activities    Activity[]
-  points        Int            @default(0)
-  activityLikes ActivityLike[]
-  kpilogs       KPILog[]
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  passwordHash String
+  name         String?
+  avatarUrl    String?
+  bio          String?
+  createdAt    DateTime      @default(now())
+  kpis         KPI[]
+  friendsSent  Friend[]      @relation("sent")
+  friendsRecv  Friend[]      @relation("recv")
+  memberships  GroupMember[]
+  activities   Activity[]
+  kpilogs      KPILog[]
 }
 
 model Friend {
@@ -50,15 +49,15 @@ model Group {
   description String?
   createdAt   DateTime @default(now())
 
-  members   GroupMember[]
-  groupKpis KPI[]
+  members    GroupMember[]
+  groupKpis  KPI[]
+  activities Activity[]
 }
 
 model GroupMember {
   id       Int       @id @default(autoincrement())
   groupId  Int
   userId   Int
-  points   Int       @default(0)
   role     GroupRole @default(MEMBER)
   joinedAt DateTime  @default(now())
 
@@ -69,91 +68,88 @@ model GroupMember {
 }
 
 model Activity {
-  id        Int            @id @default(autoincrement())
-  userId    Int
-  targetId  Int?
-  type      ActivityType
-  payload   Json?
-  createdAt DateTime       @default(now())
-  user      User           @relation(fields: [userId], references: [id])
-  likes     ActivityLike[]
-}
+  id       Int  @id @default(autoincrement())
+  userId   Int // User who performed the action
+  groupId  Int? // If the activity is related to a group (scope: group)
+  targetId Int? // For friend requests (target user ID)
 
-model ActivityLike {
-  id         Int      @id @default(autoincrement())
-  activityId Int
-  userId     Int
-  activity   Activity @relation(fields: [activityId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+  type           ActivityType
+  kpiName        String? // Name of the KPI (for KPI creation/logging)
+  kpiId          Int? // Reference to the KPI
+  description    String? // Description (for KPI creation, group actions)
+  groupName      String? // Name of the group (for group actions)
+  completedTasks Int? // Number of completed tasks (for KPI log)
 
-  @@unique([activityId, userId])
+  createdAt DateTime @default(now())
+
+  user  User   @relation(fields: [userId], references: [id])
+  group Group? @relation(fields: [groupId], references: [id])
+
+  @@index([userId])
+  @@index([groupId])
+  @@index([createdAt])
 }
 
 model KPI {
-  id          Int         @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
   type        KPIType
   scope       KPIScope
-  
-  userId      Int?
-  groupId     Int?
 
-  isActive    Boolean     @default(true)
-  createdAt   DateTime    @default(now())
+  userId  Int?
+  groupId Int?
 
-  tasks       KPITask[]
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
 
-  user        User?   @relation(fields: [userId], references: [id])
-  group       Group?  @relation(fields: [groupId], references: [id])
+  tasks KPITask[]
+
+  user  User?  @relation(fields: [userId], references: [id])
+  group Group? @relation(fields: [groupId], references: [id])
 
   @@index([scope])
   @@index([userId])
   @@index([groupId])
 }
 
-
 model KPITask {
-  id        Int      @id @default(autoincrement())
-  kpiId     Int
-  name      String
-  order     Int?
-  isActive  Boolean  @default(true)
+  id       Int     @id @default(autoincrement())
+  kpiId    Int
+  name     String
+  order    Int?
+  isActive Boolean @default(true)
 
-  scope     KPIScope
-  groupId   Int?
+  scope   KPIScope
+  groupId Int?
 
-  kpi       KPI      @relation(fields: [kpiId], references: [id])
-  logs      KPILog[]
+  kpi  KPI      @relation(fields: [kpiId], references: [id])
+  logs KPILog[]
 
   @@index([kpiId])
   @@index([scope])
   @@index([groupId])
 }
 
-
-
 model KPILog {
-  id         Int       @id @default(autoincrement())
-  kpiTaskId  Int
-  userId     Int
+  id        Int @id @default(autoincrement())
+  kpiTaskId Int
+  userId    Int
 
-  scope      KPIScope
-  groupId    Int?
+  scope   KPIScope
+  groupId Int?
 
-  completed  Boolean
-  loggedAt   DateTime  @default(now())
+  completed Boolean
+  loggedAt  DateTime @default(now())
 
-  task       KPITask   @relation(fields: [kpiTaskId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
+  task KPITask @relation(fields: [kpiTaskId], references: [id])
+  user User    @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([groupId])
   @@index([scope])
   @@index([kpiTaskId])
 }
-
-
 
 enum KPIType {
   DAILY
@@ -175,8 +171,9 @@ enum FriendStatus {
 enum ActivityType {
   KPI_LOG
   KPI_CREATED
-  KPI_COMPLETED
-  LIKE
+  REQUEST_ADD_FRIEND
+  FRIEND_REQUEST_ACCEPTED
+  CREATE_GROUP
   JOIN_GROUP
   LEAVE_GROUP
 }

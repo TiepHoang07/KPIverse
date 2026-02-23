@@ -3,10 +3,10 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 import * as bcrypt from 'bcrypt';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto.js';
+import { LoginDto } from './dto/login.dto.js';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
@@ -16,54 +16,73 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    console.log('➡️ register start');
+    console.log('register start');
 
     const existing = await this.prisma.user.findUnique({
       where: { email: dto.email },
+      select: {
+        id: true,
+        email: true,
+      },
     });
-    console.log('✅ findUnique done');
 
     if (existing) {
       throw new ConflictException('Email already used');
     }
 
-    console.log('➡️ hashing password');
     const hashed = await bcrypt.hash(dto.password, 5);
-    console.log('✅ hash done');
 
-    console.log('➡️ creating user');
     const user = await this.prisma.user.create({
       data: {
         email: dto.email,
         passwordHash: hashed,
         name: dto.name,
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        avatarUrl: true,
+        bio: true,
+        createdAt: true,
+      },
     });
-    console.log('✅ user created');
-
-    console.log('➡️ generating tokens');
+    console.log('user created');
     return this.generateTokens(user);
   }
 
   async login(dto: LoginDto) {
-    //check if user exists by email
+    // Check if user exists by email
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        passwordHash: true,
+        avatarUrl: true,
+        bio: true,
+        createdAt: true,
       },
     });
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    //check if password is correct
+
+    // Check if password is correct
     const valid = await bcrypt.compare(dto.password, user.passwordHash);
 
     if (!valid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.generateTokens(user);
+    // Remove passwordHash from user object before passing to generateTokens
+    const { passwordHash, ...userWithoutPassword } = user;
+    
+    return this.generateTokens(userWithoutPassword);
   }
 
   generateTokens(user: any) {

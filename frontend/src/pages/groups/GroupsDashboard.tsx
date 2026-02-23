@@ -38,7 +38,7 @@ export default function GroupsDashboard() {
 
               <button
                 onClick={() => navigate(`/groups/${group.id}`)}
-                className="text-blue-600 hover:underline"
+                className="text-blue-600 hover:underline cursor-pointer"
               >
                 View →
               </button>

@@ -6,15 +6,16 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { GroupsService } from './groups.service';
-import { CreateGroupDto } from './dto/create-group.dto';
-import { JoinGroupDto } from './dto/join-group.dto';
-import { CreateKpiDto } from './dto/create-group-kpi.dto';
-import { LogKpiDto } from './dto/log-group-kpi.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { GroupsService } from './groups.service.js';
+import { CreateGroupDto } from './dto/create-group.dto.js';
+import { JoinGroupDto } from './dto/join-group.dto.js';
+import { CreateKpiDto } from './dto/create-group-kpi.dto.js';
+import { LogKpiDto } from './dto/log-group-kpi.dto.js';
 
 @UseGuards(JwtAuthGuard)
 @Controller('groups')
@@ -33,7 +34,10 @@ export class GroupsController {
   }
 
   @Get(':groupId')
-  getGroupDashboard(@Param('groupId', ParseIntPipe) groupId: number, @Req() req:any) {
+  getGroupDashboard(
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Req() req: any,
+  ) {
     return this.svc.getGroupDashboard(groupId, req.user.id);
   }
 
@@ -47,9 +51,12 @@ export class GroupsController {
     return this.svc.leaveGroup(req.user.id, dto.groupId);
   }
 
-  @Get(':id/leaderboard')
-  leaderboard(@Param('id') id: string) {
-    return this.svc.groupLeaderboard(Number(id));
+  @Get(':groupId/leaderboard/:kpiId')
+  leaderboard(
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Param('kpiId', ParseIntPipe) kpiId: number,
+  ) {
+    return this.svc.groupLeaderboard(groupId, kpiId);
   }
 
   @Post(':groupId/members/:userId')
@@ -82,21 +89,17 @@ export class GroupsController {
   @Post(':groupId/create-kpi')
   createGroupKpi(
     @Req() req: any,
-    @Param('groupId') groupId: number,
+    @Param('groupId', ParseIntPipe) groupId: number,
     @Body() dto: CreateKpiDto,
   ) {
-    return this.svc.createGroupKpi(
-      req.user.id,
-      groupId,
-      dto,
-    );
+    return this.svc.createGroupKpi(req.user.id, groupId, dto);
   }
 
   @Post(':groupId/:kpiId/log')
   logGroupKpi(
     @Req() req: any,
-    @Param('groupId') groupId: number,
-    @Param('kpiId') kpiId: number,
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Param('kpiId', ParseIntPipe) kpiId: number,
     @Body() dto: LogKpiDto,
   ) {
     return this.svc.logGroupTasks(
@@ -106,5 +109,18 @@ export class GroupsController {
       dto.taskIds,
       dto.completed,
     );
+  }
+
+  @Get(':groupId/kpis/:kpiId')
+  async getGroupKpiById(
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Param('kpiId', ParseIntPipe) kpiId: number,
+    @Req() req: any,
+  ) {
+    return this.svc.getGroupKpiById(groupId, kpiId, req.user.id);
+  }
+  @Get('groups')
+  async searchGroups(@Query('q') query: string, @Req() req: any) {
+    return this.svc.searchGroups(query, req.user.id);
   }
 }

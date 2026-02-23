@@ -10,6 +10,8 @@ export default function ActivityFeed() {
     fetchFeed().then((res) => setActivities(res.data));
   }, []);
 
+  console.log(activities);
+
   return (
     <div className="space-y-4">
       {activities.map((a) => (

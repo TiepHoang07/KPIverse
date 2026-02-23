@@ -12,7 +12,11 @@ export const sidebarItems = [
     path: '/groups',
   },
   {
-    label: 'Leaderboard',
-    path: '/leaderboard',
+    label: 'Friends',
+    path: '/friends',
+  },
+  {
+    label: 'Profile',
+    path: '/profile',
   },
 ];

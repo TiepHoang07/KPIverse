@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { logKpi } from '../../api/kpi';
+import { logKpiTasks } from '../../api/kpi';
 
 type Props = {
   kpiId: number;
@@ -18,7 +18,7 @@ export default function LogKpiModal({
   const submit = async () => {
     setLoading(true);
     try {
-      await logKpi(kpiId, value);
+      await logKpiTasks(kpiId, value);
       onSuccess();
       onClose();
     } finally {

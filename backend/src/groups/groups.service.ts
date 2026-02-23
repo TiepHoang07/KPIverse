@@ -5,13 +5,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateGroupDto } from './dto/create-group.dto';
-import { CreateKpiDto } from './dto/create-group-kpi.dto';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { ActivityService } from '../activity/activity.service.js';
+import { CreateGroupDto } from './dto/create-group.dto.js';
+import { CreateKpiDto } from './dto/create-group-kpi.dto.js';
 
 @Injectable()
 export class GroupsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private activityService: ActivityService,
+  ) {}
 
   async getMyGroups(userId: number) {
     const memberships = await this.prisma.groupMember.findMany({
@@ -37,6 +41,7 @@ export class GroupsService {
       description: m.group.description,
       role: m.role,
       membersCount: m.group._count.members,
+      joinedAt: m.joinedAt,
     }));
   }
 
@@ -61,7 +66,7 @@ export class GroupsService {
       throw new NotFoundException('Group not found');
     }
 
-    // 3. members
+    // 3. members (without points)
     const members = await this.prisma.groupMember.findMany({
       where: { groupId },
       include: {
@@ -73,7 +78,7 @@ export class GroupsService {
           },
         },
       },
-      orderBy: { points: 'desc' },
+      orderBy: { joinedAt: 'desc' }, // Order by join date instead of points
     });
 
     // 4. group KPIs
@@ -82,24 +87,261 @@ export class GroupsService {
         groupId,
         isActive: true,
       },
+      include: {
+        tasks: true,
+        _count: {
+          select: {
+            tasks: true,
+          },
+        },
+      },
     });
+
+    // 5. Get recent activity stats for each KPI (optional)
+    const kpisWithStats = await Promise.all(
+      kpis.map(async (kpi) => {
+        const logsCount = await this.prisma.kPILog.count({
+          where: {
+            task: {
+              kpiId: kpi.id,
+            },
+            completed: true,
+          },
+        });
+
+        return {
+          ...kpi,
+          totalLogs: logsCount,
+        };
+      }),
+    );
 
     return {
       group,
+      membership,
       members: members.map((m) => ({
         id: m.user.id,
         name: m.user.name,
         avatarUrl: m.user.avatarUrl,
         role: m.role,
-        points: m.points,
+        joinedAt: m.joinedAt,
       })),
-      kpis,
-      leaderboard: members.map((m) => ({
-        userId: m.user.id,
-        name: m.user.name,
-        avatarUrl: m.user.avatarUrl,
-        points: m.points,
-      })),
+      kpis: kpisWithStats,
+    };
+  }
+
+  async getGroupKpiById(groupId: number, kpiId: number, userId: number) {
+    // Check if user is a member of the group
+    const membership = await this.prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: { groupId, userId },
+      },
+    });
+
+    if (!membership) {
+      throw new ForbiddenException('You are not a member of this group');
+    }
+
+    // Find the KPI
+    const kpi = await this.prisma.kPI.findFirst({
+      where: {
+        id: kpiId,
+        groupId,
+        scope: 'GROUP',
+        isActive: true,
+      },
+      include: {
+        tasks: {
+          where: { isActive: true },
+          orderBy: { order: 'asc' },
+        },
+      },
+    });
+
+    if (!kpi) {
+      throw new NotFoundException('KPI not found in this group');
+    }
+
+    // Get recent logs for this KPI (all members)
+    const recentLogs = await this.prisma.kPILog.findMany({
+      where: {
+        task: {
+          kpiId: kpi.id,
+        },
+        groupId,
+        completed: true,
+      },
+      orderBy: { loggedAt: 'desc' },
+      take: 20,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+        task: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    // Get current user's logs for today/week/month based on KPI type
+    const now = new Date();
+    let since: Date;
+
+    switch (kpi.type) {
+      case 'DAILY':
+        since = new Date(now.setHours(0, 0, 0, 0));
+        break;
+      case 'WEEKLY':
+        since = new Date(now.setDate(now.getDate() - now.getDay()));
+        since.setHours(0, 0, 0, 0);
+        break;
+      case 'MONTHLY':
+        since = new Date(now.getFullYear(), now.getMonth(), 1);
+        break;
+      default:
+        since = new Date(0); // Beginning of time
+    }
+
+    const userLogsThisPeriod = await this.prisma.kPILog.count({
+      where: {
+        task: {
+          kpiId: kpi.id,
+        },
+        groupId,
+        userId,
+        completed: true,
+        loggedAt: {
+          gte: since,
+        },
+      },
+    });
+
+    // Get the last log for this user
+    const lastUserLog = await this.prisma.kPILog.findFirst({
+      where: {
+        task: {
+          kpiId: kpi.id,
+        },
+        groupId,
+        userId,
+        completed: true,
+      },
+      orderBy: { loggedAt: 'desc' },
+      include: {
+        task: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    // Get member progress stats
+    const memberProgress = await this.prisma.kPILog.groupBy({
+      by: ['userId'],
+      where: {
+        task: {
+          kpiId: kpi.id,
+        },
+        groupId,
+        completed: true,
+      },
+      _count: {
+        id: true,
+      },
+      orderBy: {
+        _count: {
+          id: 'desc',
+        },
+      },
+      take: 5,
+    });
+
+    const memberIds = memberProgress.map((m) => m.userId);
+    const members = await this.prisma.user.findMany({
+      where: {
+        id: { in: memberIds },
+      },
+      select: {
+        id: true,
+        name: true,
+        avatarUrl: true,
+      },
+    });
+
+    const topMembers = memberProgress.map((m) => {
+      const user = members.find((u) => u.id === m.userId);
+      return {
+        userId: m.userId,
+        name: user?.name,
+        avatarUrl: user?.avatarUrl,
+        logCount: m._count.id,
+      };
+    });
+
+    // Get task completion stats
+    const taskStats = await this.prisma.kPILog.groupBy({
+      by: ['kpiTaskId'],
+      where: {
+        task: {
+          kpiId: kpi.id,
+        },
+        groupId,
+        completed: true,
+      },
+      _count: {
+        id: true,
+      },
+    });
+
+    const tasksWithStats = kpi.tasks.map((task) => {
+      const stat = taskStats.find((s) => s.kpiTaskId === task.id);
+      return {
+        ...task,
+        completionCount: stat?._count.id || 0,
+      };
+    });
+
+    return {
+      ...kpi,
+      tasks: tasksWithStats,
+      recentLogs,
+      userStats: {
+        hasLoggedThisPeriod: userLogsThisPeriod > 0,
+        logsThisPeriod: userLogsThisPeriod,
+        lastLog: lastUserLog,
+        canLog: userLogsThisPeriod === 0,
+      },
+      groupStats: {
+        totalLogs: await this.prisma.kPILog.count({
+          where: {
+            task: {
+              kpiId: kpi.id,
+            },
+            groupId,
+            completed: true,
+          },
+        }),
+        uniqueMembers: await this.prisma.kPILog
+          .groupBy({
+            by: ['userId'],
+            where: {
+              task: {
+                kpiId: kpi.id,
+              },
+              groupId,
+              completed: true,
+            },
+          })
+          .then((groups) => groups.length),
+        topMembers,
+      },
     };
   }
 
@@ -111,7 +353,117 @@ export class GroupsService {
     await this.prisma.groupMember.create({
       data: { groupId: group.id, userId, role: 'ADMIN' },
     });
+
+    // Record activity: group created
+    await this.activityService.recordGroupCreated(
+      userId,
+      group.id,
+      group.name,
+      group.description || undefined,
+    );
+
+    // Record activity: user joined group (the creator)
+    await this.activityService.recordGroupJoined(userId, group.id, group.name);
+
     return group;
+  }
+
+  async createGroupKpi(userId: number, groupId: number, dto: CreateKpiDto) {
+    if (dto.scope !== 'GROUP') {
+      throw new ForbiddenException('Only GROUP KPI allowed here');
+    }
+
+    const member = await this.prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: { groupId, userId },
+      },
+    });
+
+    if (member?.role !== 'ADMIN') {
+      throw new ForbiddenException('Only admin can create kpi');
+    }
+
+    // Get group name for activity
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+      select: { name: true },
+    });
+
+    // Create KPI
+    const kpi = await this.prisma.kPI.create({
+      data: {
+        name: dto.name,
+        description: dto.description,
+        type: dto.type,
+        scope: 'GROUP',
+        groupId,
+        tasks: {
+          create: dto.tasks.map((task, index) => ({
+            name: task.name,
+            order: index,
+            scope: 'GROUP',
+            groupId,
+          })),
+        },
+      },
+      include: { tasks: true },
+    });
+
+    // Record activity: KPI created
+    await this.activityService.recordKpiCreated(
+      userId,
+      kpi.name,
+      kpi.description,
+      groupId,
+    );
+
+    return kpi;
+  }
+
+  async logGroupTasks(
+    userId: number,
+    groupId: number,
+    kpiId: number,
+    taskIds: number[],
+    completed: boolean,
+  ) {
+    const member = await this.prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: { groupId, userId },
+      },
+    });
+
+    if (!member)
+      throw new ForbiddenException('You are not a member of this group');
+
+    // Get KPI name for activity
+    const kpi = await this.prisma.kPI.findUnique({
+      where: { id: kpiId },
+      select: { name: true },
+    });
+
+    // Create logs
+    const logs = await this.prisma.kPILog.createMany({
+      data: taskIds.map((taskId) => ({
+        kpiTaskId: taskId,
+        userId,
+        scope: 'GROUP',
+        groupId,
+        completed,
+      })),
+    });
+
+    // Record activity: KPI log (only if completed)
+    if (completed && logs.count > 0) {
+      await this.activityService.recordKpiLog(
+        userId,
+        kpi?.name || 'Unknown KPI',
+        taskIds.length,
+        groupId,
+      );
+    }
+
+    return logs;
   }
 
   async joinGroup(userId: number, groupId: number) {
@@ -122,6 +474,7 @@ export class GroupsService {
     if (!group) {
       throw new NotFoundException('Group not found');
     }
+
     const exists = await this.prisma.groupMember.findUnique({
       where: {
         groupId_userId: {
@@ -133,9 +486,14 @@ export class GroupsService {
 
     if (exists) throw new BadRequestException('Already member');
 
-    return this.prisma.groupMember.create({
+    const membership = await this.prisma.groupMember.create({
       data: { groupId, userId, role: 'MEMBER' },
     });
+
+    // Record activity: user joined group
+    await this.activityService.recordGroupJoined(userId, groupId, group.name);
+
+    return membership;
   }
 
   async leaveGroup(userId: number, groupId: number) {
@@ -159,11 +517,17 @@ export class GroupsService {
       });
 
       if (adminCount <= 1) {
-        throw new BadRequestException('group need at least 1 admin!');
+        throw new BadRequestException('Group needs at least one admin');
       }
     }
 
-    return this.prisma.groupMember.delete({
+    // Get group name for activity
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+      select: { name: true },
+    });
+
+    await this.prisma.groupMember.delete({
       where: {
         groupId_userId: {
           groupId,
@@ -171,20 +535,128 @@ export class GroupsService {
         },
       },
     });
+
+    // Record activity: user left group
+    await this.activityService.recordGroupLeft(
+      userId,
+      groupId,
+      group?.name || 'Unknown Group',
+    );
+
+    return { success: true };
   }
 
-  async groupLeaderboard(groupId: number, limit = 10) {
-    const members = await this.prisma.groupMember.findMany({
-      where: { groupId },
-      include: { user: true },
+  async groupLeaderboard(groupId: number, kpiId: number, limit = 10) {
+    // Group logs
+    const grouped = await this.prisma.kPILog.groupBy({
+      by: ['userId'],
+      where: {
+        scope: 'GROUP',
+        groupId,
+        completed: true,
+        task: {
+          kpi: {
+            id: kpiId,
+          },
+        },
+      },
+      _count: {
+        id: true,
+      },
+      orderBy: {
+        _count: {
+          id: 'desc',
+        },
+      },
+      take: limit,
     });
 
-    const ranked = members
-      .map((m) => ({ user: m.user, points: m.user.points || 0 }))
-      .sort((a, b) => b.points - a.points)
-      .slice(0, limit);
+    if (grouped.length === 0) return [];
 
-    return ranked;
+    // user info
+    const users = await this.prisma.user.findMany({
+      where: {
+        id: {
+          in: grouped.map((g) => g.userId),
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        avatarUrl: true,
+      },
+    });
+
+    const leaderboard = grouped.map((g, index) => {
+      const user = users.find((u) => u.id === g.userId);
+
+      return {
+        rank: index + 1,
+        userId: g.userId,
+        name: user?.name || 'Unknown',
+        avatarUrl: user?.avatarUrl,
+        logs: g._count.id,
+      };
+    });
+
+    return leaderboard;
+  }
+
+  async searchGroups(query: string, userId?: number) {
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const groups = await this.prisma.group.findMany({
+      where: {
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        _count: {
+          select: {
+            members: true,
+          },
+        },
+        // Check if user is a member
+        ...(userId && {
+          members: {
+            where: {
+              userId: userId,
+            },
+            select: {
+              role: true,
+            },
+          },
+        }),
+      },
+      take: 20,
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    // Add membership status
+    if (userId) {
+      return groups.map((group) => {
+        const isMember = group.members && group.members.length > 0;
+        const { members, ...groupWithoutMembers } = group;
+
+        return {
+          ...groupWithoutMembers,
+          isMember: !!isMember,
+          memberRole: isMember ? members[0]?.role : null,
+        };
+      });
+    }
+
+    return groups;
   }
 
   async ensureGroupAdmin(groupId: number, userId: number) {
@@ -208,7 +680,7 @@ export class GroupsService {
     await this.ensureGroupAdmin(groupId, adminId);
 
     if (adminId == targetUserId) {
-      throw new ForbiddenException('Admin cannot remove himself');
+      throw new ForbiddenException('Admin cannot remove themselves');
     }
 
     const target = await this.prisma.groupMember.findUnique({
@@ -224,6 +696,12 @@ export class GroupsService {
       throw new NotFoundException('User not in group');
     }
 
+    // Get group name for activity
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+      select: { name: true },
+    });
+
     await this.prisma.groupMember.delete({
       where: {
         groupId_userId: {
@@ -232,6 +710,13 @@ export class GroupsService {
         },
       },
     });
+
+    // Record activity: user left group (by being removed)
+    await this.activityService.recordGroupLeft(
+      targetUserId,
+      groupId,
+      group?.name || 'Unknown Group',
+    );
 
     return { success: true };
   }
@@ -252,13 +737,28 @@ export class GroupsService {
       throw new ConflictException('User already in group');
     }
 
-    return this.prisma.groupMember.create({
+    // Get group name for activity
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+      select: { name: true },
+    });
+
+    const membership = await this.prisma.groupMember.create({
       data: {
         groupId,
         userId: targetUserId,
         role: 'MEMBER',
       },
     });
+
+    // Record activity: user joined group (by being added)
+    await this.activityService.recordGroupJoined(
+      targetUserId,
+      groupId,
+      group?.name || 'Unknown Group',
+    );
+
+    return membership;
   }
 
   async transferAdmin(adminId: number, groupId: number, newAdminId: number) {
@@ -312,64 +812,5 @@ export class GroupsService {
         data: { role: 'ADMIN' },
       }),
     ]);
-  }
-
-  async createGroupKpi(userId: number, groupId: number, dto: CreateKpiDto) {
-    if (dto.scope !== 'GROUP') {
-      throw new ForbiddenException('Only GROUP KPI allowed here');
-    }
-
-    const member = await this.prisma.groupMember.findUnique({
-      where: {
-        groupId_userId: { groupId, userId },
-      },
-    });
-
-    if (!member) throw new ForbiddenException('Not a group member');
-
-    return this.prisma.kPI.create({
-      data: {
-        name: dto.name,
-        description: dto.description,
-        type: dto.type,
-        scope: 'GROUP',
-        groupId,
-        tasks: {
-          create: dto.tasks.map((task, index) => ({
-            name: task.name,
-            order: index,
-            scope: 'GROUP',
-            groupId,
-          })),
-        },
-      },
-      include: { tasks: true },
-    });
-  }
-
-  async logGroupTasks(
-    userId: number,
-    groupId: number,
-    kpiId: number,
-    taskIds: number[],
-    completed: boolean,
-  ) {
-    const member = await this.prisma.groupMember.findUnique({
-      where: {
-        groupId_userId: { groupId, userId },
-      },
-    });
-
-    if (!member) throw new ForbiddenException();
-
-    return this.prisma.kPILog.createMany({
-      data: taskIds.map((taskId) => ({
-        kpiTaskId: taskId,
-        userId,
-        scope: 'GROUP',
-        groupId,
-        completed,
-      })),
-    });
   }
 }

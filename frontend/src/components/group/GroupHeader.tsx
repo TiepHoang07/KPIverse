@@ -1,17 +1,22 @@
+import { useNavigate } from "react-router-dom";
+
 type Props = {
   group: any;
 };
 
 export default function GroupHeader({ group }: Props) {
+  const navigate = useNavigate();
   return (
-    <div className="bg-white p-4 rounded shadow flex justify-between">
+    <div className="flex justify-between items-center rounded bg-white p-4 shadow">
       <div>
-        <h1 className="text-xl font-bold">{group.name}</h1>
-        <p className="text-gray-500">{group.description}</p>
+        <h1 className="text-xl font-bold">{group.group.name}</h1>
+        <p className="text-sm">{group.group.description}</p>
+        <p className="text-gray-500 mt-3">role: {group.membership.role}</p>
+        <p className="text-gray-500">{group.members?.length || 0} members</p>
       </div>
 
-      {group.myRole === 'ADMIN' && (
-        <button className="text-indigo-600">
+      {group.membership.role === "ADMIN" && (
+        <button onClick={() => navigate(`/groups/${group.group.id}/members`)} className="bg-blue-600 text-white px-2 py-3 rounded cursor-pointer w-fit h-fit">
           Manage members
         </button>
       )}

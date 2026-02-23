@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { getGroupActivities } from '../../api/group';
 import ActivityCard from '../activity/ActivityCard';
+import { fetchGroupFeed } from '../../api/activity';
 
 export default function GroupActivityFeed({ groupId }: { groupId: number }) {
   const [activities, setActivities] = useState<any[]>([]);
 
   useEffect(() => {
-    getGroupActivities(groupId).then(res => setActivities(res.data));
+    fetchGroupFeed(groupId).then(res => setActivities(res.data));
   }, [groupId]);
 
   return (

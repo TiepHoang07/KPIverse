@@ -3,17 +3,18 @@ import {
   Controller,
   Get,
   Patch,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UsersService } from './users.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { UsersService } from './users.service.js';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UpdateProfileDto } from './dto/update-profile.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { multerOptions } from 'src/common/middleware/upload.middleware';
+import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { ChangePasswordDto } from './dto/change-password.dto.js';
+import { multerOptions } from '../common/middleware/upload.middleware.js';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -44,5 +45,10 @@ export class UsersController {
   uploadAvatar(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
     const url = `uploads/${file.filename}`;
     return this.usersService.updateAvatar(req.user.id, url);
+  }
+
+  @Get('search')
+  async searchUsers(@Query('q') query: string, @Req() req: any) {
+    return this.usersService.searchUsers(query, req.user.id);
   }
 }

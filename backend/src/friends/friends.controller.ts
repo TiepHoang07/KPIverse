@@ -1,8 +1,18 @@
-import { Body, Controller, Post, Req, UseGuards, Get } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { FriendsService } from './friends.service';
-import { CreateFriendDto } from './dto/create-friend.dto';
-import { RespondFriendDto } from './dto/respond-friend.dto';
+import { 
+  Body, 
+  Controller, 
+  Post, 
+  Req, 
+  UseGuards, 
+  Get,
+  Param,
+  ParseIntPipe,
+  Delete 
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { FriendsService } from './friends.service.js';
+import { CreateFriendDto } from './dto/create-friend.dto.js';
+import { RespondFriendDto } from './dto/respond-friend.dto.js';
 
 @UseGuards(JwtAuthGuard)
 @Controller('friends')
@@ -15,12 +25,27 @@ export class FriendsController {
   }
 
   @Post('respond')
-  respond(@Body() dto: RespondFriendDto) {
+  respond(@Req() req: any, @Body() dto: RespondFriendDto) {
     return this.svc.respondRequest(dto.friendId, dto.action);
   }
 
   @Get()
   list(@Req() req: any) {
     return this.svc.listFriends(req.user.id);
+  }
+
+  @Get('pending')
+  getPendingRequests(@Req() req: any) {
+    return this.svc.getPendingRequests(req.user.id);
+  }
+
+  @Get('sent')
+  getSentRequests(@Req() req: any) {
+    return this.svc.getSentRequests(req.user.id);
+  }
+
+  @Delete(':friendId')
+  removeFriend(@Req() req: any, @Param('friendId', ParseIntPipe) friendId: number) {
+    return this.svc.removeFriend(req.user.id, friendId);
   }
 }
