@@ -761,6 +761,72 @@ export class GroupsService {
     return membership;
   }
 
+  async getGroupMembers(groupId: number, requestingUserId: number) {
+    // Check if the requesting user is a member of the group
+    const membership = await this.prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: { groupId, userId: requestingUserId },
+      },
+    });
+
+    if (!membership) {
+      throw new ForbiddenException('You are not a member of this group');
+    }
+
+    // Get group info
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+      select: { name: true },
+    });
+
+    if (!group) {
+      throw new NotFoundException('Group not found');
+    }
+
+    // Get all members with their user details
+    const members = await this.prisma.groupMember.findMany({
+      where: { groupId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: [
+        { role: 'asc' }, // Admins first
+        { joinedAt: 'asc' }, // Then by join date
+      ],
+    });
+
+    // Transform to DTO
+    const memberDto = members.map(member => ({
+      id: member.user.id,
+      name: member.user.name || 'Unknown',
+      email: member.user.email,
+      avatarUrl: member.user.avatarUrl,
+      role: member.role,
+      joinedAt: member.joinedAt,
+    }));
+
+    // Count admins and members
+    const adminCount = members.filter(m => m.role === 'ADMIN').length;
+    const memberCount = members.filter(m => m.role === 'MEMBER').length;
+
+    return {
+      groupId,
+      groupName: group.name,
+      members: memberDto,
+      membership,
+      totalCount: members.length,
+      adminCount,
+      memberCount,
+    };
+  }
+
   async transferAdmin(adminId: number, groupId: number, newAdminId: number) {
     if (adminId == newAdminId) {
       throw new BadRequestException('Cannot transfer admin to yourself');

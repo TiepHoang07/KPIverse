@@ -5,8 +5,8 @@ import KpiTaskItem from "../../components/kpi/KpiTaskItem";
 import {
   logGroupKpiTasks,
   deleteGroupKpi,
-  finishGroupKpi,
   getGroupKpiById,
+  getGroupMembers,
 } from "../../api/group";
 import GroupLeaderboard from "../../components/group/GroupLeaderboard";
 
@@ -20,7 +20,6 @@ export default function GroupKpi() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [finishing, setFinishing] = useState(false);
   const [kpi, setKpi] = useState<any>(null);
   const [checked, setChecked] = useState<number[]>([]);
   const [userRole, setUserRole] = useState<string>("MEMBER");
@@ -32,8 +31,8 @@ export default function GroupKpi() {
 
   // Get last logged date from userStats
   const lastLoggedDate = useMemo(() => {
-    return kpi?.userStats?.lastLog 
-      ? new Date(kpi.userStats.lastLog.loggedAt) 
+    return kpi?.userStats?.lastLog
+      ? new Date(kpi.userStats.lastLog.loggedAt)
       : null;
   }, [kpi]);
 
@@ -58,6 +57,22 @@ export default function GroupKpi() {
     return userRole === "ADMIN";
   }, [userRole]);
 
+  // Fetch user role from group members
+  useEffect(() => {
+    if (!groupId) return;
+
+    const fetchMembers = async () => {
+      try {
+        const res = await getGroupMembers(Number(groupId));
+        setUserRole(res.data.membership.role);
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+      }
+    };
+
+    fetchMembers();
+  }, [groupId]);
+
   // Fetch KPI details
   useEffect(() => {
     if (!groupId || !kpiId) return;
@@ -68,12 +83,6 @@ export default function GroupKpi() {
         const res = await getGroupKpiById(Number(groupId), Number(kpiId));
         setKpi(res.data);
         setChecked([]);
-        
-        // You might want to get userRole from the response if available
-        // For example, if your API returns it
-        if (res.data.userRole) {
-          setUserRole(res.data.userRole);
-        }
       } catch (error) {
         console.error("Error fetching group KPI:", error);
       } finally {
@@ -106,7 +115,10 @@ export default function GroupKpi() {
       alert("Tasks logged successfully!");
 
       // Refresh KPI data
-      const refreshedKpi = await getGroupKpiById(Number(groupId), Number(kpiId));
+      const refreshedKpi = await getGroupKpiById(
+        Number(groupId),
+        Number(kpiId),
+      );
       setKpi(refreshedKpi.data);
       setChecked([]);
     } catch (error) {
@@ -138,27 +150,6 @@ export default function GroupKpi() {
     }
   };
 
-  const handleFinish = async () => {
-    if (!kpi || !groupId) return;
-
-    const confirmFinish = window.confirm(
-      `Mark "${kpi.name}" as finished?`,
-    );
-    if (!confirmFinish) return;
-
-    try {
-      setFinishing(true);
-      await finishGroupKpi(Number(groupId), kpi.id);
-      alert("KPI marked as finished!");
-      navigate(`/groups/${groupId}`);
-    } catch (error) {
-      console.error("Error finishing KPI:", error);
-      alert("Error finishing KPI. Please try again.");
-    } finally {
-      setFinishing(false);
-    }
-  };
-
   const handleBack = () => {
     navigate(`/groups/${groupId}`);
   };
@@ -171,7 +162,7 @@ export default function GroupKpi() {
   if (loading) {
     return (
       <div className="flex justify-center p-6">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-800"></div>
       </div>
     );
   }
@@ -180,7 +171,10 @@ export default function GroupKpi() {
     return (
       <div className="p-6">
         <div className="text-red-500">KPI not found</div>
-        <button onClick={handleBack} className="mt-4 text-blue-600 hover:underline">
+        <button
+          onClick={handleBack}
+          className="mt-4 text-blue-600 hover:underline"
+        >
           ← Back to Group
         </button>
       </div>
@@ -188,7 +182,6 @@ export default function GroupKpi() {
   }
 
   const nextAvailableMessage = getNextAvailableMessage();
-
   return (
     <div className="mx-auto max-w-4xl p-6">
       {/* Header */}
@@ -200,15 +193,9 @@ export default function GroupKpi() {
           ← Back to Group
         </button>
 
+        {/* Only show admin buttons if user is admin */}
         {isAdmin && (
-          <div className="flex gap-2">
-            <button
-              onClick={handleFinish}
-              disabled={finishing}
-              className="cursor-pointer rounded-lg border border-green-500 px-3 py-1 text-sm text-green-600 hover:bg-green-50 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              {finishing ? "Finishing..." : "✓ Finish"}
-            </button>
+          <div className="flex">
             <button
               onClick={handleDelete}
               disabled={deleting}
@@ -220,15 +207,21 @@ export default function GroupKpi() {
         )}
       </div>
 
-      {/* Group context */}
+      {/* Group context with role badge */}
       <div className="mb-4 flex items-center gap-2">
         <span className="text-sm text-gray-500">Group:</span>
         <span className="font-medium">{kpi.groupName}</span>
-        {isAdmin && (
-          <span className="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-800">
-            Admin
-          </span>
-        )}
+
+        {/* Role badge - shows for all users */}
+        <span
+          className={`ml-2 rounded-full px-2 py-0.5 text-xs font-medium ${
+            userRole === "ADMIN"
+              ? "bg-purple-100 text-purple-800"
+              : "bg-gray-100 text-gray-800"
+          }`}
+        >
+          {userRole}
+        </span>
       </div>
 
       {/* Type badge */}
@@ -251,15 +244,16 @@ export default function GroupKpi() {
       </div>
 
       {/* Main KPI card */}
-      <div className="rounded-2xl border bg-gray-50 p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
+      <div className="rounded-2xl bg-gray-50 shadow-sm overflow-hidden border-l-4 border-l-indigo-500">
+
+        <div className="mb-4 flex items-center justify-between px-4 pt-2">
           <h1 className="text-2xl font-semibold">{kpi.name}</h1>
           <span className="text-sm text-gray-400">
             {kpi.tasks?.length || 0} tasks
           </span>
         </div>
 
-        <p className="mb-4 text-sm text-gray-500">
+        <p className="mb-4 text-sm text-gray-500 px-4">
           {kpi.description || "No description"}
         </p>
 
@@ -271,7 +265,7 @@ export default function GroupKpi() {
         )}
 
         {/* Progress */}
-        <div className="mb-2">
+        <div className="mb-2 p-4">
           <div className="mb-1 flex justify-between text-sm text-gray-600">
             <span>Progress</span>
             <span className="font-medium">{progress}%</span>

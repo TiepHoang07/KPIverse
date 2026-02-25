@@ -3,7 +3,6 @@ import Login from "../auth/Login";
 import Register from "../auth/Register";
 import ProtectedRoute from "../components/ProtectedRoute";
 import GuestRoute from "../components/GuestRoute";
-import Navbar from "../components/Navbar";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import GroupsDashboard from "../pages/groups/GroupsDashboard";
 import GroupsPage from "../pages/groups/GroupsPage";
@@ -21,7 +20,6 @@ import Kpi from "../pages/kpi/Kpi";
 export default function AppRouter() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
         <Route element={<GuestRoute children={<Outlet />} />}>
           <Route path="/login" element={<Login />} />

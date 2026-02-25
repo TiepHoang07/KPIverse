@@ -16,8 +16,8 @@ export default function GroupHeader({ group }: Props) {
       </div>
 
       {group.membership.role === "ADMIN" && (
-        <button onClick={() => navigate(`/groups/${group.group.id}/members`)} className="bg-blue-600 text-white px-2 py-3 rounded cursor-pointer w-fit h-fit">
-          Manage members
+        <button onClick={() => navigate(`/groups/${group.group.id}/members`)} className=" bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-2xl transition-all transform hover:scale-102 shadow-md hover:shadow-lg cursor-pointer">
+          Group members
         </button>
       )}
     </div>

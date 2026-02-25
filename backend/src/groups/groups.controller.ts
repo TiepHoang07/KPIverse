@@ -119,6 +119,15 @@ export class GroupsController {
   ) {
     return this.svc.getGroupKpiById(groupId, kpiId, req.user.id);
   }
+
+  @Get(':groupId/members')
+  async getGroupMembers(
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Req() req: any,
+  ) {
+    return this.svc.getGroupMembers(groupId, req.user.id);
+  }
+
   @Get('groups')
   async searchGroups(@Query('q') query: string, @Req() req: any) {
     return this.svc.searchGroups(query, req.user.id);

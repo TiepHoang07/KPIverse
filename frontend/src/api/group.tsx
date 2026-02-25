@@ -48,9 +48,6 @@ export const transferAdmin = (groupId: number, newAdminId: number) =>
 export const deleteGroupKpi = (groupId: number, kpiId: number) => 
   api.delete(`/groups/${groupId}/kpis/${kpiId}`);
 
-export const finishGroupKpi = (groupId: number, kpiId: number) => 
-  api.patch(`/groups/${groupId}/kpis/${kpiId}/deactivate`, { isActive: false });
-
 export const getGroupKpiById = (groupId: number, kpiId: number) => 
   api.get(`/groups/${groupId}/kpis/${kpiId}`);
 

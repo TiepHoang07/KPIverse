@@ -18,7 +18,6 @@ export default function Kpi() {
   // Check if user can log tasks based on KPI type
   const canLogTasks = useMemo(() => {
     if (!kpi || !lastLoggedDate) return true;
-    if (checked.length === 0) return false;
 
     const now = new Date();
     const lastLog = new Date(lastLoggedDate);
@@ -56,8 +55,8 @@ export default function Kpi() {
   // Get next available time message
   const getNextAvailableMessage = () => {
     if (!kpi || !lastLoggedDate || canLogTasks) return null;
+    if (canLogTasks) return null; 
 
-    const now = new Date();
     const lastLog = new Date(lastLoggedDate);
 
     switch (kpi.type) {
@@ -249,7 +248,7 @@ export default function Kpi() {
       </div>
 
       {/* Main KPI card */}
-      <div className="rounded-2xl bg-gray-50 p-6 shadow-sm">
+      <div className="rounded-2xl bg-gray-50 p-6 shadow-sm border-l-4 border-l-cyan-500">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">{kpi.name}</h1>

@@ -16,9 +16,9 @@ export default function GroupKpiList({ group }: Props) {
         <h2 className="text-xl font-semibold">Group KPIs</h2>
 
         {group.membership.role === "ADMIN" && (
-          <button onClick={() => navigate(`/groups/${group.group.id}/create-kpi`)} className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl hover:opacity-90 transition cursor-pointer">
+          <button onClick={() => navigate(`/groups/${group.group.id}/create-kpi`)} className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-2xl transition-all transform hover:scale-101 shadow-md hover:shadow-lg cursor-pointer">
             <Plus size={16} />
-            Create KPI
+            Create group KPI
           </button>
         )}
       </div>

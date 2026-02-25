@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import KpiCard from '../../components/kpi/KpiCard';
 import api from '../../api/axios';
+import { Plus } from 'lucide-react';
 
 export default function KpiPage() {
   const [kpis, setKpis] = useState<any[]>([]);
@@ -27,9 +28,10 @@ export default function KpiPage() {
         <h1 className="text-2xl font-bold">My KPIs</h1>
         <button
           onClick={() => navigate('/kpis/create')}
-          className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-4 py-3 rounded-2xl transition-all transform hover:scale-102 shadow-md hover:shadow-lg cursor-pointer"
         >
-          + Create KPI
+          <Plus size={20}></Plus>
+          <span className="font-medium">Create KPI</span>
         </button>
       </div>
       
