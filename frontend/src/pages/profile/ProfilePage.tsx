@@ -64,7 +64,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Stats Cards - Clickable */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 mx-4">
         <StatCard
           label="KPIs"
           value={userData.kpis?.length || 0}

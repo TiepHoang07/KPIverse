@@ -154,8 +154,8 @@ export default function FriendsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 p-6">
-      <h1 className="text-3xl font-bold text-gray-900">Friends</h1>
+    <div className="mx-auto max-w-3xl space-y-8">
+      <h1 className="ml-6 text-3xl font-bold text-gray-900">Friends</h1>
 
       {/* Search Section */}
       <div className="rounded-xl bg-white p-6 shadow-sm">

@@ -17,7 +17,6 @@ export default function Login() {
     try {
       const data = await login({ email, password });
       localStorage.setItem("accessToken", data.accessToken);
-      // refresh auth state so ProtectedRoute will see the user
       await refresh();
       navigate("/");
     } catch (err: any) {
@@ -26,69 +25,86 @@ export default function Login() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen flex-col items-center justify-center bg-gray-100 px-12 py-20">
-      <div className="relative py-3 sm:mx-auto sm:max-w-xl">
-        <div className="absolute inset-0 -skew-y-6 transform bg-linear-to-r from-indigo-500 to-purple-500 shadow-lg sm:-rotate-6 sm:skew-y-0 sm:rounded-3xl"></div>
-        <div className="relative bg-white px-4 py-6 shadow-lg sm:rounded-3xl sm:p-10">
-          <div className="flex flex-col items-center pb-4">
-            <img className="h-18 w-40" src="images/logo.png" alt="logo" />
-            <span className="text-md font-light text-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+      <div className="relative w-full max-w-md">
+        {/* Decorative background element */}
+        <div className="absolute inset-0 -skew-y-3 transform bg-linear-to-r from-indigo-500 to-purple-500 shadow-lg sm:-rotate-3 sm:skew-y-0 sm:rounded-3xl"></div>
+        
+        {/* Main card */}
+        <div className="relative bg-white px-6 py-8 shadow-lg sm:rounded-3xl sm:p-10">
+          {/* Logo section */}
+          <div className="mb-6 flex flex-col items-center">
+            <img 
+              className="h-16 w-auto sm:h-20" 
+              src="images/logo.png" 
+              alt="KPIverse logo" 
+            />
+            <span className="mt-2 text-sm text-gray-600 sm:text-base">
               Welcome back to KPIverse!
             </span>
           </div>
-          <div className="rounded-lg bg-white shadow">
-            <form
-              className="w-96 space-y-4 rounded-xl bg-white p-8 text-base leading-6 text-gray-700 shadow-md sm:text-lg sm:leading-7"
-              onSubmit={handleSubmit}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <h1 className="text-center text-xl font-bold text-gray-900 sm:text-2xl">
+              Log in to your account
+            </h1>
+
+            {error && (
+              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
+            {/* Email field */}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                required
+              />
+            </div>
+
+            {/* Password field */}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                required
+              />
+            </div>
+
+            {/* Submit button */}
+            <button
+              type="submit"
+              className="w-full cursor-pointer rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:from-blue-700 hover:to-indigo-700 sm:text-base"
             >
-              <h1 className="mb-4 text-center text-2xl font-bold text-gray-900">
-                Log in your account
-              </h1>
+              Sign in
+            </button>
 
-              {error && <p className="mb-2 text-red-500">{error}</p>}
-              <div>
-                <span className="mb-2 block text-sm font-medium text-gray-900">
-                  Your email
-                </span>
-                <input
-                  className="mb-3 w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-300 focus:outline-blue-300"
-                  type="email"
-                  placeholder="example@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div>
-                <span className="mb-2 block text-sm font-medium text-gray-900">
-                  Your password
-                </span>
-                <input
-                  className="mb-3 w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-300 focus:outline-blue-300"
-                  type="password"
-                  placeholder="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-
-              <button className="w-full cursor-pointer rounded-2xl bg-linear-to-bl from-blue-500 to-indigo-500 px-4 py-3 text-white hover:from-indigo-600 hover:to-blue-600">
-                Login
-              </button>
-
-              <p className="mt-2 text-center text-sm font-light text-gray-500">
-                Don't have an account yet?{" "}
-                <a
-                  onClick={() => {
-                    navigate("/register");
-                  }}
-                  className="cursor-pointer font-medium text-blue-600 hover:underline"
-                >
-                  Register
-                </a>
-              </p>
-            </form>
-          </div>
+            {/* Register link */}
+            <p className="text-center text-sm text-gray-600">
+              Don't have an account?{" "}
+              <a
+                onClick={() => navigate("/register")}
+                className="font-medium cursor-pointer text-blue-600 hover:text-blue-700 hover:underline"
+              >
+                Create one now
+              </a>
+            </p>
+          </form>
         </div>
       </div>
     </div>

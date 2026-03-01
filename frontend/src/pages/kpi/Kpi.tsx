@@ -197,19 +197,19 @@ export default function Kpi() {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="text-center">Loading...</div>
+      <div className="flex min-h-[50vh] items-center justify-center p-6">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
       </div>
     );
   }
 
   if (!kpi) {
     return (
-      <div className="p-6">
-        <div className="text-red-500">KPI not found</div>
+      <div className="flex min-h-[50vh] flex-col items-center justify-center p-6">
+        <p className="text-red-500">KPI not found</p>
         <button
           onClick={handleBack}
-          className="mt-4 text-blue-600 hover:underline"
+          className="mt-4 cursor-pointer text-blue-600 hover:underline"
         >
           ← Back to KPIs
         </button>
@@ -220,48 +220,52 @@ export default function Kpi() {
   const nextAvailableMessage = getNextAvailableMessage();
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
       {/* Header with actions */}
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <button
           onClick={handleBack}
-          className="flex cursor-pointer items-center gap-1 text-blue-600 hover:underline"
+          className="flex cursor-pointer items-center gap-1 text-sm text-blue-600 hover:underline sm:text-base"
         >
           ← Back to KPIs
         </button>
 
-        <div className="flex">
-          <button
-            onClick={handleDelete}
-            disabled={deleting}
-            className="cursor-pointer rounded-lg border border-red-500 px-3 py-1 text-sm text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {deleting ? "Deleting..." : "Delete"}
-          </button>
-        </div>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="w-full cursor-pointer rounded-lg border border-red-500 px-3 py-2 text-sm text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+        >
+          {deleting ? "Deleting..." : "Delete KPI"}
+        </button>
       </div>
 
       {/* Type badge and time info */}
-      <div className="mb-4 flex items-center gap-3">
+      <div className="mb-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
         <span
-          className={`rounded-full px-3 py-1 text-xs font-medium ${kpi.type === "DAILY" ? "bg-blue-100 text-blue-800" : ""} ${kpi.type === "WEEKLY" ? "bg-purple-100 text-purple-800" : ""} ${kpi.type === "MONTHLY" ? "bg-orange-100 text-orange-800" : ""} `}
+          className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
+            kpi.type === "DAILY" ? "bg-blue-100 text-blue-800" : ""
+          } ${kpi.type === "WEEKLY" ? "bg-purple-100 text-purple-800" : ""} ${
+            kpi.type === "MONTHLY" ? "bg-orange-100 text-orange-800" : ""
+          }`}
         >
           {kpi.type}
         </span>
 
         {lastLoggedDate && (
-          <span className="text-sm text-gray-500">
+          <span className="text-xs text-gray-500 sm:text-sm">
             Last logged: {new Date(lastLoggedDate).toLocaleString()}
           </span>
         )}
       </div>
 
       {/* Main KPI card */}
-      <div className="rounded-2xl border-l-4 border-l-cyan-500 bg-gray-50 p-6 shadow-sm">
+      <div className="mb-6 rounded-2xl border-l-4 border-l-cyan-500 bg-gray-50 p-4 shadow-sm sm:p-6">
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">{kpi.name}</h1>
-          <span className="text-sm text-gray-400">
+        <div className="mb-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
+          <h1 className="break-words text-xl font-semibold sm:text-2xl">
+            {kpi.name}
+          </h1>
+          <span className="text-xs text-gray-400 sm:text-sm">
             {kpi.tasks?.length || 0} tasks
           </span>
         </div>
@@ -274,7 +278,7 @@ export default function Kpi() {
         {/* Next available message if can't log */}
         {nextAvailableMessage && (
           <div className="mb-4 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-            <p className="flex items-center gap-2 text-sm text-yellow-800">
+            <p className="flex items-center gap-2 text-xs text-yellow-800 sm:text-sm">
               <span>⏰</span>
               {nextAvailableMessage}
             </p>
@@ -283,13 +287,13 @@ export default function Kpi() {
 
         {/* Progress section */}
         <div className="mb-6">
-          <div className="mb-1 flex justify-between text-sm text-gray-600">
+          <div className="mb-1 flex flex-col justify-between gap-1 text-xs text-gray-600 sm:flex-row sm:text-sm">
             <span>Overall Progress</span>
             <span className="font-medium">{progress}%</span>
           </div>
-          <div className="h-3 rounded-full bg-gray-200">
+          <div className="h-2 w-full rounded-full bg-gray-200 sm:h-3">
             <div
-              className="h-3 rounded-full bg-green-500 transition-all"
+              className="h-2 rounded-full bg-green-500 transition-all sm:h-3"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -300,26 +304,26 @@ export default function Kpi() {
 
         {/* Tasks section */}
         <div className="mb-6">
-          <h3 className="mb-3 font-medium">Tasks</h3>
-          <div className="space-y-2 rounded-xl bg-white p-4 shadow-sm">
+          <h3 className="mb-3 text-sm font-medium sm:text-base">Tasks</h3>
+          <div className="space-y-2 rounded-xl bg-white p-3 shadow-sm sm:p-4">
             {kpi.tasks?.map((task: any) => (
               <KpiTaskItem
                 key={task.id}
                 task={task}
                 checked={checked.includes(task.id)}
                 onToggle={toggleTask}
-                disabled={!canLogTasks} // Disable if can't log
+                disabled={!canLogTasks}
               />
             ))}
           </div>
         </div>
 
         {/* Action buttons */}
-        <div className="mt-12 flex gap-3">
+        <div className="mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row">
           <button
             onClick={handleSave}
             disabled={saving || checked.length === 0 || !canLogTasks}
-            className={`flex-1 rounded-xl px-4 py-3 font-medium transition ${
+            className={`w-full rounded-xl px-4 py-3 text-sm font-medium transition sm:flex-1 sm:text-base ${
               canLogTasks && checked.length > 0
                 ? "cursor-pointer bg-gray-800 text-white hover:opacity-90"
                 : "cursor-not-allowed bg-gray-300 text-gray-500"
@@ -337,7 +341,7 @@ export default function Kpi() {
           <button
             onClick={() => setChecked(kpi.tasks?.map((t: any) => t.id) || [])}
             disabled={!canLogTasks}
-            className={`rounded-xl border px-4 py-3 transition ${
+            className={`w-full rounded-xl border px-4 py-3 text-sm transition sm:w-auto ${
               canLogTasks
                 ? "cursor-pointer text-gray-600 hover:bg-gray-50"
                 : "cursor-not-allowed bg-gray-100 text-gray-400"
@@ -354,7 +358,7 @@ export default function Kpi() {
             <div className="mt-3 flex justify-end">
               <button
                 onClick={() => setChecked([])}
-                className="cursor-pointer text-sm text-gray-500 transition hover:text-gray-700"
+                className="cursor-pointer text-xs text-gray-500 transition hover:text-gray-700 sm:text-sm"
               >
                 Clear selection
               </button>
@@ -362,19 +366,19 @@ export default function Kpi() {
           )}
       </div>
 
+      {/* Chart section */}
+      <div className="my-6">
+        <KpiChart kpiId={Number(kpiId)} />
+      </div>
+
       {/* Additional info section */}
-      <div className="mt-4 flex justify-between text-xs text-gray-400">
+      <div className="mt-4 flex flex-col gap-2 text-xs text-gray-400 sm:flex-row sm:justify-between">
         {kpi.createdAt && (
           <span>Created: {new Date(kpi.createdAt).toLocaleDateString()}</span>
         )}
         {kpi.isActive === false && (
           <span className="text-green-600">✓ Finished</span>
         )}
-      </div>
-
-      {/* Chart section*/}
-      <div className="my-4">
-        <KpiChart kpiId={Number(kpiId)} />
       </div>
     </div>
   );

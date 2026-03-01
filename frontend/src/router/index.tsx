@@ -16,7 +16,7 @@ import CreateKpi from "../pages/kpi/CreateKpi";
 import CreateGroupKpi from "../pages/groups/CreateGroupKpi";
 import GroupsMembers from "../pages/groups/GroupsMembers";
 import Kpi from "../pages/kpi/Kpi";
-import SettingsPage from "../pages/settingsPage/settingsPage";
+import SettingsPage from "../pages/settingsPage/SettingsPage";
 
 export default function AppRouter() {
   return (
