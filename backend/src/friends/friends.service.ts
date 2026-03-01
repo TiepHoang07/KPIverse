@@ -26,56 +26,95 @@ export class FriendsService {
 
     // Create friend request
     const friendRequest = await this.prisma.friend.create({
-      data: { 
-        requester: requesterId, 
-        receiver: receiverId, 
-        status: 'PENDING' 
+      data: {
+        requester: requesterId,
+        receiver: receiverId,
+        status: 'PENDING',
+      },
+      include: {
+        receiverUser: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 
     // Record activity for the sent request
-    await this.activityService.recordFriendRequest(requesterId, receiverId);
+    await this.activityService.recordFriendRequest(requesterId, receiverId, friendRequest.receiverUser.name);
 
     return friendRequest;
   }
 
-  async respondRequest(friendId: number, action: 'ACCEPTED' | 'BLOCKED') {
-    // Get the friend request details before updating
-    const friendRequest = await this.prisma.friend.findUnique({
-      where: { id: friendId },
+  async respondRequest(
+    friendId: number,
+    userId: number,
+    action: 'ACCEPT' | 'REJECT',
+  ) {
+    // Find the pending request where current user is the receiver
+    const friendRequest = await this.prisma.friend.findFirst({
+      where: {
+        id: friendId,
+        receiver: userId,
+        status: 'PENDING',
+      },
+      include: {
+        requesterUser: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     if (!friendRequest) {
       throw new BadRequestException('Friend request not found');
     }
 
-    // Update the friend request status
+    // Handle REJECT action
+    if (action === 'REJECT') {
+      return this.prisma.friend.delete({
+        where: { id: friendId },
+      });
+    }
+
+    // Handle ACCEPT action
     const updatedRequest = await this.prisma.friend.update({
       where: { id: friendId },
-      data: { status: action },
+      data: { status: 'ACCEPTED' },
     });
 
-    // If accepted, record activity for both users
-    if (action === 'ACCEPTED') {
-      // Record for the requester (they'll see that their request was accepted)
-      await this.activityService.recordFriendRequestAccepted(
-        friendRequest.receiver, // The user who accepted
-        friendRequest.requester, // The original requester
-      );
-
-      // Optional: Also record for the receiver that they accepted
-      // You might want this or not depending on your preference
-      await this.activityService.recordFriendRequestAccepted(
-        friendRequest.requester, // The original requester
-        friendRequest.receiver, // The user who accepted
-      );
-    }
+    // Record activity for both users
+    await this.activityService.recordFriendRequestAccepted(
+      friendRequest.receiver,
+      friendRequest.requester,
+      friendRequest.requesterUser.name,
+    );
 
     return updatedRequest;
   }
 
+  // Cancel a sent request
+  async cancelRequest(friendId: number, userId: number) {
+    const friendRequest = await this.prisma.friend.findFirst({
+      where: {
+        id: friendId,
+        requester: userId,
+        status: 'PENDING',
+      },
+    });
+
+    if (!friendRequest) {
+      throw new BadRequestException('Sent request not found');
+    }
+
+    return this.prisma.friend.delete({
+      where: { id: friendId },
+    });
+  }
+
   async listFriends(userId: number) {
-    const accepted = await this.prisma.friend.findMany({
+    const friends = await this.prisma.friend.findMany({
       where: {
         OR: [
           { requester: userId, status: 'ACCEPTED' },
@@ -102,14 +141,16 @@ export class FriendsService {
       },
     });
 
-    return accepted.map((f) =>
-      f.requester === userId 
-        ? { ...f.receiverUser, friendSince: f.createdAt }
-        : { ...f.requesterUser, friendSince: f.createdAt },
-    );
+    return friends.map((f) => {
+      const friendData =
+        f.requester === userId ? f.receiverUser : f.requesterUser;
+      return {
+        ...friendData,
+        friendSince: f.createdAt,
+      };
+    });
   }
 
-  // Optional: Get pending friend requests
   async getPendingRequests(userId: number) {
     return this.prisma.friend.findMany({
       where: {
@@ -129,7 +170,6 @@ export class FriendsService {
     });
   }
 
-  // Optional: Get sent friend requests
   async getSentRequests(userId: number) {
     return this.prisma.friend.findMany({
       where: {
@@ -149,13 +189,12 @@ export class FriendsService {
     });
   }
 
-  // Optional: Unfriend or cancel request
   async removeFriend(userId: number, friendId: number) {
     const friendship = await this.prisma.friend.findFirst({
       where: {
         OR: [
-          { requester: userId, receiver: friendId },
-          { requester: friendId, receiver: userId },
+          { requester: userId, receiver: friendId, status: 'ACCEPTED' },
+          { requester: friendId, receiver: userId, status: 'ACCEPTED' },
         ],
       },
     });

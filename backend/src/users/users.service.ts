@@ -185,114 +185,124 @@ export class UsersService {
     });
   }
 
-  async searchUsers(query: string, currentUserId?: number) {
-    if (!query || query.length < 1) {
-      return [];
-    }
+async searchUsers(query: string, currentUserId?: number) {
+  if (!query || query.length < 1) {
+    return [];
+  }
 
-    // Check if the query is a number (for ID search)
-    const isNumeric = /^\d+$/.test(query);
-    const idQuery = isNumeric ? parseInt(query, 10) : undefined;
-
-    // Build the OR conditions array
-    const orConditions: any[] = [
-      // Search by name (partial match)
-      {
-        name: {
-          contains: query,
-          mode: 'insensitive',
-        },
+  // Build the OR conditions array
+  const orConditions: any[] = [
+    // Search by name (partial match)
+    {
+      name: {
+        contains: query,
+        mode: 'insensitive',
       },
-      // Search by email (partial match)
-      {
-        email: {
-          contains: query,
-          mode: 'insensitive',
-        },
+    },
+    // Search by email (partial match)
+    {
+      email: {
+        contains: query,
+        mode: 'insensitive',
       },
-    ];
+    },
+  ];
 
-    // Add ID search only if we have a valid number
-    if (idQuery !== undefined) {
-      orConditions.push({
-        id: idQuery, // Simple equality - Prisma understands this
-      });
-    }
-
-    const users = await this.prisma.user.findMany({
-      where: {
-        OR: orConditions,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        avatarUrl: true,
-        bio: true,
-        // Check friendship status if currentUserId provided
-        ...(currentUserId && {
-          friendsSent: {
-            where: {
-              requester: currentUserId,
-              status: {
-                in: ['PENDING', 'ACCEPTED'],
-              },
-            },
-            select: {
-              status: true,
-              receiver: true,
+  const users = await this.prisma.user.findMany({
+    where: {
+      OR: orConditions,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      avatarUrl: true,
+      bio: true,
+      // Check friendship status if currentUserId provided
+      ...(currentUserId && {
+        // Requests SENT BY current user TO this user
+        friendsSent: {
+          where: {
+            requester: currentUserId,
+            receiver: { not: currentUserId }, // Make sure we're looking at the right direction
+            status: {
+              in: ['PENDING', 'ACCEPTED'],
             },
           },
-          friendsRecv: {
-            where: {
-              receiver: currentUserId,
-              status: {
-                in: ['PENDING', 'ACCEPTED'],
-              },
-            },
-            select: {
-              status: true,
-              requester: true,
+          select: {
+            status: true,
+            receiver: true,
+          },
+        },
+        // Requests RECEIVED BY current user FROM this user
+        friendsRecv: {
+          where: {
+            receiver: currentUserId,
+            requester: { not: currentUserId }, // Make sure we're looking at the right direction
+            status: {
+              in: ['PENDING', 'ACCEPTED'],
             },
           },
-        }),
-      },
-      orderBy: {
-        name: 'asc',
-      },
-    });
+          select: {
+            status: true,
+            requester: true,
+          },
+        },
+      }),
+    },
+    orderBy: {
+      name: 'asc',
+    },
+  });
 
-    // If currentUserId is provided, add friendship status
-    if (currentUserId) {
-      return users.map((user) => {
-        const sentRequest = user.friendsSent?.find(
-          (f) => f.receiver === user.id,
-        );
-        const receivedRequest = user.friendsRecv?.find(
-          (f) => f.requester === user.id,
-        );
-
-        let friendshipStatus = 'NONE';
-        if (sentRequest) {
-          friendshipStatus =
-            sentRequest.status === 'PENDING' ? 'PENDING_SENT' : 'FRIENDS';
-        } else if (receivedRequest) {
-          friendshipStatus =
-            receivedRequest.status === 'PENDING'
-              ? 'PENDING_RECEIVED'
-              : 'FRIENDS';
-        }
-
-        // Remove the friendship arrays from response
+  // If currentUserId is provided, add friendship status
+  if (currentUserId) {
+    return users.map((user) => {
+      // Check if this is the current user
+      if (user.id === currentUserId) {
         const { friendsSent, friendsRecv, ...userWithoutFriends } = user;
-
         return {
           ...userWithoutFriends,
-          friendshipStatus,
+          friendshipStatus: 'YOU',
         };
-      });
-    }
+      }
 
-    return users;
+      // Check if current user sent a request to this user
+      const sentRequest = user.friendsSent?.find(
+        (f) => f.receiver === user.id
+      );
+      
+      // Check if current user received a request from this user
+      const receivedRequest = user.friendsRecv?.find(
+        (f) => f.requester === user.id
+      );
+
+      let friendshipStatus = 'NONE';
+      
+      if (sentRequest) {
+        // Current user sent a request to this user
+        friendshipStatus = sentRequest.status === 'PENDING' ? 'PENDING_SENT' : 'FRIENDS';
+      } else if (receivedRequest) {
+        // Current user received a request from this user
+        friendshipStatus = receivedRequest.status === 'PENDING' ? 'PENDING_RECEIVED' : 'FRIENDS';
+      }
+
+      // Also check if they are friends in the opposite direction (just in case)
+      if (!sentRequest && !receivedRequest) {
+        // You might want to do an additional direct query here if needed
+        // But the above should cover all cases
+      }
+
+      // Remove the friendship arrays from response
+      const { friendsSent, friendsRecv, ...userWithoutFriends } = user;
+
+      return {
+        ...userWithoutFriends,
+        friendshipStatus,
+      };
+    });
   }
+
+  return users;
+}
 }

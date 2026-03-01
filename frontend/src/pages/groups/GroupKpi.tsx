@@ -9,6 +9,7 @@ import {
   getGroupMembers,
 } from "../../api/group";
 import GroupLeaderboard from "../../components/group/GroupLeaderboard";
+import GroupKpiChart from "../../components/group/GroupKpiChart";
 
 export default function GroupKpi() {
   const { groupId, kpiId } = useParams<{
@@ -244,8 +245,7 @@ export default function GroupKpi() {
       </div>
 
       {/* Main KPI card */}
-      <div className="rounded-2xl bg-gray-50 shadow-sm overflow-hidden border-l-4 border-l-indigo-500">
-
+      <div className="overflow-hidden rounded-2xl border-l-4 border-l-indigo-500 bg-gray-50 shadow-sm">
         <div className="mb-4 flex items-center justify-between px-4 pt-2">
           <h1 className="text-2xl font-semibold">{kpi.name}</h1>
           <span className="text-sm text-gray-400">
@@ -253,7 +253,7 @@ export default function GroupKpi() {
           </span>
         </div>
 
-        <p className="mb-4 text-sm text-gray-500 px-4">
+        <p className="mb-4 px-4 text-sm text-gray-500">
           {kpi.description || "No description"}
         </p>
 
@@ -298,7 +298,7 @@ export default function GroupKpi() {
             onClick={handleDone}
             className={`w-full rounded-xl px-4 py-2 font-medium transition ${
               canLogTasks && checked.length > 0
-                ? "cursor-pointer bg-black text-white hover:opacity-90"
+                ? "cursor-pointer bg-blue-600 text-white hover:opacity-90"
                 : "cursor-not-allowed bg-gray-300 text-gray-500"
             }`}
           >
@@ -311,6 +311,11 @@ export default function GroupKpi() {
                   : `Mark ${checked.length} task${checked.length > 1 ? "s" : ""} as done`}
           </button>
         </div>
+      </div>
+
+      {/* Chart section - ADDED HERE */}
+      <div className="my-4">
+        <GroupKpiChart groupId={Number(groupId)} kpiId={Number(kpi.id)} />
       </div>
 
       {/* Leaderboard */}

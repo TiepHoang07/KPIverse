@@ -6,7 +6,7 @@ type ViewType = "kpis" | "friends" | "groups" | "activities" | null;
 
 export default function ProfilePage() {
   const [me, setMe] = useState<any>(null);
-  const [activeView, setActiveView] = useState<ViewType>(null);
+  const [activeView, setActiveView] = useState<ViewType>("kpis");
 
   useEffect(() => {
     api.get("/users/me").then((res) => setMe(res.data));
@@ -37,11 +37,7 @@ export default function ProfilePage() {
       case "activities":
         return <ActivitiesList activities={userData.activities || []} />;
       default:
-        return (
-          <div className="py-8 text-center text-gray-500">
-            Click on a stat to view details
-          </div>
-        );
+        return <KPIList kpis={userData.kpis || []} />;
     }
   };
 
@@ -55,7 +51,7 @@ export default function ProfilePage() {
         <img
           src={
             userData.avatarUrl ||
-            "https://ui-avatars.com/api/?name=" + (userData.name || "User")
+            `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=3b82f6&color=fff`
           }
           alt={userData.name}
           className="h-20 w-20 rounded-full object-cover"

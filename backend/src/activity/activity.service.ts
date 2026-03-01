@@ -125,22 +125,24 @@ export class ActivityService {
   }
 
   // Record friend request sent
-  async recordFriendRequest(userId: number, targetId: number) {
+  async recordFriendRequest(userId: number, targetId: number, targetName: string | null) {
     return this.prisma.activity.create({
       data: {
         userId,
         targetId,
+        description: targetName,
         type: ActivityType.REQUEST_ADD_FRIEND,
       },
     });
   }
 
   // Record friend request accepted
-  async recordFriendRequestAccepted(userId: number, targetId: number) {
+  async recordFriendRequestAccepted(userId: number, targetId: number, targetName: string|null) {
     return this.prisma.activity.create({
       data: {
         userId,
         targetId,
+        description: targetName,
         type: ActivityType.FRIEND_REQUEST_ACCEPTED,
       },
     });

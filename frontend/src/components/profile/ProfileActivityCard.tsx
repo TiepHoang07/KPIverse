@@ -4,11 +4,11 @@ export default function ProfileActivityCard({ activity }: { activity: any }) {
       case 'KPI_CREATED':
         return { icon: '📊', text: `Created KPI: ${activity.kpiName}`, color: 'purple' };
       case 'KPI_LOG':
-        return { icon: '✅', text: `Completed ${activity.completedTasks} tasks`, color: 'green' };
+        return { icon: '✅', text: `Completed ${activity.completedTasks} tasks - ${activity.kpiName}`, color: 'green' };
       case 'REQUEST_ADD_FRIEND':
-        return { icon: '👋', text: 'Sent friend request', color: 'blue' };
+        return { icon: '👋', text: 'Sent friend request to ' + activity.description, color: 'blue' };
       case 'FRIEND_REQUEST_ACCEPTED':
-        return { icon: '🤝', text: 'Friend request accepted', color: 'indigo' };
+        return { icon: '🤝', text: `Friend request of ${activity.description} accepted`, color: 'indigo' };
       case 'CREATE_GROUP':
         return { icon: '👥', text: `Created group: ${activity.groupName}`, color: 'orange' };
       case 'JOIN_GROUP':

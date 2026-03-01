@@ -1,13 +1,13 @@
-import { 
-  Body, 
-  Controller, 
-  Post, 
-  Req, 
-  UseGuards, 
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  UseGuards,
   Get,
   Param,
   ParseIntPipe,
-  Delete 
+  Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { FriendsService } from './friends.service.js';
@@ -26,7 +26,7 @@ export class FriendsController {
 
   @Post('respond')
   respond(@Req() req: any, @Body() dto: RespondFriendDto) {
-    return this.svc.respondRequest(dto.friendId, dto.action);
+    return this.svc.respondRequest(dto.friendId, req.user.id, dto.action);
   }
 
   @Get()
@@ -44,8 +44,19 @@ export class FriendsController {
     return this.svc.getSentRequests(req.user.id);
   }
 
+  @Delete('cancel/:friendId')
+  cancelRequest(
+    @Req() req: any,
+    @Param('friendId', ParseIntPipe) friendId: number,
+  ) {
+    return this.svc.cancelRequest(friendId, req.user.id);
+  }
+
   @Delete(':friendId')
-  removeFriend(@Req() req: any, @Param('friendId', ParseIntPipe) friendId: number) {
+  removeFriend(
+    @Req() req: any,
+    @Param('friendId', ParseIntPipe) friendId: number,
+  ) {
     return this.svc.removeFriend(req.user.id, friendId);
   }
 }

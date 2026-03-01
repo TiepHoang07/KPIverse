@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar';
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-[#ebf3fc]">
       <div className="flex">
         <Sidebar />
 

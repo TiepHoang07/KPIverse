@@ -42,7 +42,7 @@ export default function GroupLeaderboard({
     if (rank === 1) return "🥇";
     if (rank === 2) return "🥈";
     if (rank === 3) return "🥉";
-    return null;
+    return rank;
   };
 
   return (
@@ -60,20 +60,29 @@ export default function GroupLeaderboard({
       )}
 
       {!loading && users.length > 0 && (
-        <ul className="space-y-3">
+        <ul className="space-y-1">
           {users.map((u) => (
             <li
               key={u.userId}
-              className="flex items-center justify-between rounded-xl bg-gray-50 px-3 py-2 transition hover:bg-gray-100"
+              className={`flex items-center rounded-xl justify-between border-[1.5px] bg-gray-50 px-3 py-2 ${
+                u.rank === 1
+                  ? "border-orange-400 bg-orange-50"
+                  : u.rank === 2
+                    ? "border-purple-400 bg-purple-50"
+                    : u.rank === 3
+                      ? "border-blue-400 bg-blue-50"
+                      : "border-gray-400 bg-gray-50"
+              }`}
             >
               <div className="flex items-center gap-6">
-                <span className="w-6 text-center text-xl">
+                <span className={`w-6 text-center ${u.rank >= 4 ? 'text-md' : 'text-xl'}`}>
                   {getMedal(u.rank) || u.rank}
                 </span>
 
                 <img
                   src={
-                    u.avatarUrl || "https://ui-avatars.com/api/?name=" + u.name
+                    u.avatarUrl ||
+                    `https://ui-avatars.com/api/?name=${u.name}&background=3b82f6&color=fff`
                   }
                   alt={u.name}
                   className="h-8 w-8 rounded-full object-cover"
@@ -82,7 +91,19 @@ export default function GroupLeaderboard({
                 <span className="text-sm font-medium">{u.name}</span>
               </div>
 
-              <span className="mr-3 text-sm font-semibold">{u.logs}</span>
+              <span
+                className={`mr-3 w-10 rounded-full p-2 text-center text-sm font-semibold ${
+                  u.rank === 1
+                    ? "text-orange-600 bg-orange-100"
+                    : u.rank === 2
+                      ? "text-purple-600 bg-purple-100"
+                      : u.rank === 3
+                        ? "text-blue-600 bg-blue-100"
+                        : "text-gray-600 bg-gray-100"
+                }`}
+              >
+                {u.logs}
+              </span>
             </li>
           ))}
         </ul>

@@ -16,6 +16,7 @@ import CreateKpi from "../pages/kpi/CreateKpi";
 import CreateGroupKpi from "../pages/groups/CreateGroupKpi";
 import GroupsMembers from "../pages/groups/GroupsMembers";
 import Kpi from "../pages/kpi/Kpi";
+import SettingsPage from "../pages/settingsPage/settingsPage";
 
 export default function AppRouter() {
   return (
@@ -47,6 +48,7 @@ export default function AppRouter() {
             {/* <Route path="/" element={<LeaderboardPage />} /> */}
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/friends" element={<FriendsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
       </Routes>

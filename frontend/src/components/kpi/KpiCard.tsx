@@ -6,7 +6,7 @@ type Props = {
     id: number;
     name: string;
     description?: string;
-    createdAt: string;
+    createdAt: Date;
     tasks: {
       id: number;
       name: string;
@@ -30,7 +30,7 @@ export default function KpiCard({ kpi }: Props) {
       onClick={handleClick}
       className="relative group bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-blue-300 hover:shadow-md hover:scale-101 transition-all duration-200 overflow-hidden mb-5"
     >
-      <div className='absolute w-2 h-70 left-0 top-0 bg-linear-to-b from-cyan-500 to-blue-500'></div>
+      <div className='h-1.5 bg-linear-to-l from-cyan-500 to-blue-500'></div>
       {/* Header */}
       <div className="flex items-start justify-between mb-3 px-5 py-3">
         <div>
@@ -39,7 +39,7 @@ export default function KpiCard({ kpi }: Props) {
             <p className="text-sm text-gray-500 mt-1 line-clamp-2">{kpi.description}</p>
           )}
         </div>
-        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-nowrap">
+        <span className="text-xs bg-linear-to-tr from-sky-500 to-emerald-500 text-white px-2 py-1 rounded-full text-nowrap">
           {totalTasks} tasks
         </span>
       </div>

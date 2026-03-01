@@ -43,7 +43,7 @@ export class UsersController {
   @Patch('avatar')
   @UseInterceptors(FileInterceptor('file', multerOptions))
   uploadAvatar(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
-    const url = `uploads/${file.filename}`;
+    const url = `src/uploads/${file.filename}`;
     return this.usersService.updateAvatar(req.user.id, url);
   }
 

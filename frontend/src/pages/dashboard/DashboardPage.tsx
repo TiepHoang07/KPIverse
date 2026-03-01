@@ -7,6 +7,7 @@ type KPI = {
   id: number;
   name: string;
   description?: string;
+  createdAt: Date,
   tasks: {
     id: number;
     name: string;
@@ -39,7 +40,11 @@ export default function DashboardPage() {
       </div>
 
       {/* KPI Cards */}
+      <h2 className="font-semibold">KPIs</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {kpis.length === 0 && (
+          <p className="text-gray-500 text-md">No KPI created yet.</p>
+        )}
         {kpis.map((kpi) => (
           <KpiCard key={kpi.id} kpi={kpi} />
         ))}

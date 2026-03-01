@@ -132,7 +132,6 @@ export class KpiService {
         completed: true,
       },
       orderBy: { loggedAt: 'desc' },
-      take: 10,
       include: {
         task: {
           select: {

@@ -4,6 +4,6 @@ export class RespondFriendDto {
   @IsInt()
   friendId: number;
 
-  @IsIn(['ACCEPTED', 'BLOCKED'])
+  @IsIn(['ACCEPTED', 'REJECTED'])
   action: any;
 }

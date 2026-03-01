@@ -5,7 +5,7 @@ import { extname } from "path";
 export const multerOptions = {
   storage: diskStorage({
     destination: (req, file, cb) => {
-      const uploadPath = '/uploads'
+      const uploadPath = '/src/uploads'
       if (!existsSync(uploadPath)) mkdirSync(uploadPath)
       cb(null, uploadPath)
     },

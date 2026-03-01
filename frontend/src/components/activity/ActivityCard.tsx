@@ -1,4 +1,3 @@
-// components/activity/ActivityCard.tsx
 import type { Activity } from "../../types/activity";
 
 type Props = {
@@ -70,9 +69,9 @@ function renderActivityText(activity: any) {
     case "KPI_LOG":
       return `✅ completed ${activity.completedTasks} task(s) for ${activity.kpiName}`;
     case "REQUEST_ADD_FRIEND":
-      return `👋 sent a friend request`;
+      return `👋 sent a friend request to ${activity.description}`;
     case "FRIEND_REQUEST_ACCEPTED":
-      return `🤝 accepted a friend request`;
+      return `🤝 accepted a friend request: ${activity.description}`;
     case "CREATE_GROUP":
       return `👥 created group: ${activity.groupName}`;
     case "JOIN_GROUP":

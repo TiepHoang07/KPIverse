@@ -19,8 +19,10 @@ import {
   HelpCircle,
   Menu,
   X,
-  GroupIcon
+  GroupIcon,
 } from "lucide-react";
+import { useAuth } from "../auth/AuthContext";
+import { getFriendRequests } from "../api/friend";
 
 // Map icon names to components
 const iconMap: Record<string, any> = {
@@ -43,12 +45,24 @@ interface SidebarProps {
 
 export default function Sidebar({ onCollapse }: SidebarProps) {
   const [me, setMe] = useState<any>(null);
+  const [friendRequests, setFriendRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
+  const { logout } = useAuth();
+
   const navigate = useNavigate();
+
+  const fetchFriendRequests = () => {
+    getFriendRequests().then((res) => setFriendRequests(res.data));
+  };
+  useEffect(() => {
+    fetchFriendRequests();
+  }, []);
+
+  console.log(friendRequests);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -104,12 +118,12 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-gray-200 bg-white transition-all duration-300 ${
+        className={`fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-gray-200 bg-gray-50 transition-all duration-300 ${
           collapsed ? "w-20" : "w-64"
         } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         {/* Header */}
-        <div className="flex h-16 items-center justify-between border-b border-gray-200 ">
+        <div className="flex h-16 items-center justify-between border-b border-gray-200">
           {!collapsed && (
             <img className="ml-5 h-12 w-28" src="/images/logo.png" alt="logo" />
           )}
@@ -131,7 +145,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
           {/* Close button - visible on mobile */}
           <button
             onClick={() => setMobileOpen(false)}
-            className="cursor-pointer rounded-lg p-1.5 mr-2 text-gray-500 hover:bg-gray-100 lg:hidden"
+            className="mr-2 cursor-pointer rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 lg:hidden"
             aria-label="Close menu"
           >
             <X size={18} />
@@ -159,13 +173,16 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                 }
                 title={collapsed ? item.label : undefined}
               >
-                <div className="flex items-center gap-3">
+                <div className="relative flex items-center gap-3">
                   <Icon
                     size={20}
                     className={isActive ? "text-blue-600" : "text-gray-500"}
                   />
                   {!collapsed && (
                     <span className="text-sm font-medium">{item.label}</span>
+                  )}
+                  {item.label === 'Friends' && friendRequests.length >= 1 && (
+                    <span className="absolute -right-4 top-1 bg-red-500 rounded-full w-2 h-2"></span>
                   )}
                 </div>
 
@@ -220,7 +237,10 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
               </div>
 
               {!collapsed && (
-                <button className="mt-3 flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-100">
+                <button
+                  onClick={logout}
+                  className="mt-3 flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                >
                   <LogOut size={16} />
                   <span>Logout</span>
                 </button>
@@ -235,7 +255,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
       </aside>
 
       {/* Mobile header with current page */}
-      <header className="fixed top-0 right-0 left-0 z-30 border-b border-gray-200 bg-white/80 px-4 py-3 backdrop-blur-sm lg:hidden">
+      <header className="fixed top-0 right-0 left-0 z-30 border-b border-gray-200 bg-white/80 px-4 py-3 shadow-md backdrop-blur-sm lg:hidden">
         <div className="flex items-center justify-center">
           <h2 className="text-lg font-semibold text-gray-800">{currentPage}</h2>
         </div>

@@ -15,7 +15,7 @@ export function GroupKpiCard({ group, kpi }: any) {
       {/* Header */}
       <div className="flex items-start justify-between">
         <h3 className="font-semibold text-gray-900">{kpi.name}</h3>
-        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+        <span className="text-xs bg-linear-to-tr from-pink-500 to-indigo-500 text-white px-2 py-1 rounded-full">
           {kpi.tasks?.length || 0} tasks
         </span>
       </div>

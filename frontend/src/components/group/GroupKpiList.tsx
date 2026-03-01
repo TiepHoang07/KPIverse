@@ -37,8 +37,8 @@ export default function GroupKpiList({ group }: Props) {
 
       {/* KPI Grid */}
       <div className="grid md:grid-cols-2 gap-4">
-        {group.kpis.map((kpi: any) => (
-          <GroupKpiCard group={group} kpi={kpi} />
+        {group.kpis.map(( kpi: any) => (
+          <GroupKpiCard key={kpi.id} group={group} kpi={kpi} />
         ))}
       </div>
     </div>

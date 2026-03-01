@@ -10,10 +10,11 @@ export default function ActivityFeed() {
     fetchFeed().then((res) => setActivities(res.data));
   }, []);
 
-  console.log(activities);
-
   return (
     <div className="space-y-4">
+      {activities.length === 0 && (
+        <p className='text-gray-500 text-md'>No activity yet.</p>
+      )}
       {activities.map((a) => (
         <ActivityCard key={a.id} activity={a} />
       ))}

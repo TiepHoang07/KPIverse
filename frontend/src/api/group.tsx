@@ -37,10 +37,7 @@ export const removeGroupMember = (groupId: number, userId: number) =>
   api.delete(`/groups/${groupId}/members/${userId}`);
 
 export const addGroupMember = (groupId: number, userId: number) =>
-  api.post(`/groups/${groupId}/members`, { userId });
-
-export const updateMemberRole = (groupId: number, userId: number, role: 'ADMIN' | 'MEMBER') =>
-  api.patch(`/groups/${groupId}/members/${userId}/role`, { role });
+  api.post(`/groups/${groupId}/members/${userId}`);
 
 export const transferAdmin = (groupId: number, newAdminId: number) =>
   api.post(`/groups/${groupId}/transfer-admin/${newAdminId}`);
