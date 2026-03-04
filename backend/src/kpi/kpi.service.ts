@@ -238,7 +238,6 @@ export class KpiService {
   ]);
 }
 
-  // Optional: Get KPI progress/statistics
   async getKpiStats(userId: number, kpiId: number) {
     const kpi = await this.getOneByUser(userId, kpiId);
 

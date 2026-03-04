@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client"
-  // Generate into the default top-level location so require('@prisma/client') can load the generated runtime
   output   = "../src/generated/prisma"
   moduleFormat    = "cjs"
 }

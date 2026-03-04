@@ -162,7 +162,7 @@ export default function GroupKpi() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center p-6">
+      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
       </div>
     );
@@ -209,7 +209,7 @@ export default function GroupKpi() {
       {/* Group context with role badge */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="text-xs text-gray-500 sm:text-sm">Group:</span>
-        <span className="break-words text-sm font-medium sm:text-base">
+        <span className="text-sm font-medium break-words sm:text-base">
           {kpi.groupName}
         </span>
 
@@ -247,8 +247,8 @@ export default function GroupKpi() {
       {/* Main KPI card */}
       <div className="mb-6 overflow-hidden rounded-2xl border-l-4 border-l-indigo-500 bg-gray-50 shadow-sm">
         {/* Header section */}
-        <div className="flex flex-col items-start justify-between gap-2 px-4 pb-2 pt-4 sm:flex-row sm:items-center">
-          <h1 className="break-words text-xl font-semibold sm:text-2xl">
+        <div className="flex flex-col items-start justify-between gap-2 px-4 pt-4 pb-2 sm:flex-row sm:items-center">
+          <h1 className="text-xl font-semibold break-words sm:text-2xl">
             {kpi.name}
           </h1>
           <span className="text-xs text-gray-400 sm:text-sm">
@@ -328,9 +328,7 @@ export default function GroupKpi() {
 
       {/* Leaderboard section */}
       <div className="mt-8">
-        <h2 className="mb-4 text-base font-semibold sm:text-lg">
-          Leaderboard
-        </h2>
+        <h2 className="mb-4 text-base font-semibold sm:text-lg">Leaderboard</h2>
         <div className="overflow-x-auto">
           <GroupLeaderboard groupId={Number(groupId)} kpiId={kpi.id} />
         </div>

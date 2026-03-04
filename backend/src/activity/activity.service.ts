@@ -172,9 +172,7 @@ export class ActivityService {
     const memberCount = await this.prisma.groupMember.count({
       where: { groupId },
     });
-
-    // If this is the first member, it's the creator - but we already have CREATE_GROUP
-    // So we still record JOIN_GROUP for completeness
+    
     return this.prisma.activity.create({
       data: {
         userId,

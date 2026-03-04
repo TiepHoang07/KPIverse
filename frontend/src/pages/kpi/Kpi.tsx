@@ -197,7 +197,7 @@ export default function Kpi() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center p-6">
+      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
       </div>
     );
@@ -262,7 +262,7 @@ export default function Kpi() {
       <div className="mb-6 rounded-2xl border-l-4 border-l-cyan-500 bg-gray-50 p-4 shadow-sm sm:p-6">
         {/* Header */}
         <div className="mb-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
-          <h1 className="break-words text-xl font-semibold sm:text-2xl">
+          <h1 className="text-xl font-semibold break-words sm:text-2xl">
             {kpi.name}
           </h1>
           <span className="text-xs text-gray-400 sm:text-sm">

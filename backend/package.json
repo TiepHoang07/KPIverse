@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "0.0.1",
   "type": "commonjs",
-  "description": "",
+  "description": "a webapp for tracking your KPIs",
   "author": "Hoang Tiep",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
