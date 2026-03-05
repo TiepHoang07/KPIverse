@@ -12,7 +12,12 @@ export default function ProfilePage() {
     api.get("/users/me").then((res) => setMe(res.data));
   }, []);
 
-  if (!me) return <div>Loading...</div>;
+  if (!me)
+    return (
+      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      </div>
+    );
 
   // Extract user data for easier access
   const userData = me.user;
@@ -28,8 +33,14 @@ export default function ProfilePage() {
       case "friends":
         // Combine friends from both sent and received
         const friends = [
-          ...(userData.friendsRecv || []).map((f: any) => ({ ...f, type: 'received' })),
-          ...(userData.friendsSent || []).map((f: any) => ({ ...f, type: 'sent' }))
+          ...(userData.friendsRecv || []).map((f: any) => ({
+            ...f,
+            type: "received",
+          })),
+          ...(userData.friendsSent || []).map((f: any) => ({
+            ...f,
+            type: "sent",
+          })),
         ];
         return <FriendsList friends={friends} />;
       case "groups":
@@ -42,7 +53,8 @@ export default function ProfilePage() {
   };
 
   // Calculate friend count
-  const friendCount = (userData.friendsRecv?.length || 0) + (userData.friendsSent?.length || 0);
+  const friendCount =
+    (userData.friendsRecv?.length || 0) + (userData.friendsSent?.length || 0);
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
@@ -59,12 +71,15 @@ export default function ProfilePage() {
         <h2 className="mt-2 text-xl font-bold">{userData.name}</h2>
         <p className="text-gray-500">{userData.email}</p>
         <p className="text-sm text-gray-400">
-          Member since {userData.createdAt ? new Date(userData.createdAt).toLocaleDateString() : "N/A"}
+          Member since{" "}
+          {userData.createdAt
+            ? new Date(userData.createdAt).toLocaleDateString()
+            : "N/A"}
         </p>
       </div>
 
       {/* Stats Cards - Clickable */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 mx-4">
+      <div className="mx-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatCard
           label="KPIs"
           value={userData.kpis?.length || 0}
@@ -152,7 +167,10 @@ function KPIList({ kpis }: { kpis: any[] }) {
   return (
     <div className="space-y-3">
       {kpis.map((kpi) => (
-        <div key={kpi.id} className="rounded-lg border p-3 hover:bg-gray-50">
+        <div
+          key={kpi.id}
+          className="rounded-lg border-2 border-orange-300 p-3 hover:bg-gray-50"
+        >
           <h4 className="font-medium">{kpi.name}</h4>
           {kpi.description && (
             <p className="text-sm text-gray-500">{kpi.description}</p>
@@ -178,27 +196,32 @@ function FriendsList({ friends }: { friends: any[] }) {
     <div className="space-y-3">
       {friends.map((friend, index) => {
         // Handle both structures - if it's a friend object with user data inside
-        const friendData = friend.receiverUser || friend.requesterUser || friend;
-        
+        const friendData =
+          friend.receiverUser || friend.requesterUser || friend;
+        console.log(friendData);
+
         return (
           <div
             key={friendData.id || index}
-            className="flex items-center gap-3 rounded-lg border p-3"
+            className="flex items-center gap-3 rounded-lg border-2 border-orange-300 p-3"
           >
             <img
               src={
                 friendData.avatarUrl ||
-                "https://ui-avatars.com/api/?name=" + (friendData.name || "User")
+                `https://ui-avatars.com/api/?name=
+                  ${friendData.name || "User"}&background=3b82f6&color=fff`
               }
               alt={friendData.name}
               className="h-10 w-10 rounded-full object-cover"
             />
-            <div>
+            <div className="flex flex-col">
               <h4 className="font-medium">{friendData.name}</h4>
-              <p className="text-sm text-gray-500">{friendData.email}</p>
+              <p className="text-sm text-gray-700">bio: {friendData.bio}</p>
+              <p className="text-sm text-gray-500">email: {friendData.email}</p>
               {friend.createdAt && (
                 <p className="text-xs text-gray-400">
-                  Friends since {new Date(friend.createdAt).toLocaleDateString()}
+                  Friends since{" "}
+                  {new Date(friend.createdAt).toLocaleDateString()}
                 </p>
               )}
             </div>
@@ -218,17 +241,24 @@ function GroupsList({ groups }: { groups: any[] }) {
   return (
     <div className="space-y-3">
       {groups.map((membership, index) => (
-        <div key={membership.group?.id || index} className="rounded-lg border p-3">
+        <div
+          key={membership.group?.id || index}
+          className="rounded-lg border-2 border-orange-300 p-3"
+        >
           <div className="flex items-start justify-between">
             <div>
-              <h4 className="font-medium">{membership.group?.name || "Unknown Group"}</h4>
+              <h4 className="font-medium">
+                {membership.group?.name || "Unknown Group"}
+              </h4>
               {membership.group?.description && (
                 <p className="text-sm text-gray-500">
                   {membership.group.description}
                 </p>
               )}
               <div className="mt-2 flex gap-3 text-xs">
-                <span className="text-gray-400">Role: {membership.role || "MEMBER"}</span>
+                <span className="text-gray-400">
+                  Role: {membership.role || "MEMBER"}
+                </span>
                 <span className="text-gray-400">•</span>
                 <span className="text-gray-400">
                   {membership.group?._count?.members || 0} members
@@ -274,7 +304,10 @@ function getCount(view: ViewType, userData: any): number {
     case "kpis":
       return userData.kpis?.length || 0;
     case "friends":
-      return (userData.friendsRecv?.length || 0) + (userData.friendsSent?.length || 0);
+      return (
+        (userData.friendsRecv?.length || 0) +
+        (userData.friendsSent?.length || 0)
+      );
     case "groups":
       return userData.memberships?.length || 0;
     case "activities":

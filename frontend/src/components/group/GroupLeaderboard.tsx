@@ -53,7 +53,11 @@ export default function GroupLeaderboard({
         <span>Completed</span>
       </div>
 
-      {loading && <div className="text-sm text-gray-400">Loading...</div>}
+      {loading && (
+        <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+        </div>
+      )}
 
       {!loading && users.length === 0 && (
         <div className="text-sm text-gray-400">No logs yet for this KPI</div>
@@ -64,7 +68,7 @@ export default function GroupLeaderboard({
           {users.map((u) => (
             <li
               key={u.userId}
-              className={`flex items-center rounded-xl justify-between border-[1.5px] bg-gray-50 px-3 py-2 ${
+              className={`flex items-center justify-between rounded-xl border-[1.5px] bg-gray-50 px-3 py-2 ${
                 u.rank === 1
                   ? "border-orange-400 bg-orange-50"
                   : u.rank === 2
@@ -75,7 +79,9 @@ export default function GroupLeaderboard({
               }`}
             >
               <div className="flex items-center gap-6">
-                <span className={`w-6 text-center ${u.rank >= 4 ? 'text-md' : 'text-xl'}`}>
+                <span
+                  className={`w-6 text-center ${u.rank >= 4 ? "text-md" : "text-xl"}`}
+                >
                   {getMedal(u.rank) || u.rank}
                 </span>
 
@@ -94,12 +100,12 @@ export default function GroupLeaderboard({
               <span
                 className={`mr-3 w-10 rounded-full p-2 text-center text-sm font-semibold ${
                   u.rank === 1
-                    ? "text-orange-600 bg-orange-100"
+                    ? "bg-orange-100 text-orange-600"
                     : u.rank === 2
-                      ? "text-purple-600 bg-purple-100"
+                      ? "bg-purple-100 text-purple-600"
                       : u.rank === 3
-                        ? "text-blue-600 bg-blue-100"
-                        : "text-gray-600 bg-gray-100"
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-gray-100 text-gray-600"
                 }`}
               >
                 {u.logs}

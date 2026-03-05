@@ -27,14 +27,14 @@ const getActivityColor = (type: string) => {
 };
 
 const colorClasses = {
-  purple: "bg-purple-50 border-purple-300",
-  green: "bg-green-50 border-green-300",
-  blue: "bg-blue-50 border-blue-300",
-  indigo: "bg-indigo-50 border-indigo-300",
-  orange: "bg-orange-50 border-orange-300",
-  teal: "bg-teal-50 border-teal-300",
-  red: "bg-red-50 border-red-300",
-  gray: "bg-gray-50 border-gray-300",
+  purple: "border-purple-300",
+  green: "border-green-300",
+  blue: "border-blue-300",
+  indigo: "border-indigo-300",
+  orange: "border-orange-300",
+  teal: "border-teal-300",
+  red: "border-red-300",
+  gray: "border-gray-300",
 };
 
 export default function ActivityCard({ activity }: Props) {
@@ -42,7 +42,7 @@ export default function ActivityCard({ activity }: Props) {
   const bgColorClass = colorClasses[color as keyof typeof colorClasses];
 
   return (
-    <div className={`space-y-2 rounded-xl p-4 shadow ${bgColorClass} border-2`}>
+    <div className={`space-y-2 p-4 shadow ${bgColorClass} border-2`}>
       <div className="flex items-center gap-2">
         <img
           src={
@@ -54,8 +54,10 @@ export default function ActivityCard({ activity }: Props) {
         <span className="font-semibold">{activity.user.name}</span>
       </div>
 
-      <p className="text-sm text-gray-800">{renderActivityText(activity)}</p>
-      <p className="text-[12px] text-gray-700">
+      <p className="my-3 text-sm text-gray-800 font-medium">
+        {renderActivityText(activity)}
+      </p>
+      <p className="mt-4 text-[12px] text-gray-700">
         {new Date(activity.createdAt).toLocaleString()}
       </p>
     </div>
