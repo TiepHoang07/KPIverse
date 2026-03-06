@@ -169,7 +169,7 @@ function KPIList({ kpis }: { kpis: any[] }) {
       {kpis.map((kpi) => (
         <div
           key={kpi.id}
-          className="rounded-lg border-2 border-orange-300 p-3 hover:bg-gray-50"
+          className="rounded-lg shadow-md border-l-4 border-l-sky-600 p-3 hover:bg-gray-50"
         >
           <h4 className="font-medium">{kpi.name}</h4>
           {kpi.description && (
@@ -203,7 +203,7 @@ function FriendsList({ friends }: { friends: any[] }) {
         return (
           <div
             key={friendData.id || index}
-            className="flex items-center gap-3 rounded-lg border-2 border-orange-300 p-3"
+            className="flex items-center gap-3 rounded-lg shadow-md border-l-4 border-l-emerald-500 p-3"
           >
             <img
               src={
@@ -243,7 +243,7 @@ function GroupsList({ groups }: { groups: any[] }) {
       {groups.map((membership, index) => (
         <div
           key={membership.group?.id || index}
-          className="rounded-lg border-2 border-orange-300 p-3"
+          className="rounded-lg shadow-md border-l-4 border-l-purple-600 p-3"
         >
           <div className="flex items-start justify-between">
             <div>

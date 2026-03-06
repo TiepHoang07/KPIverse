@@ -38,10 +38,10 @@ export default function Register() {
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <div className="relative w-full max-w-md">
         {/* Decorative background element */}
-        <div className="absolute inset-0 -skew-y-3 transform bg-linear-to-r from-cyan-500 to-blue-500 shadow-lg sm:-rotate-3 sm:skew-y-0 sm:rounded-3xl"></div>
+        <div className="absolute inset-0 skew-y-0 transform bg-linear-to-r from-cyan-500 to-blue-500 shadow-lg -rotate-3 rounded-3xl"></div>
         
         {/* Main card */}
-        <div className="relative bg-white px-6 py-8 shadow-lg sm:rounded-3xl sm:p-10">
+        <div className="relative bg-white px-6 py-8 shadow-lg rounded-3xl sm:p-10">
           {/* Logo section */}
           <div className="mb-6 flex flex-col items-center">
             <img 

@@ -5,20 +5,8 @@ import ActivityFeed from "../../components/activity/ActivityFeed";
 import {  TrendingUp } from "lucide-react";
 import { navigationCards } from "../../constants/NavigationCards";
 
-type KPI = {
-  id: number;
-  name: string;
-  description?: string;
-  createdAt: Date;
-  tasks: {
-    id: number;
-    name: string;
-  }[];
-};
-
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const [kpis, setKpis] = useState<KPI[]>([]);
   const [stats, setStats] = useState({
     totalKpis: 0,
     totalFriends: 0,
@@ -29,7 +17,6 @@ export default function DashboardPage() {
   useEffect(() => {
     Promise.all([api.get("/kpis"), api.get("/friends"), api.get("/groups/my")])
       .then(([kpisRes, friendsRes, groupsRes]) => {
-        setKpis(kpisRes.data);
         setStats({
           totalKpis: kpisRes.data.length,
           totalFriends: friendsRes.data.length,
@@ -146,8 +133,8 @@ export default function DashboardPage() {
 
       {/* Activity Feed */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-gray-800">
-          Recent Activity
+        <h2 className="mb-4 pt-4 text-xl font-bold text-gray-800">
+          Recent Activities
         </h2>
         <ActivityFeed />
       </div>
