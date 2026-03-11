@@ -18,6 +18,7 @@ import {
   Calendar,
 } from "lucide-react";
 import api from "../../api/axios";
+import toast from "react-hot-toast";
 
 interface Member {
   id: number;
@@ -98,7 +99,7 @@ export default function GroupsMembers() {
       setShowRemoveModal(null);
     } catch (error) {
       console.error("Failed to remove member:", error);
-      alert("Failed to remove member");
+      toast.error("Failed to remove member");
     } finally {
       setProcessingId(null);
     }
@@ -122,7 +123,7 @@ export default function GroupsMembers() {
       );
     } catch (error) {
       console.error("Failed to transfer admin:", error);
-      alert("Failed to transfer admin");
+      toast.error("Failed to transfer admin");
     } finally {
       setProcessingId(null);
     }
@@ -160,7 +161,7 @@ export default function GroupsMembers() {
       fetchData();
     } catch (error) {
       console.error("Failed to add member:", error);
-      alert("Failed to add member");
+      toast.error("Failed to add member");
     } finally {
       setAddingMember(false);
     }

@@ -8,6 +8,7 @@ import {
   getMe,
 } from "../../api/user";
 import { useAuth } from "../../auth/AuthContext";
+import toast from "react-hot-toast";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -71,10 +72,10 @@ export default function SettingsPage() {
       // setSelectedFile(null);
       setPreviewUrl(null);
 
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Profile update failed:", error);
-      alert("Failed to update profile");
+      toast.error("Failed to update profile");
     } finally {
       setSavingProfile(false);
     }
@@ -82,11 +83,11 @@ export default function SettingsPage() {
 
   const handleSavePassword = async () => {
     if (passwordData.new !== passwordData.confirm) {
-      return alert("New passwords do not match");
+      return toast.error("New passwords do not match");
     }
 
     if (passwordData.new.length < 8) {
-      return alert("Password must be at least 8 characters long");
+      return toast.error("Password must be at least 8 characters long");
     }
 
     try {
@@ -95,7 +96,7 @@ export default function SettingsPage() {
       // Pass both old and new password
       await changePassword(passwordData.current, passwordData.new);
       
-      alert("Password changed successfully!");
+      toast.success("Password changed successfully!");
 
       // Clear password fields
       setPasswordData({
@@ -105,7 +106,7 @@ export default function SettingsPage() {
       });
     } catch (error: any) {
       console.error("Password change failed:", error);
-      alert(error.response?.data?.message || "Failed to change password");
+      toast.error(error.response?.data?.message || "Failed to change password");
     } finally {
       setSavingPassword(false);
     }

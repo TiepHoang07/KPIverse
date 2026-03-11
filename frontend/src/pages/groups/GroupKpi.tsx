@@ -10,6 +10,7 @@ import {
 } from "../../api/group";
 import GroupLeaderboard from "../../components/group/GroupLeaderboard";
 import GroupKpiChart from "../../components/group/GroupKpiChart";
+import toast from "react-hot-toast";
 
 export default function GroupKpi() {
   const { groupId, kpiId } = useParams<{
@@ -113,7 +114,7 @@ export default function GroupKpi() {
         completed: true,
       });
 
-      alert("Tasks logged successfully!");
+      toast.success("Tasks logged successfully!");
 
       // Refresh KPI data
       const refreshedKpi = await getGroupKpiById(
@@ -124,7 +125,7 @@ export default function GroupKpi() {
       setChecked([]);
     } catch (error) {
       console.error("Error logging tasks:", error);
-      alert("Error logging tasks. Please try again.");
+      toast.error("Error logging tasks. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -141,11 +142,11 @@ export default function GroupKpi() {
     try {
       setDeleting(true);
       await deleteGroupKpi(Number(groupId), kpi.id);
-      alert("KPI deleted successfully!");
+      toast.success("KPI deleted successfully!");
       navigate(`/groups/${groupId}`);
     } catch (error) {
       console.error("Error deleting KPI:", error);
-      alert("Error deleting KPI. Please try again.");
+      toast.error("Error deleting KPI. Please try again.");
     } finally {
       setDeleting(false);
     }

@@ -198,7 +198,6 @@ function FriendsList({ friends }: { friends: any[] }) {
         // Handle both structures - if it's a friend object with user data inside
         const friendData =
           friend.receiverUser || friend.requesterUser || friend;
-        console.log(friendData);
 
         return (
           <div

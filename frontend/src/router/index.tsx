@@ -17,10 +17,12 @@ import CreateGroupKpi from "../pages/groups/CreateGroupKpi";
 import GroupsMembers from "../pages/groups/GroupsMembers";
 import Kpi from "../pages/kpi/Kpi";
 import SettingsPage from "../pages/settingsPage/SettingsPage";
+import { Toaster } from "react-hot-toast";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
+    <Toaster position="top-center" />
       <Routes>
         <Route element={<GuestRoute children={<Outlet />} />}>
           <Route path="/login" element={<Login />} />

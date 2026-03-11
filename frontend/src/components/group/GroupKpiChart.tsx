@@ -135,15 +135,6 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
               (logsByDateAndUser[dateStr][userId] || 0) + 1;
           });
 
-          // Debug logs
-          console.log('Date range:', {
-            from: firstLogDate.toLocaleDateString(),
-            to: lastLogDate.toLocaleDateString(),
-            totalDays: allDates.length
-          });
-          console.log('Today\'s date:', new Date().toLocaleDateString());
-          console.log('Logs by date:', logsByDateAndUser);
-
           // Create timeline datasets for each user
           const timelineDatasets = userLogsArray.map((user) => ({
             label: user.userName.split(" ")[0],

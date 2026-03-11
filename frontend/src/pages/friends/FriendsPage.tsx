@@ -8,6 +8,7 @@ import {
   DeleteFriend,
   getFriendRequestsSent,
 } from "../../api/friend";
+import toast from "react-hot-toast";
 
 export default function FriendsPage() {
   const [friends, setFriends] = useState<any[]>([]);
@@ -95,7 +96,7 @@ export default function FriendsPage() {
   const sendRequest = async (receiverId: number) => {
     try {
       await sendFriendRequest(receiverId);
-      alert("Friend request sent!");
+      toast.success("Friend request sent!");
       // Update local state to show pending
       setResults(prev =>
         prev.map(user =>
@@ -106,7 +107,7 @@ export default function FriendsPage() {
       );
       fetchFriendRequests(); // Refresh requests
     } catch (error) {
-      alert("Error: " + error);
+      toast.error("Error: " + error);
     }
   };
 
@@ -116,7 +117,7 @@ export default function FriendsPage() {
   ) => {
     try {
       await respondFriendRequests(friendId, action);
-      alert(`Friend request ${action.toLowerCase()}`);
+      toast.success(`Friend request ${action.toLowerCase()}`);
       
       if (action === "ACCEPTED") {
         fetchFriends(); // Refresh friends list
@@ -128,7 +129,7 @@ export default function FriendsPage() {
         search();
       }
     } catch (error) {
-      alert("Failed to process request");
+      toast.error("Failed to process request");
     }
   };
 
@@ -149,7 +150,7 @@ export default function FriendsPage() {
       }
     } catch (error) {
       console.error("Failed to delete friend:", error);
-      alert("Failed to remove friend. Please try again.");
+      toast.error("Failed to remove friend. Please try again.");
     }
   };
 

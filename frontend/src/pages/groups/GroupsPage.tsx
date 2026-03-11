@@ -17,7 +17,6 @@ export default function GroupsPage() {
     });
   }, [groupId]);
 
-  console.log(group);
   if (loading) {
     return (
       <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">

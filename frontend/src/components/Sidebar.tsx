@@ -62,8 +62,6 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
     fetchFriendRequests();
   }, []);
 
-  console.log(friendRequests);
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {

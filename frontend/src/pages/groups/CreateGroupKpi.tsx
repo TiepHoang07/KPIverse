@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { createGroupKpi } from "../../api/group";
+import toast from "react-hot-toast";
 
 type KPIType = "DAILY" | "WEEKLY" | "MONTHLY";
 
@@ -30,12 +31,12 @@ export default function CreateGroupKpi() {
 
   const submit = async () => {
     if (!groupId) return;
-    if (!name) return alert("KPI name is required");
+    if (!name) return toast.error("KPI name is required");
 
     const cleanTasks = tasks.filter(t => t.name.trim() !== "");
 
     if (cleanTasks.length === 0) {
-      return alert("Add at least one task");
+      return toast.error("Add at least one task");
     }
 
     try {

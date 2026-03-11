@@ -79,16 +79,6 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
           return logsByDate[dateStr] || 0;
         });
 
-        // Debug logs
-        console.log('Date range:', {
-          from: firstLog.toLocaleDateString(),
-          to: lastLog.toLocaleDateString(),
-          totalDays: dates.length
-        });
-        console.log('Today\'s date:', new Date().toLocaleDateString());
-        console.log('Today\'s data:', data[data.length - 1]);
-        console.log('Logs by date:', logsByDate);
-
         setChartData({
           labels,
           datasets: [

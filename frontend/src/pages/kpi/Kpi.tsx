@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import KpiTaskItem from "../../components/kpi/KpiTaskItem";
 import KpiChart from "../../components/kpi/KpiChart"; // ✅ Added chart import
 import api from "../../api/axios";
+import toast from "react-hot-toast";
 
 export default function Kpi() {
   const { kpiId } = useParams<{ kpiId: string }>();
@@ -153,8 +154,7 @@ export default function Kpi() {
       // Update last logged date
       setLastLoggedDate(new Date());
 
-      // Show success message
-      alert("Tasks logged successfully!");
+      toast.success("Tasks logged successfully!");
 
       // Refresh KPI data
       const refreshedKpi = await api.get(`/kpis/${kpiId}`);
@@ -164,7 +164,7 @@ export default function Kpi() {
       // setChecked([]);
     } catch (error) {
       console.error("Error saving tasks:", error);
-      alert("Error saving tasks. Please try again.");
+      toast.error("Error saving tasks. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -181,11 +181,11 @@ export default function Kpi() {
     try {
       setDeleting(true);
       await api.delete(`/kpis/${kpi.id}`);
-      alert("KPI deleted successfully!");
+      toast.success("KPI deleted successfully!");
       navigate("/kpis");
     } catch (error) {
       console.error("Error deleting KPI:", error);
-      alert("Error deleting KPI. Please try again.");
+      toast.error("Error deleting KPI. Please try again.");
     } finally {
       setDeleting(false);
     }
