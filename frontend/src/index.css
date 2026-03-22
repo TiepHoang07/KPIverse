@@ -1,1 +1,59 @@
 @import "tailwindcss";
+
+@theme {
+  --color-background: #020617; /* Slate 950 */
+  --color-foreground: #f8fafc; /* Slate 50 */
+  
+  --color-card: #0f172a; /* Slate 900 */
+  --color-card-foreground: #f8fafc;
+  
+  --color-popover: #0f172a;
+  --color-popover-foreground: #f8fafc;
+  
+  --color-primary: #3b82f6; /* Blue 500 */
+  --color-primary-foreground: #ffffff;
+  
+  --color-secondary: #1e293b; /* Slate 800 */
+  --color-secondary-foreground: #f8fafc;
+  
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8; /* Slate 400 */
+  
+  --color-accent: #1e293b;
+  --color-accent-foreground: #f8fafc;
+  
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #f8fafc;
+  
+  --color-border: #1e293b; /* Slate 800 */
+  --color-input: #1e293b;
+  --color-ring: #3b82f6;
+  
+  --radius-lg: 0.75rem;
+  --radius-md: calc(var(--radius-lg) - 2px);
+  --radius-sm: calc(var(--radius-lg) - 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply antialiased;
+  }
+}
+
+/* Custom Utilities for Premium Look */
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+  .glass-card {
+    @apply bg-card/50 backdrop-blur-sm border border-border/50;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-purple-500;
+  }
+}

@@ -169,114 +169,119 @@ export default function GroupsMembers() {
 
   if (loading || !currentUserId) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-background p-6">
         <div className="mx-auto max-w-4xl">
-          <div className="h-8 w-48 animate-pulse rounded bg-gray-200" />
+          <div className="h-8 w-48 animate-pulse rounded bg-secondary/50" />
           <div className="mt-6 space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 animate-pulse rounded bg-gray-200" />
+              <div key={i} className="h-16 animate-pulse rounded bg-secondary/50" />
             ))}
           </div>
         </div>
       </div>
     );
   }
-
+ 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
-        <div className="mb-6 flex items-center gap-4">
-          <button
-            onClick={() => navigate(`/groups/${groupId}`)}
-            className="rounded p-2 hover:bg-gray-200"
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold">{groupName}</h1>
-            <p className="text-sm text-gray-500">{members.length} members</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate(`/groups/${groupId}`)}
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-secondary/50 hover:text-primary"
+            >
+              <ArrowLeft size={20} />
+            </button>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">{groupName}</h1>
+              <p className="text-sm font-medium text-muted-foreground/60">{members.length} members collaborating</p>
+            </div>
           </div>
-        </div>
-
-        <div className="mb-6 flex justify-end">
+ 
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 cursor-pointer"
+            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold uppercase tracking-widest text-white hover:bg-primary/90 cursor-pointer shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5"
           >
             <UserPlus size={18} />
             Add Member
           </button>
         </div>
-
+ 
         {/* Members List */}
-        <div className="space-y-3">
+        <div className="space-y-4">
+          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground/40">Team Members</div>
           {members.map((member) => (
-            <div key={member.id} className="rounded-lg bg-white p-4 shadow">
+            <div key={member.id} className="group rounded-2xl bg-card p-5 shadow-xl border border-border transition-all hover:border-primary/30">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={
-                      member.avatarUrl ||
-                      `https://ui-avatars.com/api/?name=${member.name}&background=3b82f6&color=fff`
-                    }
-                    alt={member.name}
-                    className="h-12 w-12 rounded-full"
-                  />
-
+                <div className="flex items-center gap-5">
+                  <div className="relative">
+                    <img
+                      src={
+                        member.avatarUrl ||
+                        `https://ui-avatars.com/api/?name=${member.name}&background=3b82f6&color=fff&size=128`
+                      }
+                      alt={member.name}
+                      className="h-14 w-14 rounded-full object-cover ring-2 ring-primary/20"
+                    />
+                    {member.role === "ADMIN" && (
+                      <div className="absolute -top-1 -right-1 rounded-full bg-primary p-1 shadow-lg border border-background">
+                        <Crown size={10} className="text-white" />
+                      </div>
+                    )}
+                  </div>
+ 
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-medium">
+                      <h3 className="text-lg font-bold text-foreground">
                         {member.name}
                         {member.id === currentUserId && (
-                          <span className="ml-2 text-xs text-gray-400">
+                          <span className="ml-2 text-xs font-medium text-primary/50">
                             (you)
                           </span>
                         )}
                       </h3>
                       <span
-                        className={`rounded-full px-2 py-0.5 text-xs ${
+                        className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
                           member.role === "ADMIN"
-                            ? "bg-purple-100 text-purple-700"
-                            : "bg-blue-100 text-blue-700"
+                            ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                            : "bg-primary/10 text-primary border-primary/20"
                         }`}
                       >
                         {member.role}
                       </span>
-                      {member.role === "ADMIN" && (
-                        <Crown size={14} className="text-purple-600" />
-                      )}
                     </div>
-
-                    <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <Mail size={12} />
+ 
+                    <div className="mt-1.5 flex items-center gap-4 text-xs font-medium text-muted-foreground/60">
+                      <span className="flex items-center gap-1.5">
+                        <Mail size={14} className="opacity-40" />
                         {member.email}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar size={12} />
-                        {new Date(member.joinedAt).toLocaleDateString()}
+                      <span className="flex items-center gap-1.5">
+                        <Calendar size={14} className="opacity-40" />
+                        Joined {new Date(member.joinedAt).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
                 </div>
-
-                {/* Admin actions - Only visible to admins and not for current user */}
+ 
+                {/* Admin actions */}
                 {isAdmin && member.id !== currentUserId && (
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     {member.role === "MEMBER" && (
                       <button
                         onClick={() => handleTransferAdmin(member)}
                         disabled={processingId === member.id}
-                        className="cursor-pointer rounded-xl border border-purple-500 bg-purple-50 px-2 py-1 text-sm text-purple-600 hover:bg-purple-100 disabled:opacity-50"
+                        className="cursor-pointer rounded-xl border border-purple-500/20 bg-purple-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-purple-400 hover:bg-purple-500 hover:text-white transition-all disabled:opacity-30"
                       >
-                        Transfer Admin
+                        {processingId === member.id ? "Working..." : "Make Admin"}
                       </button>
                     )}
-
+ 
                     <button
                       onClick={() => setShowRemoveModal(member)}
-                      className="cursor-pointer rounded-xl border border-red-500 bg-red-50 px-2 py-1 text-sm text-red-600 hover:bg-red-100"
+                      className="cursor-pointer rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
                     >
                       Remove
                     </button>
@@ -287,111 +292,120 @@ export default function GroupsMembers() {
           ))}
         </div>
       </div>
-
+ 
       {/* Add Member Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-lg bg-white p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Add Member</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl border border-border">
+            <div className="mb-6 flex items-center justify-between">
+              <h3 className="text-xl font-bold text-foreground">Add New Member</h3>
               <button
                 onClick={() => {
                   setShowAddModal(false);
                   setSelectedUser(null);
                   setSearchQuery("");
                 }}
-                className="rounded p-1 hover:bg-gray-100"
+                className="rounded-xl p-2 text-muted-foreground hover:bg-secondary/50 transition-colors cursor-pointer"
               >
                 <X size={20} />
               </button>
             </div>
-
-            <div className="relative mb-4">
-              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+ 
+            <div className="relative mb-6">
+              <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted-foreground/40" />
               <input
                 type="text"
-                placeholder="Search users..."
+                placeholder="Search by name or email..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full rounded border border-gray-200 py-2 pr-4 pl-9"
+                className="w-full rounded-xl border border-border bg-secondary/50 py-3.5 pl-12 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/20"
                 autoFocus
               />
             </div>
-
-            <div className="max-h-60 space-y-2 overflow-y-auto">
+ 
+            <div className="max-h-72 space-y-2 overflow-y-auto pr-2 custom-scrollbar">
               {searching && (
-                <div className="py-4 text-center text-gray-400">
-                  Searching...
+                <div className="py-8 text-center text-muted-foreground/40 font-medium italic">
+                  Searching for users...
                 </div>
               )}
-
+ 
+              {!searching && searchQuery.length >= 2 && searchResults.length === 0 && (
+                <div className="py-8 text-center text-muted-foreground/40 font-medium italic">
+                  No users found matching "{searchQuery}"
+                </div>
+              )}
+ 
               {!searching &&
                 searchResults.map((user) => (
                   <button
                     key={user.id}
                     onClick={() => setSelectedUser(user)}
-                    className={`flex w-full items-center gap-3 rounded p-2 ${
+                    className={`flex w-full items-center gap-4 rounded-xl p-3 transition-all ${
                       selectedUser?.id === user.id
-                        ? "bg-blue-50"
-                        : "hover:bg-gray-50"
+                        ? "bg-primary/10 border border-primary/30"
+                        : "hover:bg-secondary/50 border border-transparent"
                     }`}
                   >
                     <img
                       src={
                         user.avatarUrl ||
-                        `https://ui-avatars.com/api/?name=${user.name}`
+                        `https://ui-avatars.com/api/?name=${user.name}&background=primary&size=128`
                       }
                       alt={user.name}
                       className="h-10 w-10 rounded-full"
                     />
-                    <div className="text-left">
-                      <div className="text-sm font-medium">{user.name}</div>
-                      <div className="text-xs text-gray-400">{user.email}</div>
+                    <div className="text-left flex-1 overflow-hidden">
+                      <div className="text-sm font-bold text-foreground truncate">{user.name}</div>
+                      <div className="text-xs text-muted-foreground/60 truncate">{user.email}</div>
                     </div>
                   </button>
                 ))}
             </div>
-
-            <div className="mt-6 flex gap-2">
+ 
+            <div className="mt-8 flex gap-3">
               <button
                 onClick={() => setShowAddModal(false)}
-                className="flex-1 rounded border border-gray-200 py-2 text-sm hover:bg-gray-50"
+                className="flex-1 rounded-xl border border-border bg-card py-3.5 text-xs font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddMember}
                 disabled={!selectedUser || addingMember}
-                className="flex-1 rounded bg-blue-600 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                className="flex-1 rounded-xl bg-primary py-3.5 text-xs font-bold uppercase tracking-widest text-white hover:bg-primary/90 disabled:opacity-30 shadow-lg shadow-primary/20 transition-all"
               >
-                {addingMember ? "Adding..." : "Add"}
+                {addingMember ? "Adding..." : "Invite to Group"}
               </button>
             </div>
           </div>
         </div>
       )}
-
+ 
       {/* Remove Member Modal */}
       {showRemoveModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-lg bg-white p-6">
-            <h3 className="mb-2 text-lg font-semibold">Remove Member</h3>
-            <p className="text-gray-600">
-              Remove {showRemoveModal.name} from the group?
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm rounded-2xl bg-card p-8 shadow-2xl border border-destructive/20 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+              <X size={32} />
+            </div>
+            <h3 className="mb-2 text-xl font-bold text-foreground">Remove Member?</h3>
+            <p className="text-muted-foreground text-sm font-medium">
+              Are you sure you want to remove <span className="text-foreground font-bold">{showRemoveModal.name}</span> from the group? They will lose access to all group KPIs.
             </p>
-
-            <div className="mt-6 flex gap-2">
+ 
+            <div className="mt-8 flex gap-3">
               <button
                 onClick={() => setShowRemoveModal(null)}
-                className="flex-1 rounded border border-gray-200 py-2 text-sm hover:bg-gray-50"
+                className="flex-1 rounded-xl border border-border bg-card py-3.5 text-xs font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleRemoveMember(showRemoveModal)}
-                className="flex-1 rounded bg-red-600 py-2 text-sm text-white hover:bg-red-700"
+                className="flex-1 rounded-xl bg-destructive py-3.5 text-xs font-bold uppercase tracking-widest text-white hover:bg-destructive/90 transition-all shadow-lg shadow-destructive/20"
               >
-                Remove
+                {processingId === showRemoveModal.id ? "Removing..." : "Remove Member"}
               </button>
             </div>
           </div>

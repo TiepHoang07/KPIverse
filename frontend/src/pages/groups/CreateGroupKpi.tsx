@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { createGroupKpi } from "../../api/group";
 import toast from "react-hot-toast";
+import { Plus } from "lucide-react";
 
 type KPIType = "DAILY" | "WEEKLY" | "MONTHLY";
 
@@ -60,64 +61,66 @@ export default function CreateGroupKpi() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-2xl">
-        <div className="mb-6 flex items-center gap-4">
+        <div className="mb-8 flex items-center gap-4">
           <button
             onClick={() => navigate(`/groups/${groupId}`)}
-            className="rounded-lg p-2 hover:bg-gray-200 transition"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-secondary/50 hover:text-primary"
           >
             ←
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">Create Group KPI</h1>
+          <h1 className="text-3xl font-bold text-foreground">Create Group KPI</h1>
         </div>
-
-        <div className="space-y-6">
+ 
+        <div className="space-y-8">
           {/* Main Form Card */}
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <div className="space-y-6">
+          <div className="rounded-2xl bg-card p-8 shadow-xl border border-border relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary to-purple-500"></div>
+            
+            <div className="space-y-8">
               {/* KPI Name */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  KPI Name <span className="text-red-500">*</span>
+                <label className="mb-2 block text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
+                  KPI Name <span className="text-destructive">*</span>
                 </label>
                 <input
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-700 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3.5 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/30"
                   placeholder="e.g., Team Daily Sales"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-
+ 
               {/* Description */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Description <span className="text-gray-400">(optional)</span>
+                <label className="mb-2 block text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
+                  Description <span className="text-muted-foreground/40 font-normal lowercase">(optional)</span>
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-700 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3.5 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/30"
                   placeholder="What does this KPI measure?"
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
-
+ 
               {/* Type selector */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-3 block text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
                   Frequency
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {["DAILY", "WEEKLY", "MONTHLY"].map((t) => (
                     <button
                       key={t}
                       type="button"
                       onClick={() => setType(t as KPIType)}
-                      className={`min-w-[90px] cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
+                      className={`min-w-[100px] cursor-pointer rounded-xl border px-4 py-3 text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
                         type === t
-                          ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-                          : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                          ? "border-primary bg-primary text-white shadow-lg shadow-primary/20"
+                          : "border-border bg-secondary/30 text-muted-foreground hover:bg-secondary/50"
                       }`}
                     >
                       {t}
@@ -125,38 +128,38 @@ export default function CreateGroupKpi() {
                   ))}
                 </div>
               </div>
-
+ 
               {/* Tasks */}
               <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Tasks <span className="text-red-500">*</span>
+                <div className="mb-4 flex items-center justify-between">
+                  <label className="block text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
+                    Tasks <span className="text-destructive">*</span>
                   </label>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">
                     {tasks.filter(t => t.name.trim() !== "").length} added
                   </span>
                 </div>
-
-                <div className="space-y-3">
+ 
+                <div className="space-y-4">
                   {tasks.map((task, index) => (
-                    <div key={index} className="flex items-center gap-2">
+                    <div key={index} className="flex items-center gap-3">
                       <div className="relative flex-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground/30">
                           {index + 1}.
                         </span>
                         <input
-                          className="w-full rounded-xl border border-gray-200 py-3 pl-8 pr-4 text-gray-700 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-                          placeholder={`Task ${index + 1}`}
+                          className="w-full rounded-xl border border-border bg-secondary/30 py-3.5 pl-10 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/20"
+                          placeholder={`Enter task ${index + 1}...`}
                           value={task.name}
                           onChange={(e) => updateTask(index, e.target.value)}
                         />
                       </div>
-
+ 
                       {tasks.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeTask(index)}
-                          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl text-gray-400 transition hover:bg-red-50 hover:text-red-500"
+                          className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl border border-destructive/20 bg-destructive/5 text-destructive transition-all hover:bg-destructive hover:text-white"
                         >
                           ✕
                         </button>
@@ -164,44 +167,44 @@ export default function CreateGroupKpi() {
                     </div>
                   ))}
                 </div>
-
+ 
                 <button
                   type="button"
                   onClick={addTask}
-                  className="mt-3 flex cursor-pointer items-center gap-1 text-sm text-blue-600 transition hover:text-blue-700"
+                  className="mt-6 flex cursor-pointer items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:gap-3"
                 >
-                  <span className="text-lg">+</span> Add another task
+                  <Plus size={18} /> Add another task
                 </button>
                 
                 {tasks.length === 0 && (
-                  <p className="mt-2 text-xs text-red-500">
+                  <p className="mt-4 text-xs font-medium text-destructive">
                     At least one task is required
                   </p>
                 )}
               </div>
             </div>
           </div>
-
+ 
           {/* Action Buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             <button
               onClick={() => navigate(`/groups/${groupId}`)}
-              className="flex-1 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
+              className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-4 text-sm font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"
             >
               Cancel
             </button>
             <button
               onClick={submit}
               disabled={loading || !name.trim() || tasks.filter(t => t.name.trim() !== "").length === 0}
-              className="flex-1 cursor-pointer rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+              className="flex-1 cursor-pointer rounded-xl bg-primary px-4 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-30 shadow-lg shadow-primary/20 hover:-translate-y-0.5"
             >
-              {loading ? "Creating..." : "Create KPI"}
+              {loading ? "Creating..." : "Create Group KPI"}
             </button>
           </div>
-
+ 
           {/* Helper Text */}
-          <p className="text-center text-xs text-gray-400">
-            Create measurable tasks that your team can track
+          <p className="text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">
+            Create measurable tasks that your team can track together
           </p>
         </div>
       </div>

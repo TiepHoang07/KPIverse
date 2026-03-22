@@ -45,22 +45,26 @@ export default function GroupLeaderboard({
     return rank;
   };
 
+  if (loading) {
+    return (
+      <div className="bg-card border-border flex h-48 items-center justify-center rounded-2xl border p-4 shadow-xl">
+        <div className="border-border border-t-primary h-8 w-8 animate-spin rounded-full border-4"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full rounded-2xl bg-white p-5 shadow-sm">
-      <h2 className="mb-4 text-lg font-semibold">Leaderboard</h2>
-      <div className="flex justify-between px-2 text-sm font-semibold text-gray-700">
+    <div className="bg-card border-border w-full rounded-2xl border p-6 shadow-xl">
+      <h2 className="text-foreground mb-6 text-xl font-bold">Leaderboard</h2>
+      <div className="text-muted-foreground/60 mb-4 flex justify-between px-4 text-xs font-bold tracking-widest uppercase">
         <span>Rank & Name</span>
         <span>Completed</span>
       </div>
 
-      {loading && (
-        <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
-        </div>
-      )}
-
       {!loading && users.length === 0 && (
-        <div className="text-sm text-gray-400">No logs yet for this KPI</div>
+        <div className="text-muted-foreground/50 bg-secondary/10 border-border rounded-xl border border-dashed py-8 text-center text-sm italic">
+          No logs yet for this KPI
+        </div>
       )}
 
       {!loading && users.length > 0 && (
@@ -68,14 +72,14 @@ export default function GroupLeaderboard({
           {users.map((u) => (
             <li
               key={u.userId}
-              className={`flex items-center justify-between rounded-xl border-[1.5px] bg-gray-50 px-3 py-2 ${
+              className={`flex items-center justify-between rounded-xl border-[1.5px] px-4 py-3 transition-all hover:scale-[1.01] ${
                 u.rank === 1
-                  ? "border-orange-400 bg-orange-50"
+                  ? "border-orange-600/30 bg-orange-500/5"
                   : u.rank === 2
-                    ? "border-purple-400 bg-purple-50"
+                    ? "border-yellow-500/30 bg-yellow-400/5"
                     : u.rank === 3
-                      ? "border-blue-400 bg-blue-50"
-                      : "border-gray-400 bg-gray-50"
+                      ? "border-cyan-600/30 bg-cyan-600/5"
+                      : "border-border bg-secondary/20"
               }`}
             >
               <div className="flex items-center gap-6">
@@ -91,21 +95,23 @@ export default function GroupLeaderboard({
                     `https://ui-avatars.com/api/?name=${u.name}&background=3b82f6&color=fff`
                   }
                   alt={u.name}
-                  className="h-8 w-8 rounded-full object-cover"
+                  className="ring-primary/20 h-10 w-10 rounded-full object-cover ring-2"
                 />
 
-                <span className="text-sm font-medium">{u.name}</span>
+                <span className="text-foreground text-sm font-bold">
+                  {u.name}
+                </span>
               </div>
 
               <span
-                className={`mr-3 w-10 rounded-full p-2 text-center text-sm font-semibold ${
+                className={`w-12 rounded-lg py-1.5 text-center text-sm font-bold shadow-sm ${
                   u.rank === 1
-                    ? "bg-orange-100 text-orange-600"
+                    ? "bg-orange-600/20 text-orange-500"
                     : u.rank === 2
-                      ? "bg-purple-100 text-purple-600"
+                      ? "bg-yellow-500/20 text-yellow-400"
                       : u.rank === 3
-                        ? "bg-blue-100 text-blue-600"
-                        : "bg-gray-100 text-gray-600"
+                        ? "bg-cyan-600/20 text-cyan-500"
+                        : "bg-secondary/50 text-muted-foreground"
                 }`}
               >
                 {u.logs}

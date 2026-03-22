@@ -23,12 +23,12 @@ export default function KpiPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">My KPIs</h1>
+    <div className="p-6 bg-background min-h-screen">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-foreground">My KPIs</h1>
         <button
           onClick={() => navigate('/kpis/create')}
-          className="inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-4 py-3 rounded-2xl transition-all transform hover:scale-102 shadow-md hover:shadow-lg cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-2xl transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 cursor-pointer"
         >
           <Plus size={20}></Plus>
           <span className="font-medium">Create KPI</span>
@@ -36,11 +36,15 @@ export default function KpiPage() {
       </div>
       
       {kpis.length === 0 ? (
-        <p className="text-gray-500">No KPIs found. Create your first KPI!</p>
+        <div className="text-center py-20 bg-card rounded-2xl border-2 border-dashed border-border">
+          <p className="text-muted-foreground">No KPIs found. Create your first KPI to start tracking your progress!</p>
+        </div>
       ) : (
-        kpis.map((kpi) => (
-          <KpiCard key={kpi.id} kpi={kpi} />
-        ))
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {kpis.map((kpi) => (
+            <KpiCard key={kpi.id} kpi={kpi} />
+          ))}
+        </div>
       )}
     </div>
   );

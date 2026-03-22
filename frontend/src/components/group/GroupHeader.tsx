@@ -7,19 +7,25 @@ type Props = {
 export default function GroupHeader({ group }: Props) {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between rounded bg-white p-4 shadow">
+    <div className="flex items-center justify-between rounded-2xl bg-card p-6 shadow-xl border border-border">
       <div>
-        <h1 className="text-xl font-bold">{group.group.name}</h1>
-        <p className="text-sm">{group.group.description}</p>
-        <p className="mt-3 text-gray-500">role: {group.membership.role}</p>
-        <p className="text-gray-500">{group.members?.length || 0} members</p>
+        <h1 className="text-2xl font-bold text-foreground">{group.group.name}</h1>
+        <p className="text-sm font-medium text-muted-foreground/60 mt-1">{group.group.description}</p>
+        <div className="mt-4 flex items-center gap-4 text-xs font-bold uppercase tracking-widest">
+          <span className="rounded-full bg-primary/10 px-3 py-1 text-primary border border-primary/20">
+            {group.membership.role}
+          </span>
+          <span className="text-muted-foreground/40">
+            {group.members?.length || 0} members collaborating
+          </span>
+        </div>
       </div>
-
+ 
       <button
         onClick={() => navigate(`/groups/${group.group.id}/members`)}
-        className="transform cursor-pointer rounded-2xl bg-blue-600 px-4 py-3 text-white shadow-md transition-all hover:scale-102 hover:bg-blue-700 hover:shadow-lg"
+        className="transform cursor-pointer rounded-xl bg-secondary/50 border border-border px-5 py-3 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-secondary hover:border-primary/30 shadow-lg"
       >
-        Group members
+        Manage Members
       </button>
     </div>
   );

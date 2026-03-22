@@ -100,7 +100,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
       {/* Mobile menu button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed top-2 left-4 z-40 cursor-pointer rounded-lg border-[1.5px] border-blue-600 bg-blue-100 p-2 text-blue-600 hover:bg-blue-200 lg:hidden"
+        className="fixed top-2 left-4 z-40 cursor-pointer rounded-lg border-[1.5px] border-primary bg-primary/10 p-2 text-primary hover:bg-primary/20 lg:hidden"
         aria-label="Open menu"
       >
         <Menu size={20} />
@@ -116,25 +116,25 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-gray-200 bg-gray-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-border bg-card transition-all duration-300 ${
           collapsed ? "w-20" : "w-64"
         } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         {/* Header */}
-        <div className="flex h-16 items-center justify-between border-b border-gray-200">
+        <div className="flex h-16 items-center justify-between border-b border-border">
           {!collapsed && (
             <img className="ml-5 h-12 w-28" src="/images/logo.png" alt="logo" />
           )}
           {collapsed && (
             <div className="flex w-full justify-center">
-              <span className="text-2xl font-bold text-blue-600">K</span>
+              <span className="text-2xl font-bold text-primary">K</span>
             </div>
           )}
 
           {/* Collapse button - hidden on mobile */}
           <button
             onClick={toggleCollapse}
-            className="hidden rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 lg:block"
+            className="hidden rounded-lg p-1.5 text-muted-foreground hover:bg-secondary lg:block"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
@@ -143,7 +143,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
           {/* Close button - visible on mobile */}
           <button
             onClick={() => setMobileOpen(false)}
-            className="mr-2 cursor-pointer rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 lg:hidden"
+            className="mr-2 cursor-pointer rounded-lg p-1.5 text-muted-foreground hover:bg-secondary lg:hidden"
             aria-label="Close menu"
           >
             <X size={18} />
@@ -165,8 +165,8 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                     collapsed ? "justify-center px-2 py-3" : "px-4 py-2.5"
                   } ${
                     isActive
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary/10 text-primary shadow-sm shadow-primary/20"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`
                 }
                 title={collapsed ? item.label : undefined}
@@ -174,7 +174,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                 <div className="relative flex items-center gap-3">
                   <Icon
                     size={20}
-                    className={isActive ? "text-blue-600" : "text-gray-500"}
+                    className={isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}
                   />
                   {!collapsed && (
                     <span className="text-sm font-medium">{item.label}</span>
@@ -186,12 +186,12 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
                 {/* Active indicator */}
                 {isActive && !collapsed && (
-                  <div className="absolute right-2 h-2 w-2 rounded-full bg-blue-600" />
+                  <div className="absolute right-2 h-2 w-2 rounded-full bg-primary animate-pulse" />
                 )}
 
                 {/* Tooltip for collapsed mode */}
                 {collapsed && (
-                  <div className="absolute left-full ml-2 hidden rounded-lg bg-gray-900 px-2 py-1 text-xs text-white group-hover:block">
+                  <div className="absolute left-full ml-4 hidden rounded-xl bg-card border border-border px-3 py-2 text-xs font-bold uppercase tracking-widest text-foreground shadow-2xl group-hover:block z-50 whitespace-nowrap">
                     {item.label}
                   </div>
                 )}
@@ -202,11 +202,11 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
         {/* User section - with null check */}
         <div
-          className={`border-t border-gray-200 p-3 ${collapsed ? "text-center" : ""}`}
+          className={`border-t border-border p-3 ${collapsed ? "text-center" : ""}`}
         >
           {loading ? (
             <div className="flex justify-center py-2">
-              <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-primary"></div>
             </div>
           ) : me?.user ? (
             <>
@@ -221,13 +221,13 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                       `https://ui-avatars.com/api/?name=${me.user.name || "User"}&background=3b82f6&color=fff`
                     }
                     alt={me.user.name || "User"}
-                    className="h-8 w-8 cursor-pointer rounded-full object-cover ring-2 ring-blue-100"
+                    className="h-8 w-8 cursor-pointer rounded-full object-cover ring-2 ring-primary/20"
                   />
                 </div>
 
                 {!collapsed && (
                   <div className="flex-1">
-                    <p className="truncate text-sm font-medium text-gray-700">
+                    <p className="truncate text-sm font-medium text-foreground">
                       {me.user.name || "User"}
                     </p>
                   </div>
@@ -237,25 +237,25 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
               {!collapsed && (
                 <button
                   onClick={logout}
-                  className="mt-3 flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                  className="mt-3 flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
                 >
                   <LogOut size={16} />
                   <span>Logout</span>
                 </button>
               )}
             </>
-          ) : (
-            <div className="py-2 text-center text-sm text-gray-500">
-              <p>Please log in</p>
+            ) : (
+            <div className="py-4 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+              <p>Session Expired</p>
             </div>
           )}
         </div>
       </aside>
 
       {/* Mobile header with current page */}
-      <header className="fixed top-0 right-0 left-0 z-30 border-b border-gray-200 bg-white/80 px-4 py-3 shadow-md backdrop-blur-sm lg:hidden">
+      <header className="fixed top-0 right-0 left-0 z-30 border-b border-border bg-card/80 px-4 py-3 shadow-lg backdrop-blur-md lg:hidden">
         <div className="flex items-center justify-center">
-          <h2 className="text-lg font-semibold text-gray-800">{currentPage}</h2>
+          <h2 className="text-lg font-semibold text-foreground">{currentPage}</h2>
         </div>
       </header>
 

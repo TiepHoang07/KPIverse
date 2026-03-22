@@ -21,16 +21,16 @@ export default function ProfileActivityCard({ activity }: { activity: any }) {
   };
 
   const details = getActivityDetails();
-  
+
   const colorClasses = {
-    purple: 'bg-purple-50 border-purple-200',
-    green: 'bg-green-50 border-green-200',
-    blue: 'bg-blue-50 border-blue-200',
-    indigo: 'bg-indigo-50 border-indigo-200',
-    orange: 'bg-orange-50 border-orange-200',
-    teal: 'bg-teal-50 border-teal-200',
-    red: 'bg-red-50 border-red-200',
-    gray: 'bg-gray-50 border-gray-200',
+    purple: 'bg-purple-500/10 border-purple-500/20 text-purple-400',
+    green: 'bg-green-500/10 border-green-500/20 text-green-400',
+    blue: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
+    indigo: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400',
+    orange: 'bg-orange-500/10 border-orange-200/20 text-orange-400',
+    teal: 'bg-teal-500/10 border-teal-500/20 text-teal-400',
+    red: 'bg-red-500/10 border-red-500/20 text-red-400',
+    gray: 'bg-secondary/30 border-border text-muted-foreground',
   };
 
   const formatDate = (date: string) => {
@@ -38,18 +38,20 @@ export default function ProfileActivityCard({ activity }: { activity: any }) {
     const now = new Date();
     const diff = now.getTime() - d.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
-    
+
     if (hours < 24) return `${hours}h ago`;
     if (hours < 48) return 'Yesterday';
     return d.toLocaleDateString();
   };
 
   return (
-    <div className={`flex items-center gap-3 rounded-lg border p-3 ${colorClasses[details.color as keyof typeof colorClasses]}`}>
-      <span className="text-xl">{details.icon}</span>
+    <div className={`flex items-center gap-4 rounded-xl border p-4 transition-all hover:scale-[1.02] ${colorClasses[details.color as keyof typeof colorClasses]}`}>
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-current/10 shadow-inner">
+        <span className="text-xl">{details.icon}</span>
+      </div>
       <div className="flex-1">
-        <p className="text-sm font-medium">{details.text}</p>
-        <p className="text-xs text-gray-500">{formatDate(activity.createdAt)}</p>
+        <p className="text-sm font-bold text-foreground">{details.text}</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mt-1">{formatDate(activity.createdAt)}</p>
       </div>
     </div>
   );

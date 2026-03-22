@@ -10,33 +10,36 @@ interface Props {
 export default function GroupKpiList({ group }: Props) {
   const navigate = useNavigate();
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md space-y-6">
+    <div className="bg-card p-8 rounded-3xl shadow-2xl border border-border space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Group KPIs</h2>
-
+        <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Group Objectives</h2>
+ 
         {group.membership.role === "ADMIN" && (
-          <button onClick={() => navigate(`/groups/${group.group.id}/create-kpi`)} className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-2xl transition-all transform hover:scale-101 shadow-md hover:shadow-lg cursor-pointer">
+          <button 
+            onClick={() => navigate(`/groups/${group.group.id}/create-kpi`)} 
+            className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-primary/20 cursor-pointer hover:-translate-y-0.5"
+          >
             <Plus size={16} />
-            Create group KPI
+            New Group KPI
           </button>
         )}
       </div>
-
+ 
       {/* Empty state */}
       {group.kpis.length === 0 && (
-        <div className="text-center py-10 text-gray-500">
-          <p>No KPIs yet</p>
+        <div className="text-center py-16 bg-secondary/10 rounded-2xl border border-dashed border-border">
+          <p className="text-muted-foreground font-medium italic">No objectives defined yet</p>
           {group.membership.role === "ADMIN" && (
-            <p className="text-sm mt-2">
+            <p className="text-xs mt-3 text-primary/60 font-bold uppercase tracking-widest">
               Start by creating the first KPI for your team 🚀
             </p>
           )}
         </div>
       )}
-
+ 
       {/* KPI Grid */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-6">
         {group.kpis.map(( kpi: any) => (
           <GroupKpiCard key={kpi.id} group={group} kpi={kpi} />
         ))}

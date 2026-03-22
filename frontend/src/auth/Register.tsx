@@ -35,108 +35,97 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="relative w-full max-w-md">
-        {/* Decorative background element */}
-        <div className="absolute inset-0 skew-y-0 transform bg-linear-to-r from-cyan-500 to-blue-500 shadow-lg -rotate-3 rounded-3xl"></div>
-        
-        {/* Main card */}
-        <div className="relative bg-white px-6 py-8 shadow-lg rounded-3xl sm:p-10">
-          {/* Logo section */}
-          <div className="mb-6 flex flex-col items-center">
-            <img 
-              className="h-16 w-auto sm:h-20" 
-              src="images/logo.png" 
-              alt="KPIverse logo" 
-            />
-            <span className="mt-2 text-sm text-gray-600 sm:text-base">
-              Join KPIverse today!
-            </span>
-          </div>
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 rounded-2xl bg-card p-8 shadow-xl border border-border">
+        {/* Logo section */}
+        <div className="flex flex-col items-center">
+          <img className="h-16 w-auto sm:h-20" src="images/logo.png" alt="KPIverse logo" />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
+            Create account
+          </h2>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            Join KPIverse today!
+          </p>
+        </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <h1 className="text-center text-xl font-bold text-gray-900 sm:text-2xl">
-              Create your account
-            </h1>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="rounded-xl bg-destructive/10 border border-destructive/20 p-4 text-xs font-bold uppercase tracking-widest text-destructive text-center">
+              {error}
+            </div>
+          )}
 
-            {error && (
-              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
-                {error}
-              </div>
-            )}
-
-            {/* Name field */}
+          <div className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                Full name
+              <label htmlFor="name" className="mb-2 block text-xs font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+                Full Name
               </label>
               <input
+                id="name"
                 name="name"
                 type="text"
+                required
+                className="block w-full rounded-xl border border-border bg-secondary/30 px-4 py-3.5 text-foreground placeholder:text-muted-foreground/20 focus:border-primary/50 focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-inner"
+                placeholder="John Doe"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Your name"
-                className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-                required
               />
             </div>
-
-            {/* Email field */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                Email address
+              <label htmlFor="email-address" className="mb-2 block text-xs font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+                Email Address
               </label>
               <input
+                id="email-address"
                 name="email"
                 type="email"
+                required
+                className="block w-full rounded-xl border border-border bg-secondary/30 px-4 py-3.5 text-foreground placeholder:text-muted-foreground/20 focus:border-primary/50 focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-inner"
+                placeholder="name@example.com"
                 value={form.email}
                 onChange={handleChange}
-                placeholder="name@example.com"
-                className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-                required
               />
             </div>
-
-            {/* Password field */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="mb-2 block text-xs font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
                 Password
               </label>
               <input
+                id="password"
                 name="password"
                 type="password"
+                required
+                className="block w-full rounded-xl border border-border bg-secondary/30 px-4 py-3.5 text-foreground placeholder:text-muted-foreground/20 focus:border-primary/50 focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-inner"
+                placeholder="••••••••"
                 value={form.password}
                 onChange={handleChange}
-                placeholder="••••••••"
-                className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-                required
               />
-              <p className="mt-1 text-xs text-gray-500">
-                Must be at least 8 characters
-              </p>
             </div>
+          </div>
 
-            {/* Submit button */}
+          <div>
             <button
               type="submit"
-              className="w-full cursor-pointer rounded-xl bg-linear-to-r from-cyan-600 to-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:from-cyan-700 hover:to-blue-700 sm:text-base"
+              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5"
             >
-              Create account
+              Register
             </button>
+          </div>
 
-            {/* Login link */}
-            <p className="text-center text-sm text-gray-600">
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
-              <a
+              <button
+                type="button"
                 onClick={() => navigate("/login")}
-                className="font-medium cursor-pointer text-blue-600 hover:text-blue-700 hover:underline"
+                className="font-medium text-primary hover:text-primary/80 transition-colors"
               >
                 Sign in
-              </a>
+              </button>
             </p>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );

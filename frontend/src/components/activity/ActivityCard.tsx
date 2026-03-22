@@ -1,48 +1,15 @@
+import { useAuth } from "../../auth/AuthContext";
 import type { Activity } from "../../types/activity";
 
 type Props = {
   activity: Activity;
 };
 
-// Color mapping based on activity type
-const getActivityColor = (type: string) => {
-  switch (type) {
-    case "KPI_CREATED":
-      return "purple";
-    case "KPI_LOG":
-      return "green";
-    case "REQUEST_ADD_FRIEND":
-      return "blue";
-    case "FRIEND_REQUEST_ACCEPTED":
-      return "indigo";
-    case "CREATE_GROUP":
-      return "orange";
-    case "JOIN_GROUP":
-      return "teal";
-    case "LEAVE_GROUP":
-      return "red";
-    default:
-      return "gray";
-  }
-};
-
-const colorClasses = {
-  purple: "border-purple-300",
-  green: "border-green-300",
-  blue: "border-blue-300",
-  indigo: "border-indigo-300",
-  orange: "border-orange-300",
-  teal: "border-teal-300",
-  red: "border-red-300",
-  gray: "border-gray-300",
-};
-
 export default function ActivityCard({ activity }: Props) {
-  const color = getActivityColor(activity.type);
-  const bgColorClass = colorClasses[color as keyof typeof colorClasses];
+  const { user } = useAuth();
 
   return (
-    <div className={`space-y-2 p-4 shadow ${bgColorClass} border-2`}>
+    <div className={`space-y-2 p-4 rounded-xl bg-card border border-border shadow-md transition-all hover:bg-secondary/50`}>
       <div className="flex items-center gap-2">
         <img
           src={
@@ -51,13 +18,13 @@ export default function ActivityCard({ activity }: Props) {
           }
           className="h-8 w-8 rounded-full"
         />
-        <span className="font-semibold">{activity.user.name}</span>
+        <span className="font-semibold text-foreground">{activity.user.name}{activity.user.id === user?.id ? <span className="text-primary font-bold ml-1 text-blue-500">- You</span> : null}</span>
       </div>
 
-      <p className="my-3 text-sm text-gray-800 font-medium">
+      <p className="my-3 text-sm text-foreground/90 font-medium">
         {renderActivityText(activity)}
       </p>
-      <p className="mt-4 text-[12px] text-gray-700">
+      <p className="mt-4 text-[12px] text-muted-foreground">
         {new Date(activity.createdAt).toLocaleString()}
       </p>
     </div>

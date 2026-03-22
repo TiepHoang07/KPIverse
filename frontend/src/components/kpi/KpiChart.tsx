@@ -21,14 +21,12 @@ type KPIChartProps = {
 export default function KpiChart({ kpiId }: KPIChartProps) {
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState<any>(null);
-  const [kpiName, setKpiName] = useState('');
 
   useEffect(() => {
     const fetchKpiData = async () => {
       try {
         const res = await api.get(`/kpis/${kpiId}`);
         const kpi = res.data;
-        setKpiName(kpi.name);
 
         if (!kpi.recentLogs || kpi.recentLogs.length === 0) {
           setChartData(null);
@@ -106,26 +104,26 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-2xl bg-card border border-border p-4 shadow-xl">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }
 
   if (!chartData) {
     return (
-      <div className="rounded-xl bg-white p-8 text-center shadow">
-        <p className="text-gray-500">No logs yet for this KPI</p>
+      <div className="rounded-2xl bg-card border border-border p-10 text-center shadow-xl">
+        <p className="text-muted-foreground font-medium italic">No activity logs recorded yet</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl bg-white p-4 shadow" style={{ maxHeight: '30vh' }}>
-      <h3 className="mb-2 text-sm font-medium text-gray-600">
-        {kpiName} - Progress Timeline
+    <div className="rounded-2xl bg-card border border-border p-6 shadow-xl" style={{ maxHeight: '40vh' }}>
+      <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
+        Progress Timeline
       </h3>
-      <div style={{ height: '25vh' }}>
+      <div style={{ height: '30vh' }}>
         <Line
           data={chartData}
           options={{
@@ -134,6 +132,13 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
             plugins: {
               legend: { display: false },
               tooltip: {
+                backgroundColor: "rgba(10, 10, 20, 0.9)",
+                titleColor: "#fff",
+                bodyColor: "rgba(255, 255, 255, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.1)",
+                borderWidth: 1,
+                padding: 10,
+                cornerRadius: 12,
                 callbacks: {
                   label: (context) => `${context.raw} task${context.raw === 1 ? '' : 's'} completed`,
                 },
@@ -144,16 +149,19 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
                 beginAtZero: true,
                 ticks: { 
                   stepSize: 1,
+                  color: "rgba(255, 255, 255, 0.4)",
+                  font: { weight: "bold", size: 10 },
                   callback: (value) => value,
                 },
-                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
               },
               x: {
                 grid: { display: false },
                 ticks: {
                   maxRotation: 45,
                   minRotation: 45,
-                  font: { size: 10 },
+                  color: "rgba(255, 255, 255, 0.4)",
+                  font: { size: 9, weight: "bold" },
                   maxTicksLimit: 10,
                 },
               },

@@ -8,53 +8,55 @@ export function GroupKpiCard({ group, kpi }: any) {
   };
 
   return (
-    <div 
+    <div
       onClick={handleClick}
-      className="bg-white rounded-xl p-5 shadow-md border-b-5 hover:scale-101 border-b-indigo-500 hover:shadow-xl transition-all cursor-pointer"
+      className="group bg-card rounded-2xl p-6 shadow-xl border border-border hover:border-primary/30 transition-all cursor-pointer relative overflow-hidden"
     >
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
+
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <h3 className="font-semibold text-gray-900">{kpi.name}</h3>
-        <span className="text-xs bg-linear-to-tr from-pink-500 to-indigo-500 text-white px-2 py-1 rounded-full">
+      <div className="flex items-start justify-between relative z-10">
+        <h3 className="text-lg font-bold text-foreground leading-tight">{kpi.name}</h3>
+        <span className="text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary px-2.5 py-1 rounded-full border border-primary/20 whitespace-nowrap">
           {kpi.tasks?.length || 0} tasks
         </span>
       </div>
 
-      <div className="h-1 w-25 rounded-4xl bg-linear-to-r from-blue-500 to-purple-500" />
+      <div className="h-1 w-12 rounded-full bg-linear-to-r from-primary to-purple-500 mt-4 relative z-10" />
 
       {/* Description */}
       {kpi.description && (
-        <p className="text-sm text-gray-500 mb-4 line-clamp-2 mt-2">
+        <p className="text-sm font-medium text-muted-foreground/60 mb-6 line-clamp-2 mt-4 relative z-10">
           {kpi.description}
         </p>
       )}
 
       {/* Task List */}
-      <div className="space-y-2 mb-4">
+      <div className="space-y-3 mb-8 relative z-10">
         {kpi.tasks?.slice(0, 3).map((task: any) => (
-          <div key={task.id} className="flex items-center gap-2 text-sm">
-            <span className="text-gray-400 text-xs">•</span>
-            <span className={`${task.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+          <div key={task.id} className="flex items-center gap-3 text-xs">
+            <div className={`h-1.5 w-1.5 rounded-full ${task.completed ? 'bg-muted-foreground/20' : 'bg-primary/40'}`}></div>
+            <span className={`font-medium ${task.completed ? 'line-through text-muted-foreground/30' : 'text-muted-foreground/80'}`}>
               {task.name}
             </span>
           </div>
         ))}
-        
+
         {kpi.tasks?.length > 3 && (
-          <div className="text-xs text-gray-400 pl-4">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/20 pl-4 mt-2">
             +{kpi.tasks.length - 3} more tasks
           </div>
         )}
       </div>
 
-      <button 
+      <button
         onClick={(e) => {
           e.stopPropagation();
           handleClick();
         }}
-        className="w-full py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition cursor-pointer"
+        className="w-full py-3 text-xs font-bold uppercase tracking-widest text-foreground bg-secondary/50 rounded-xl hover:bg-primary hover:text-white transition-all cursor-pointer border border-border group-hover:border-primary/30 shadow-lg"
       >
-        View KPI →
+        Open KPI →
       </button>
     </div>
   );

@@ -14,8 +14,8 @@ export default function ProfilePage() {
 
   if (!me)
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-2xl bg-card p-4 shadow-lg border border-border">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
 
@@ -57,20 +57,23 @@ export default function ProfilePage() {
     (userData.friendsRecv?.length || 0) + (userData.friendsSent?.length || 0);
 
   return (
-    <div className="mx-auto max-w-xl space-y-6">
+    <div className="mx-auto max-w-xl space-y-6 pb-10">
       {/* Profile Header */}
-      <div className="flex flex-col items-center gap-2 rounded bg-white p-6 shadow">
-        <img
-          src={
-            userData.avatarUrl ||
-            `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=3b82f6&color=fff`
-          }
-          alt={userData.name}
-          className="h-20 w-20 rounded-full object-cover"
-        />
-        <h2 className="mt-2 text-xl font-bold">{userData.name}</h2>
-        <p className="text-gray-500">{userData.email}</p>
-        <p className="text-sm text-gray-400">
+      <div className="flex flex-col items-center gap-2 rounded-2xl bg-card p-8 shadow-xl border border-border">
+        <div className="relative">
+          <img
+            src={
+              userData.avatarUrl ||
+              `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=3b82f6&color=fff`
+            }
+            alt={userData.name}
+            className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
+          />
+          <div className="absolute bottom-0 right-0 h-6 w-6 rounded-full border-4 border-card bg-green-500"></div>
+        </div>
+        <h2 className="mt-4 text-2xl font-bold text-foreground">{userData.name}</h2>
+        <p className="text-muted-foreground">{userData.email}</p>
+        <p className="text-sm text-muted-foreground/70">
           Member since{" "}
           {userData.createdAt
             ? new Date(userData.createdAt).toLocaleDateString()
@@ -108,17 +111,17 @@ export default function ProfilePage() {
 
       {/* Today's Progress - Calculate from activities if needed */}
       {userData.activities && userData.activities.length > 0 && (
-        <div className="rounded-lg bg-blue-50 p-4 shadow-sm">
-          <h3 className="mb-2 font-semibold text-blue-800">Recent Activity</h3>
-          <p className="text-blue-600">
+        <div className="rounded-xl bg-primary/10 p-5 shadow-sm border border-primary/20">
+          <h3 className="mb-2 font-semibold text-primary">Recent Activity</h3>
+          <p className="text-primary/80">
             You have {userData.activities.length} recent activities
           </p>
         </div>
       )}
 
       {/* Dynamic Content Section */}
-      <div className="rounded-lg bg-white p-4 shadow">
-        <h3 className="mb-4 font-semibold">
+      <div className="rounded-2xl bg-card p-6 shadow-xl border border-border">
+        <h3 className="mb-6 font-bold text-xl text-foreground">
           {activeView
             ? `${activeView.charAt(0).toUpperCase() + activeView.slice(1)} (${getCount(activeView, userData)})`
             : "Overview"}
@@ -144,14 +147,16 @@ function StatCard({
   return (
     <button
       onClick={onClick}
-      className={`cursor-pointer rounded-lg p-4 text-center transition-all ${
+      className={`relative cursor-pointer rounded-2xl p-5 text-center transition-all duration-300 border ${
         isActive
-          ? "scale-105 bg-blue-500 text-white shadow-lg"
-          : "bg-white text-gray-700 shadow hover:bg-gray-50"
+          ? "bg-primary text-white shadow-lg shadow-primary/30 border-primary -translate-y-1 scale-105"
+          : "bg-card text-muted-foreground shadow-md border-border hover:bg-secondary/30 hover:border-primary/20"
       }`}
     >
-      <div className="text-xl font-bold">{value}</div>
-      <div className="text-sm">{label}</div>
+      <div className={`text-2xl font-bold ${isActive ? "text-white" : "text-foreground"}`}>
+        {value}
+      </div>
+      <div className="text-xs font-medium uppercase tracking-wider mt-1">{label}</div>
     </button>
   );
 }
@@ -160,25 +165,33 @@ function StatCard({
 function KPIList({ kpis }: { kpis: any[] }) {
   if (!kpis || kpis.length === 0) {
     return (
-      <p className="py-4 text-center text-gray-500">No KPIs created yet</p>
+      <div className="py-12 text-center bg-secondary/10 rounded-2xl border border-dashed border-border">
+        <p className="text-muted-foreground font-medium italic">No personal objectives yet</p>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {kpis.map((kpi) => (
         <div
           key={kpi.id}
-          className="rounded-lg shadow-md border-l-4 border-l-sky-600 p-3 hover:bg-gray-50"
+          className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 hover:border-primary/30 group"
         >
-          <h4 className="font-medium">{kpi.name}</h4>
+          <div className="flex justify-between items-start mb-1">
+            <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{kpi.name}</h4>
+            <span className="text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary px-2 py-0.5 rounded border border-primary/20">
+              {kpi.type}
+            </span>
+          </div>
           {kpi.description && (
-            <p className="text-sm text-gray-500">{kpi.description}</p>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{kpi.description}</p>
           )}
-          <div className="mt-2 flex gap-2 text-xs text-gray-400">
-            <span>{kpi.type}</span>
-            <span>•</span>
-            <span>{kpi.tasks?.length || 0} tasks</span>
+          <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground/70">
+            <div className="flex items-center gap-1">
+               <div className="h-1.5 w-1.5 rounded-full bg-primary/40"></div>
+               <span>{kpi.tasks?.length || 0} tasks</span>
+            </div>
           </div>
         </div>
       ))}
@@ -189,7 +202,11 @@ function KPIList({ kpis }: { kpis: any[] }) {
 // Friends List Component
 function FriendsList({ friends }: { friends: any[] }) {
   if (!friends || friends.length === 0) {
-    return <p className="py-4 text-center text-gray-500">No friends yet</p>;
+    return (
+      <div className="py-12 text-center bg-secondary/10 rounded-2xl border border-dashed border-border">
+        <p className="text-muted-foreground font-medium italic">No active connections yet</p>
+      </div>
+    );
   }
 
   return (
@@ -202,7 +219,7 @@ function FriendsList({ friends }: { friends: any[] }) {
         return (
           <div
             key={friendData.id || index}
-            className="flex items-center gap-3 rounded-lg shadow-md border-l-4 border-l-emerald-500 p-3"
+            className="flex items-center gap-4 rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40"
           >
             <img
               src={
@@ -211,16 +228,15 @@ function FriendsList({ friends }: { friends: any[] }) {
                   ${friendData.name || "User"}&background=3b82f6&color=fff`
               }
               alt={friendData.name}
-              className="h-10 w-10 rounded-full object-cover"
+              className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/20"
             />
             <div className="flex flex-col">
-              <h4 className="font-medium">{friendData.name}</h4>
-              <p className="text-sm text-gray-700">bio: {friendData.bio}</p>
-              <p className="text-sm text-gray-500">email: {friendData.email}</p>
+              <h4 className="font-semibold text-foreground">{friendData.name}</h4>
+              <p className="text-sm text-muted-foreground line-clamp-1">{friendData.bio || "No bio yet"}</p>
+              <p className="text-xs text-muted-foreground/60">{friendData.email}</p>
               {friend.createdAt && (
-                <p className="text-xs text-gray-400">
-                  Friends since{" "}
-                  {new Date(friend.createdAt).toLocaleDateString()}
+                <p className="text-[10px] uppercase font-bold tracking-wider text-primary/60 mt-2">
+                  Friends since {new Date(friend.createdAt).toLocaleDateString()}
                 </p>
               )}
             </div>
@@ -234,7 +250,11 @@ function FriendsList({ friends }: { friends: any[] }) {
 // Groups List Component
 function GroupsList({ groups }: { groups: any[] }) {
   if (!groups || groups.length === 0) {
-    return <p className="py-4 text-center text-gray-500">No groups joined</p>;
+    return (
+      <div className="py-12 text-center bg-secondary/10 rounded-2xl border border-dashed border-border">
+        <p className="text-muted-foreground font-medium italic">No group memberships yet</p>
+      </div>
+    );
   }
 
   return (
@@ -242,34 +262,35 @@ function GroupsList({ groups }: { groups: any[] }) {
       {groups.map((membership, index) => (
         <div
           key={membership.group?.id || index}
-          className="rounded-lg shadow-md border-l-4 border-l-purple-600 p-3"
+          className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 group relative overflow-hidden"
         >
+          <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
           <div className="flex items-start justify-between">
             <div>
-              <h4 className="font-medium">
+              <h4 className="font-semibold text-foreground group-hover:text-purple-400 transition-colors">
                 {membership.group?.name || "Unknown Group"}
               </h4>
               {membership.group?.description && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
                   {membership.group.description}
                 </p>
               )}
-              <div className="mt-2 flex gap-3 text-xs">
-                <span className="text-gray-400">
-                  Role: {membership.role || "MEMBER"}
+              <div className="mt-3 flex gap-3 text-[10px] font-bold uppercase tracking-wider">
+                <span className="text-purple-400/80">
+                  {membership.role || "MEMBER"}
                 </span>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-400">
+                <span className="text-muted-foreground/40">•</span>
+                <span className="text-muted-foreground/60">
                   {membership.group?._count?.members || 0} members
                 </span>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-400">
+                <span className="text-muted-foreground/40">•</span>
+                <span className="text-muted-foreground/60">
                   {membership.group?._count?.groupKpis || 0} KPIs
                 </span>
               </div>
             </div>
             {membership.joinedAt && (
-              <span className="text-xs text-gray-400">
+              <span className="text-[10px] text-muted-foreground/50 whitespace-nowrap">
                 Joined {new Date(membership.joinedAt).toLocaleDateString()}
               </span>
             )}

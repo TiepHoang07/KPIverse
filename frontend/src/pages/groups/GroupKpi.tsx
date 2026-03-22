@@ -163,19 +163,19 @@ export default function GroupKpi() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-2xl bg-card p-4 shadow-xl border border-border">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }
 
   if (!kpi) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center p-6">
-        <p className="text-red-500">KPI not found</p>
+      <div className="flex min-h-[50vh] flex-col items-center justify-center p-6 bg-background">
+        <p className="text-destructive font-bold text-xl">KPI not found</p>
         <button
           onClick={handleBack}
-          className="mt-4 cursor-pointer text-blue-600 hover:underline"
+          className="mt-6 cursor-pointer text-primary font-bold hover:underline"
         >
           ← Back to Group
         </button>
@@ -190,7 +190,7 @@ export default function GroupKpi() {
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <button
           onClick={handleBack}
-          className="flex cursor-pointer items-center gap-1 text-sm text-blue-600 hover:underline sm:text-base"
+          className="flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all sm:text-base"
         >
           ← Back to Group
         </button>
@@ -200,7 +200,7 @@ export default function GroupKpi() {
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="w-full cursor-pointer rounded-lg border border-red-500 px-3 py-2 text-sm text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+            className="w-full cursor-pointer rounded-xl border border-destructive/50 bg-destructive/10 px-4 py-2.5 text-sm font-bold text-destructive transition hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto shadow-lg shadow-destructive/10"
           >
             {deleting ? "Deleting..." : "Delete KPI"}
           </button>
@@ -208,18 +208,18 @@ export default function GroupKpi() {
       </div>
 
       {/* Group context with role badge */}
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <span className="text-xs text-gray-500 sm:text-sm">Group:</span>
-        <span className="text-sm font-medium wrap-break-words sm:text-base">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 sm:text-sm">Group:</span>
+        <span className="text-sm font-bold text-foreground sm:text-lg">
           {kpi.groupName}
         </span>
-
+ 
         {/* Role badge - shows for all users */}
         <span
-          className={`ml-0 rounded-full px-2 py-0.5 text-xs font-medium sm:ml-2 ${
+          className={`ml-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider sm:ml-2 border ${
             userRole === "ADMIN"
-              ? "bg-purple-100 text-purple-800"
-              : "bg-gray-100 text-gray-800"
+              ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+              : "bg-secondary/50 text-muted-foreground border-border"
           }`}
         >
           {userRole}
@@ -227,70 +227,72 @@ export default function GroupKpi() {
       </div>
 
       {/* Type badge and last logged info */}
-      <div className="mb-4 flex flex-col flex-wrap items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
+      <div className="mb-6 flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center">
         <span
-          className={`rounded-full px-3 py-1 text-xs font-medium ${
-            kpi.type === "DAILY" ? "bg-blue-100 text-blue-800" : ""
-          } ${kpi.type === "WEEKLY" ? "bg-purple-100 text-purple-800" : ""} ${
-            kpi.type === "MONTHLY" ? "bg-orange-100 text-orange-800" : ""
+          className={`rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest border ${
+            kpi.type === "DAILY" ? "bg-primary/10 text-primary border-primary/20" : ""
+          } ${kpi.type === "WEEKLY" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" : ""} ${
+            kpi.type === "MONTHLY" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" : ""
           }`}
         >
           {kpi.type} KPI
         </span>
-
+ 
         {lastLoggedDate && (
-          <span className="text-xs text-gray-500 sm:text-sm">
+          <span className="text-xs font-medium text-muted-foreground sm:text-sm flex items-center gap-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30"></div>
             Last logged: {lastLoggedDate.toLocaleDateString()}
           </span>
         )}
       </div>
 
       {/* Main KPI card */}
-      <div className="mb-6 overflow-hidden rounded-2xl border-l-4 border-l-indigo-500 bg-gray-50 shadow-sm">
+      <div className="mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-xl relative">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/80"></div>
         {/* Header section */}
-        <div className="flex flex-col items-start justify-between gap-2 px-4 pt-4 pb-2 sm:flex-row sm:items-center">
-          <h1 className="text-xl font-semibold wrap-break-words sm:text-2xl">
+        <div className="flex flex-col items-start justify-between gap-4 px-6 pt-6 pb-2 sm:flex-row sm:items-center">
+          <h1 className="text-2xl font-bold text-foreground">
             {kpi.name}
           </h1>
-          <span className="text-xs text-gray-400 sm:text-sm">
+          <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20 sm:text-sm">
             {kpi.tasks?.length || 0} tasks
           </span>
         </div>
-
+ 
         {/* Description */}
         {kpi.description && (
-          <p className="px-4 pb-2 text-xs text-gray-500 sm:text-sm">
-            {kpi.description || "No description"}
+          <p className="px-6 pb-2 text-sm text-muted-foreground leading-relaxed">
+            {kpi.description}
           </p>
         )}
 
         {/* Next available message */}
         {nextAvailableMessage && (
-          <div className="mx-4 mb-4 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-            <p className="text-xs text-yellow-800 sm:text-sm">
-              ⏰ {nextAvailableMessage}
+          <div className="mx-6 mb-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+            <p className="text-sm font-medium text-yellow-500 flex items-center gap-2">
+              <span className="text-lg">⏰</span> {nextAvailableMessage}
             </p>
           </div>
         )}
 
         {/* Progress section */}
-        <div className="px-4 pb-4">
-          <div className="mb-1 flex flex-col justify-between gap-1 text-xs text-gray-600 sm:flex-row sm:text-sm">
+        <div className="px-6 pb-6 mt-2">
+          <div className="mb-2 flex flex-col justify-between gap-1 text-xs font-bold uppercase tracking-wider text-muted-foreground sm:flex-row sm:text-sm">
             <span>Progress</span>
-            <span className="font-medium">{progress}%</span>
+            <span className="text-primary">{progress}%</span>
           </div>
-          <div className="h-2 w-full rounded-full bg-gray-200 sm:h-3">
+          <div className="h-3 w-full rounded-full bg-secondary overflow-hidden">
             <div
-              className="h-2 rounded-full bg-green-500 transition-all sm:h-3"
+              className="h-full rounded-full bg-primary transition-all duration-500 shadow-lg shadow-primary/30"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Tasks section */}
-        <div className="mx-4 mb-4 rounded-xl bg-white p-3 shadow-sm sm:p-4">
-          <h3 className="mb-3 text-sm font-medium sm:text-base">Tasks</h3>
-          <div className="mb-4 space-y-2">
+        <div className="mx-6 mb-6 rounded-2xl bg-secondary/30 p-4 border border-border shadow-inner sm:p-6">
+          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-foreground sm:text-base">Tasks</h3>
+          <div className="mb-6 space-y-3">
             {kpi.tasks?.map((task: any) => (
               <KpiTaskItem
                 key={task.id}
@@ -301,14 +303,14 @@ export default function GroupKpi() {
               />
             ))}
           </div>
-
+ 
           <button
             disabled={saving || checked.length === 0 || !canLogTasks}
             onClick={handleDone}
-            className={`w-full rounded-xl px-4 py-2 text-sm font-medium transition sm:text-base ${
+            className={`w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 sm:text-base shadow-lg ${
               canLogTasks && checked.length > 0
-                ? "cursor-pointer bg-blue-600 text-white hover:opacity-90"
-                : "cursor-not-allowed bg-gray-300 text-gray-500"
+                ? "cursor-pointer bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:-translate-y-0.5"
+                : "cursor-not-allowed bg-secondary text-muted-foreground opacity-50"
             }`}
           >
             {saving
@@ -328,8 +330,8 @@ export default function GroupKpi() {
       </div>
 
       {/* Leaderboard section */}
-      <div className="mt-8">
-        <h2 className="mb-4 text-base font-semibold sm:text-lg">Leaderboard</h2>
+      <div className="mt-12">
+        <h2 className="mb-6 text-xl font-bold text-foreground sm:text-2xl">Leaderboard</h2>
         <div className="overflow-x-auto">
           <GroupLeaderboard groupId={Number(groupId)} kpiId={kpi.id} />
         </div>

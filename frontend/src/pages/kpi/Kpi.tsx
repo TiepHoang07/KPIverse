@@ -197,19 +197,19 @@ export default function Kpi() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-2xl bg-card border border-border p-4 shadow-xl">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }
 
   if (!kpi) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center p-6">
-        <p className="text-red-500">KPI not found</p>
+      <div className="flex min-h-[50vh] flex-col items-center justify-center p-6 bg-background">
+        <p className="text-destructive font-bold text-xl text-center">KPI not found</p>
         <button
           onClick={handleBack}
-          className="mt-4 cursor-pointer text-blue-600 hover:underline"
+          className="mt-6 cursor-pointer text-primary font-bold hover:underline"
         >
           ← Back to KPIs
         </button>
@@ -225,7 +225,7 @@ export default function Kpi() {
       <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <button
           onClick={handleBack}
-          className="flex cursor-pointer items-center gap-1 text-sm text-blue-600 hover:underline sm:text-base"
+          className="flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all sm:text-base"
         >
           ← Back to KPIs
         </button>
@@ -233,7 +233,7 @@ export default function Kpi() {
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="w-full cursor-pointer rounded-lg border border-red-500 px-3 py-2 text-sm text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+          className="w-full cursor-pointer rounded-xl border border-destructive/50 bg-destructive/10 px-4 py-2.5 text-sm font-bold text-destructive transition hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto shadow-lg shadow-destructive/10"
         >
           {deleting ? "Deleting..." : "Delete KPI"}
         </button>
@@ -242,70 +242,72 @@ export default function Kpi() {
       {/* Type badge and time info */}
       <div className="mb-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
         <span
-          className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
-            kpi.type === "DAILY" ? "bg-blue-100 text-blue-800" : ""
-          } ${kpi.type === "WEEKLY" ? "bg-purple-100 text-purple-800" : ""} ${
-            kpi.type === "MONTHLY" ? "bg-orange-100 text-orange-800" : ""
+          className={`inline-block rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border ${
+            kpi.type === "DAILY" ? "bg-primary/10 text-primary border-primary/20" : ""
+          } ${kpi.type === "WEEKLY" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" : ""} ${
+            kpi.type === "MONTHLY" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" : ""
           }`}
         >
-          {kpi.type}
+          {kpi.type} KPI
         </span>
 
         {lastLoggedDate && (
-          <span className="text-xs text-gray-500 sm:text-sm">
-            Last logged: {new Date(lastLoggedDate).toLocaleString()}
+          <span className="text-xs font-medium text-muted-foreground sm:text-sm flex items-center gap-2">
+             <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30"></div>
+             Last logged: {new Date(lastLoggedDate).toLocaleString()}
           </span>
         )}
       </div>
 
       {/* Main KPI card */}
-      <div className="mb-6 rounded-2xl border-l-4 border-l-cyan-500 bg-gray-50 p-4 shadow-sm sm:p-6">
+      <div className="mb-6 rounded-2xl border border-border bg-card p-6 shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-cyan-500/80"></div>
         {/* Header */}
-        <div className="mb-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
-          <h1 className="text-xl font-semibold wrap-break-words sm:text-2xl">
+        <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <h1 className="text-2xl font-bold text-foreground">
             {kpi.name}
           </h1>
-          <span className="text-xs text-gray-400 sm:text-sm">
+          <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20 sm:text-sm">
             {kpi.tasks?.length || 0} tasks
           </span>
         </div>
 
         {/* Description */}
         {kpi.description && (
-          <p className="mb-4 text-sm text-gray-500">{kpi.description}</p>
+          <p className="mb-6 text-sm text-muted-foreground leading-relaxed">{kpi.description}</p>
         )}
 
         {/* Next available message if can't log */}
         {nextAvailableMessage && (
-          <div className="mb-4 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-            <p className="flex items-center gap-2 text-xs text-yellow-800 sm:text-sm">
-              <span>⏰</span>
+          <div className="mb-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+            <p className="flex items-center gap-2 text-sm font-medium text-yellow-500">
+              <span className="text-lg">⏰</span>
               {nextAvailableMessage}
             </p>
           </div>
         )}
 
         {/* Progress section */}
-        <div className="mb-6">
-          <div className="mb-1 flex flex-col justify-between gap-1 text-xs text-gray-600 sm:flex-row sm:text-sm">
+        <div className="mb-8">
+          <div className="mb-2 flex flex-col justify-between gap-1 text-xs font-bold uppercase tracking-wider text-muted-foreground sm:flex-row sm:text-sm">
             <span>Overall Progress</span>
-            <span className="font-medium">{progress}%</span>
+            <span className="text-primary">{progress}%</span>
           </div>
-          <div className="h-2 w-full rounded-full bg-gray-200 sm:h-3">
+          <div className="h-3 w-full rounded-full bg-secondary overflow-hidden">
             <div
-              className="h-2 rounded-full bg-green-500 transition-all sm:h-3"
+              className="h-full rounded-full bg-primary transition-all duration-500 shadow-lg shadow-primary/30"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="mt-1 text-right text-xs text-gray-500">
+          <div className="mt-2 text-right text-xs font-medium text-muted-foreground/60">
             {checked.length} of {kpi.tasks?.length || 0} tasks completed
           </div>
         </div>
 
         {/* Tasks section */}
-        <div className="mb-6">
-          <h3 className="mb-3 text-sm font-medium sm:text-base">Tasks</h3>
-          <div className="space-y-2 rounded-xl bg-white p-3 shadow-sm sm:p-4">
+        <div className="mb-8">
+          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-foreground sm:text-base">Tasks</h3>
+          <div className="space-y-3 rounded-2xl bg-secondary/30 p-4 border border-border shadow-inner">
             {kpi.tasks?.map((task: any) => (
               <KpiTaskItem
                 key={task.id}
@@ -319,14 +321,14 @@ export default function Kpi() {
         </div>
 
         {/* Action buttons */}
-        <div className="mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row">
+        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
           <button
             onClick={handleSave}
             disabled={saving || checked.length === 0 || !canLogTasks}
-            className={`w-full rounded-xl px-4 py-3 text-sm font-medium transition sm:flex-1 sm:text-base ${
+            className={`w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 sm:flex-1 sm:text-base shadow-lg ${
               canLogTasks && checked.length > 0
-                ? "cursor-pointer bg-gray-800 text-white hover:opacity-90"
-                : "cursor-not-allowed bg-gray-300 text-gray-500"
+                ? "cursor-pointer bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:-translate-y-0.5"
+                : "cursor-not-allowed bg-secondary text-muted-foreground opacity-50"
             }`}
           >
             {saving
@@ -341,10 +343,10 @@ export default function Kpi() {
           <button
             onClick={() => setChecked(kpi.tasks?.map((t: any) => t.id) || [])}
             disabled={!canLogTasks}
-            className={`w-full rounded-xl border px-4 py-3 text-sm transition sm:w-auto ${
+            className={`w-full rounded-xl border border-border px-6 py-4 text-sm font-bold uppercase tracking-widest transition-all sm:w-auto ${
               canLogTasks
-                ? "cursor-pointer text-gray-600 hover:bg-gray-50"
-                : "cursor-not-allowed bg-gray-100 text-gray-400"
+                ? "cursor-pointer bg-card text-foreground hover:bg-secondary/50"
+                : "cursor-not-allowed bg-secondary/30 text-muted-foreground opacity-50"
             }`}
           >
             Select all
@@ -355,10 +357,10 @@ export default function Kpi() {
         {checked.length > 0 &&
           checked.length < kpi.tasks?.length &&
           canLogTasks && (
-            <div className="mt-3 flex justify-end">
+            <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setChecked([])}
-                className="cursor-pointer text-xs text-gray-500 transition hover:text-gray-700 sm:text-sm"
+                className="cursor-pointer text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all"
               >
                 Clear selection
               </button>
@@ -372,12 +374,15 @@ export default function Kpi() {
       </div>
 
       {/* Additional info section */}
-      <div className="mt-4 flex flex-col gap-2 text-xs text-gray-400 sm:flex-row sm:justify-between">
+      <div className="mt-8 flex flex-col gap-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 sm:flex-row sm:justify-between border-t border-border pt-6">
         {kpi.createdAt && (
-          <span>Created: {new Date(kpi.createdAt).toLocaleDateString()}</span>
+          <span className="flex items-center gap-2">
+             <div className="h-1 w-1 rounded-full bg-muted-foreground/30"></div>
+             Created: {new Date(kpi.createdAt).toLocaleDateString()}
+          </span>
         )}
         {kpi.isActive === false && (
-          <span className="text-green-600">✓ Finished</span>
+          <span className="text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">✓ Finished</span>
         )}
       </div>
     </div>

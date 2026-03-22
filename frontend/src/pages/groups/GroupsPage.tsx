@@ -19,8 +19,8 @@ export default function GroupsPage() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-2xl bg-card p-4 shadow-xl border border-border">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }

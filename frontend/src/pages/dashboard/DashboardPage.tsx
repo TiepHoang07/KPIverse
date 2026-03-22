@@ -28,8 +28,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-xl bg-card p-4 shadow-lg border border-border">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }
@@ -46,10 +46,10 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="flex gap-4 text-3xl font-bold text-gray-900">
-            Dashboard <TrendingUp className="h-8 w-8 text-blue-500" />
+          <h1 className="flex gap-4 text-3xl font-bold text-foreground">
+            Dashboard <TrendingUp className="h-8 w-8 text-primary" />
           </h1>
-          <p className="mt-1 text-gray-500">
+          <p className="mt-1 text-muted-foreground">
             Welcome back! Here's your overview
           </p>
         </div>
@@ -57,19 +57,19 @@ export default function DashboardPage() {
 
       {/* Quick Stats Summary */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-xl bg-linear-to-br from-blue-50 to-blue-100 p-4">
-          <p className="text-sm font-medium text-blue-600">Total KPIs</p>
-          <p className="text-2xl font-bold text-blue-700">{stats.totalKpis}</p>
+        <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 p-4">
+          <p className="text-sm font-medium text-blue-400">Total KPIs</p>
+          <p className="text-2xl font-bold text-blue-300">{stats.totalKpis}</p>
         </div>
-        <div className="rounded-xl bg-linear-to-br from-purple-50 to-purple-100 p-4">
-          <p className="text-sm font-medium text-purple-600">Friends</p>
-          <p className="text-2xl font-bold text-purple-700">
+        <div className="rounded-xl bg-purple-500/10 border border-purple-500/20 p-4">
+          <p className="text-sm font-medium text-purple-400">Friends</p>
+          <p className="text-2xl font-bold text-purple-300">
             {stats.totalFriends}
           </p>
         </div>
-        <div className="rounded-xl bg-linear-to-br from-green-50 to-green-100 p-4">
-          <p className="text-sm font-medium text-green-600">Groups</p>
-          <p className="text-2xl font-bold text-green-700">
+        <div className="rounded-xl bg-green-500/10 border border-green-500/20 p-4">
+          <p className="text-sm font-medium text-green-400">Groups</p>
+          <p className="text-2xl font-bold text-green-300">
             {stats.totalGroups}
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function DashboardPage() {
             <button
               key={card.path}
               onClick={() => navigate(card.path)}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-white p-6 text-left shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-card p-6 text-left border border-border transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]"
             >
               {/* Background Gradient on Hover */}
               <div
@@ -94,27 +94,27 @@ export default function DashboardPage() {
                 <div className="flex-1">
                   <div className="mb-3 flex items-center gap-3">
                     <div
-                      className={`rounded-xl bg-${card.color}-100 p-3 transition-transform duration-300 group-hover:scale-110`}
+                      className={`rounded-xl bg-primary/10 p-3 transition-transform duration-300 group-hover:scale-110`}
                     >
-                      <Icon className={`h-6 w-6 text-${card.color}-600`} />
+                      <Icon className={`h-6 w-6 text-primary`} />
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-800">
+                    <h2 className="text-xl font-semibold text-foreground">
                       {card.title}
                     </h2>
                   </div>
 
-                  <p className="mb-4 text-sm text-gray-500">
+                  <p className="mb-4 text-sm text-muted-foreground">
                     {card.description}
                   </p>
 
                   {card.stats !== null && (
                     <div className="flex items-center gap-2">
                       <span
-                        className={`text-2xl font-bold text-${card.color}-600`}
+                        className={`text-2xl font-bold text-primary`}
                       >
                         {card.stats}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-muted-foreground">
                         {card.statLabel}
                       </span>
                     </div>
@@ -133,7 +133,7 @@ export default function DashboardPage() {
 
       {/* Activity Feed */}
       <div>
-        <h2 className="mb-4 pt-4 text-xl font-bold text-gray-800">
+        <h2 className="mb-4 pt-4 text-xl font-bold text-foreground">
           Recent Activities
         </h2>
         <ActivityFeed />

@@ -33,8 +33,8 @@ export default function GroupsDashboard() {
 
   const getRoleBadgeColor = (role: string) => {
     return role === "ADMIN"
-      ? "bg-purple-100 text-purple-700 border-purple-200"
-      : "bg-gray-100 text-gray-600 border-gray-200";
+      ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+      : "bg-secondary text-muted-foreground border-border";
   };
 
   const getRoleIcon = (role: string) => {
@@ -47,28 +47,28 @@ export default function GroupsDashboard() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl bg-white p-4 shadow">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="flex h-48 items-center justify-center rounded-xl bg-card p-4 shadow-lg border border-border">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header Section */}
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Groups</h1>
-              <p className="mt-1 text-gray-500">
+              <h1 className="text-3xl font-bold text-foreground">My Groups</h1>
+              <p className="mt-1 text-muted-foreground">
                 Manage and collaborate with your groups
               </p>
             </div>
 
             <button
               onClick={() => navigate("/groups/create")}
-              className="inline-flex transform cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-4 py-3 text-white shadow-md transition-all hover:scale-102 hover:bg-blue-700 hover:shadow-lg"
+              className="inline-flex transform cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-white shadow-md transition-all hover:scale-102 hover:bg-primary/90 hover:shadow-lg"
             >
               <Plus size={20} />
               <span className="font-medium">New Group</span>
@@ -80,22 +80,22 @@ export default function GroupsDashboard() {
       {/* Groups Grid */}
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {groups.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-gray-200 bg-white py-16 text-center">
+          <div className="rounded-2xl border-2 border-dashed border-border bg-card py-16 text-center">
             <div className="mb-4 flex justify-center">
-              <div className="rounded-full bg-blue-100 p-4">
-                <Users size={48} className="text-blue-600" />
+              <div className="rounded-full bg-primary/10 p-4">
+                <Users size={48} className="text-primary" />
               </div>
             </div>
-            <h3 className="mb-2 text-xl font-semibold text-gray-900">
+            <h3 className="mb-2 text-xl font-semibold text-foreground">
               No groups yet
             </h3>
-            <p className="mx-auto mb-6 max-w-md text-gray-500">
+            <p className="mx-auto mb-6 max-w-md text-muted-foreground">
               Create your first group to start collaborating with others on
               shared KPIs and goals.
             </p>
             <button
               onClick={() => navigate("/groups/create")}
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-white transition-all hover:bg-blue-700"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-white transition-all hover:bg-primary/90 shadow-lg shadow-primary/20 hover:-translate-y-0.5"
             >
               <Plus size={20} />
               <span>Create Your First Group</span>
@@ -106,7 +106,7 @@ export default function GroupsDashboard() {
             {groups.map((group) => (
               <div
                 key={group.id}
-                className="group cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:border-blue-300 hover:shadow-xl"
+                className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1"
                 onClick={() => navigate(`/groups/${group.id}`)}
               >
                 {/* Card Header with Gradient */}
@@ -115,7 +115,7 @@ export default function GroupsDashboard() {
                 <div className="p-6">
                   {/* Title and Role */}
                   <div className="mb-4 flex items-start justify-between">
-                    <h2 className="line-clamp-1 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
+                    <h2 className="line-clamp-1 text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
                       {group.name}
                     </h2>
                     <span
@@ -127,12 +127,12 @@ export default function GroupsDashboard() {
                   </div>
 
                   {/* Description */}
-                  <p className="mb-4 line-clamp-2 min-h-10 text-sm text-gray-500">
+                  <p className="mb-4 line-clamp-2 min-h-10 text-sm text-muted-foreground">
                     {group.description || "No description provided"}
                   </p>
 
                   {/* Stats */}
-                  <div className="mb-4 flex items-center gap-4 text-sm text-gray-500">
+                  <div className="mb-4 flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Users size={16} />
                       <span>{group.membersCount || 0} members</span>
@@ -146,8 +146,8 @@ export default function GroupsDashboard() {
                   </div>
 
                   {/* Action Button */}
-                  <div className="flex items-center justify-end border-t border-gray-100 pt-4">
-                    <span className="inline-flex items-center text-sm font-medium text-blue-600 transition-all group-hover:gap-2">
+                  <div className="flex items-center justify-end border-t border-border pt-4">
+                    <span className="inline-flex items-center text-sm font-medium text-primary transition-all group-hover:gap-2">
                       View Group Details
                       <ChevronRight
                         size={16}
