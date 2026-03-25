@@ -178,7 +178,7 @@ function KPIList({ kpis }: { kpis: any[] }) {
           key={kpi.id}
           className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 hover:border-primary/30 group"
         >
-          <div className="flex justify-between items-start mb-1">
+          <div className="flex justify-between items-start mb-1 gap-2">
             <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{kpi.name}</h4>
             <span className="text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary px-2 py-0.5 rounded border border-primary/20">
               {kpi.type}
@@ -265,7 +265,7 @@ function GroupsList({ groups }: { groups: any[] }) {
           className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 group relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-4">
             <div>
               <h4 className="font-semibold text-foreground group-hover:text-purple-400 transition-colors">
                 {membership.group?.name || "Unknown Group"}

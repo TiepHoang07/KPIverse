@@ -56,7 +56,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Stats Summary */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 p-4">
           <p className="text-sm font-medium text-blue-400">Total KPIs</p>
           <p className="text-2xl font-bold text-blue-300">{stats.totalKpis}</p>

@@ -114,7 +114,7 @@ export default function GroupsDashboard() {
 
                 <div className="p-6">
                   {/* Title and Role */}
-                  <div className="mb-4 flex items-start justify-between">
+                  <div className="mb-4 flex items-start justify-between gap-2">
                     <h2 className="line-clamp-1 text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
                       {group.name}
                     </h2>
@@ -132,7 +132,7 @@ export default function GroupsDashboard() {
                   </p>
 
                   {/* Stats */}
-                  <div className="mb-4 flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="mb-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Users size={16} />
                       <span>{group.membersCount || 0} members</span>

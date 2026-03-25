@@ -159,7 +159,7 @@ export default function CreateKpi() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => navigate('/kpis')}
               className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-3.5 text-sm font-bold text-muted-foreground transition hover:bg-secondary/50"

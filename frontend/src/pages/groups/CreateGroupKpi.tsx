@@ -186,7 +186,7 @@ export default function CreateGroupKpi() {
           </div>
  
           {/* Action Buttons */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => navigate(`/groups/${groupId}`)}
               className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-4 text-sm font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"

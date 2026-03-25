@@ -186,7 +186,7 @@ export default function GroupsMembers() {
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(`/groups/${groupId}`)}
@@ -202,7 +202,7 @@ export default function GroupsMembers() {
  
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold uppercase tracking-widest text-white hover:bg-primary/90 cursor-pointer shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold uppercase tracking-widest text-white hover:bg-primary/90 cursor-pointer shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5"
           >
             <UserPlus size={18} />
             Add Member
@@ -214,8 +214,8 @@ export default function GroupsMembers() {
           <div className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground/40">Team Members</div>
           {members.map((member) => (
             <div key={member.id} className="group rounded-2xl bg-card p-5 shadow-xl border border-border transition-all hover:border-primary/30">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-5 w-full sm:w-auto">
                   <div className="relative">
                     <img
                       src={
@@ -253,7 +253,7 @@ export default function GroupsMembers() {
                       </span>
                     </div>
  
-                    <div className="mt-1.5 flex items-center gap-4 text-xs font-medium text-muted-foreground/60">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground/60">
                       <span className="flex items-center gap-1.5">
                         <Mail size={14} className="opacity-40" />
                         {member.email}
@@ -268,7 +268,7 @@ export default function GroupsMembers() {
  
                 {/* Admin actions */}
                 {isAdmin && member.id !== currentUserId && (
-                  <div className="flex gap-3">
+                  <div className="flex w-full sm:w-auto gap-3 mt-4 sm:mt-0 justify-end">
                     {member.role === "MEMBER" && (
                       <button
                         onClick={() => handleTransferAdmin(member)}

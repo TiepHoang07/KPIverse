@@ -44,7 +44,7 @@ export default function CreateGroup() {
               />
             </div>
  
-            <div className="flex gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <button
                 onClick={() => navigate('/groups')}
                 className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-3 text-sm font-bold text-muted-foreground transition hover:bg-secondary/50"

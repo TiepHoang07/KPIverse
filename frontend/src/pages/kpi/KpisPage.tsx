@@ -24,11 +24,11 @@ export default function KpiPage() {
 
   return (
     <div className="p-6 bg-background min-h-screen">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <h1 className="text-3xl font-bold text-foreground">My KPIs</h1>
         <button
           onClick={() => navigate('/kpis/create')}
-          className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-2xl transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-2xl transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 cursor-pointer"
         >
           <Plus size={20}></Plus>
           <span className="font-medium">Create KPI</span>

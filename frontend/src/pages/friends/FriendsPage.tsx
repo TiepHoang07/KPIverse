@@ -171,7 +171,7 @@ export default function FriendsPage() {
         <h2 className="mb-6 text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
           Find New Friends
         </h2>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1 group/input">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground/30 group-focus-within/input:text-primary transition-colors" />
             <input
@@ -185,7 +185,7 @@ export default function FriendsPage() {
           <button
             onClick={search}
             disabled={searching || !query.trim()}
-            className="cursor-pointer rounded-2xl bg-primary px-8 py-4 font-bold uppercase tracking-widest text-xs text-white transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-30 shadow-lg shadow-primary/20 hover:-translate-y-0.5"
+            className="cursor-pointer rounded-2xl bg-primary px-8 py-4 font-bold uppercase tracking-widest text-xs text-white transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-30 shadow-lg shadow-primary/20 w-full sm:w-auto hover:-translate-y-0.5"
           >
             {searching ? "Searching..." : "Search"}
           </button>
@@ -212,9 +212,9 @@ export default function FriendsPage() {
                 {results.map((u) => (
                   <div
                     key={u.id}
-                    className="flex items-center justify-between rounded-2xl border border-border bg-secondary/20 p-5 transition-all hover:bg-secondary/40 hover:border-primary/30 group/item"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border bg-secondary/20 p-5 transition-all hover:bg-secondary/40 hover:border-primary/30 group/item"
                   >
-                    <div className="flex items-center gap-5">
+                    <div className="flex items-center gap-5 w-full sm:w-auto">
                       <div className="relative">
                         <img
                           src={
@@ -231,7 +231,7 @@ export default function FriendsPage() {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="w-full sm:w-auto mt-2 sm:mt-0">
                       {u.friendshipStatus === "YOU" && (
                         <span className="inline-flex rounded-xl bg-cyan-500/10 px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-500/20 shadow-lg shadow-cyan-500/5">
                           It's You
@@ -240,7 +240,7 @@ export default function FriendsPage() {
                       {u.friendshipStatus === "NONE" && (
                         <button
                           onClick={() => sendRequest(u.id)}
-                          className="flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:-translate-y-0.5"
+                          className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:-translate-y-0.5"
                         >
                           <UserPlus size={16} />
                           Add Friend
@@ -360,9 +360,9 @@ export default function FriendsPage() {
                 {friends.map((f) => (
                   <div
                     key={f.id}
-                    className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-secondary/20 p-5 transition-all hover:border-primary/20 group/friend"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border bg-secondary/20 p-5 transition-all hover:border-primary/20 group/friend"
                   >
-                    <div className="flex items-center gap-4 overflow-hidden">
+                    <div className="flex items-center gap-4 overflow-hidden w-full sm:w-auto">
                       <img
                         src={
                           f.avatarUrl ||
@@ -380,10 +380,10 @@ export default function FriendsPage() {
                         )}
                       </div>
                     </div>
-                    <div>
+                    <div className="w-full sm:w-auto mt-2 sm:mt-0">
                       <button
                         onClick={() => handleDelete(f.id, f.name)}
-                        className="cursor-pointer rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-destructive transition-all hover:bg-destructive hover:text-white focus:opacity-100"
+                        className="w-full sm:w-auto cursor-pointer rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-destructive transition-all hover:bg-destructive hover:text-white focus:opacity-100"
                       >
                         Delete
                       </button>
