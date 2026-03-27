@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -16,8 +17,6 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    console.log('register start');
-
     const existing = await this.prisma.user.findUnique({
       where: { email: dto.email },
       select: {
@@ -28,6 +27,10 @@ export class AuthService {
 
     if (existing) {
       throw new ConflictException('Email already used');
+    }
+
+    if (dto.password.length < 8) {
+      throw new BadRequestException('Password must be at least 8 characters long');
     }
 
     const hashed = await bcrypt.hash(dto.password, 5);
@@ -47,12 +50,11 @@ export class AuthService {
         createdAt: true,
       },
     });
-    console.log('user created');
+
     return this.generateTokens(user);
   }
 
   async login(dto: LoginDto) {
-    // Check if user exists by email
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -69,14 +71,13 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Wrong email or password');
     }
 
-    // Check if password is correct
     const valid = await bcrypt.compare(dto.password, user.passwordHash);
 
     if (!valid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Wrong email or password');
     }
 
     // Remove passwordHash from user object before passing to generateTokens

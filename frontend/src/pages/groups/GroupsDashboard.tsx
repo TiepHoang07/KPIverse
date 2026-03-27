@@ -95,7 +95,7 @@ export default function GroupsDashboard() {
             </p>
             <button
               onClick={() => navigate("/groups/create")}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-white transition-all hover:bg-primary/90 shadow-lg shadow-primary/20 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 cursor-pointer rounded-xl bg-primary px-6 py-3 text-white transition-all hover:bg-primary/90 shadow-lg shadow-primary/20 hover:-translate-y-0.5"
             >
               <Plus size={20} />
               <span>Create Your First Group</span>

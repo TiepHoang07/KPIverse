@@ -319,7 +319,7 @@ export default function SettingsPage() {
               className="flex cursor-pointer items-center gap-2 rounded-xl bg-destructive/10 px-10 py-3.5 text-sm font-bold text-destructive transition hover:bg-destructive/20 border border-destructive/20"
             >
               <LogOut size={18} />
-              Logout from account
+              Logout
             </button>
           </div>
         </div>

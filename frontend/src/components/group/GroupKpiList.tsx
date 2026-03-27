@@ -29,10 +29,10 @@ export default function GroupKpiList({ group }: Props) {
       {/* Empty state */}
       {group.kpis.length === 0 && (
         <div className="text-center py-16 bg-secondary/10 rounded-2xl border border-dashed border-border">
-          <p className="text-muted-foreground font-medium italic">No objectives defined yet</p>
+          <p className="text-muted-foreground font-medium">No Group KPIs yet!</p>
           {group.membership.role === "ADMIN" && (
             <p className="text-xs mt-3 text-primary/60 font-bold uppercase tracking-widest">
-              Start by creating the first KPI for your team 🚀
+              Start by creating the first KPI for your team!
             </p>
           )}
         </div>

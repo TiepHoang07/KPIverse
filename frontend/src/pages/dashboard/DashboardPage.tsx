@@ -83,7 +83,7 @@ export default function DashboardPage() {
             <button
               key={card.path}
               onClick={() => navigate(card.path)}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-card p-6 text-left border border-border transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]"
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-card w-full h-50 p-6 text-left border border-border transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]"
             >
               {/* Background Gradient on Hover */}
               <div

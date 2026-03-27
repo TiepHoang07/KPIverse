@@ -44,10 +44,10 @@ export default function CreateKpi() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-2xl">
-        <div className="mb-6 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-6">
           <button
             onClick={() => navigate('/kpis')}
-            className="rounded-xl p-2.5 bg-card border border-border text-foreground hover:bg-secondary/50 transition shadow-sm"
+            className="rounded-xl py-2 md:py-3 px-3 md:px-4 bg-card border border-border cursor-pointer text-foreground hover:bg-secondary/50 transition shadow-sm"
           >
             ←
           </button>
@@ -174,11 +174,6 @@ export default function CreateKpi() {
               Create KPI
             </button>
           </div>
-
-          {/* Helper Text */}
-          <p className="text-center text-xs text-muted-foreground font-medium uppercase tracking-widest">
-            Track your progress with measurable goals
-          </p>
         </div>
       </div>
     </div>

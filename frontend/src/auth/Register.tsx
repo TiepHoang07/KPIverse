@@ -107,7 +107,7 @@ export default function Register() {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5"
+              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5 cursor-pointer"
             >
               Register
             </button>
@@ -119,7 +119,7 @@ export default function Register() {
               <button
                 type="button"
                 onClick={() => navigate("/login")}
-                className="font-medium text-primary hover:text-primary/80 transition-colors"
+                className="font-medium text-primary hover:text-primary/80 transition-colors cursor-pointer"
               >
                 Sign in
               </button>
