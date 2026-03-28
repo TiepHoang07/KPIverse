@@ -192,7 +192,6 @@ export class UsersService {
       return [];
     }
 
-    // Build the OR conditions array
     const orConditions: any[] = [
       // Search by name (partial match)
       {
@@ -252,6 +251,7 @@ export class UsersService {
           },
         }),
       },
+      take: 10,
       orderBy: {
         name: 'asc',
       },

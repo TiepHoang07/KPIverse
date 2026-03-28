@@ -546,7 +546,7 @@ export class GroupsService {
     return { success: true };
   }
 
-  async groupLeaderboard(groupId: number, kpiId: number, limit = 10) {
+  async groupLeaderboard(groupId: number, kpiId: number, limit = 5) {
     // Group logs
     const grouped = await this.prisma.kPILog.groupBy({
       by: ['userId'],

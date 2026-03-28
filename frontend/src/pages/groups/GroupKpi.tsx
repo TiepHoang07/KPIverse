@@ -207,25 +207,6 @@ export default function GroupKpi() {
         )}
       </div>
 
-      {/* Group context with role badge */}
-      <div className="mb-4 flex flex-wrap items-center gap-3">
-        <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 sm:text-sm">Group:</span>
-        <span className="text-sm font-bold text-foreground sm:text-lg">
-          {kpi.groupName}
-        </span>
- 
-        {/* Role badge - shows for all users */}
-        <span
-          className={`ml-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider sm:ml-2 border ${
-            userRole === "ADMIN"
-              ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
-              : "bg-secondary/50 text-muted-foreground border-border"
-          }`}
-        >
-          {userRole}
-        </span>
-      </div>
-
       {/* Type badge and last logged info */}
       <div className="mb-6 flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center">
         <span
@@ -250,7 +231,7 @@ export default function GroupKpi() {
       <div className="mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-xl relative">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/80"></div>
         {/* Header section */}
-        <div className="flex flex-col items-start justify-between gap-4 px-6 pt-6 pb-2 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start justify-between gap-2 sm:gap-4 px-6 pt-4 sm:pt-6 pb-2 sm:flex-row sm:items-center">
           <h1 className="text-2xl font-bold text-foreground">
             {kpi.name}
           </h1>
@@ -261,7 +242,7 @@ export default function GroupKpi() {
  
         {/* Description */}
         {kpi.description && (
-          <p className="px-6 pb-2 text-sm text-muted-foreground leading-relaxed">
+          <p className="px-6 sm:pb-2 text-sm text-muted-foreground leading-relaxed">
             {kpi.description}
           </p>
         )}

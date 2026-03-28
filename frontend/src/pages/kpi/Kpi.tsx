@@ -263,7 +263,7 @@ export default function Kpi() {
       <div className="mb-6 rounded-2xl border border-border bg-card p-6 shadow-xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-cyan-500/80"></div>
         {/* Header */}
-        <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex justify-between gap-4 flex-row items-center">
           <h1 className="text-2xl font-bold text-foreground">
             {kpi.name}
           </h1>
@@ -274,7 +274,7 @@ export default function Kpi() {
 
         {/* Description */}
         {kpi.description && (
-          <p className="mb-6 text-sm text-muted-foreground leading-relaxed">{kpi.description}</p>
+          <p className="mb-4 sm:mb-6 text-[12px] sm:text-sm text-muted-foreground leading-relaxed">{kpi.description}</p>
         )}
 
         {/* Next available message if can't log */}
@@ -288,9 +288,9 @@ export default function Kpi() {
         )}
 
         {/* Progress section */}
-        <div className="mb-8">
+        <div className="mb-2 sm:mb-6">
           <div className="mb-2 flex flex-col justify-between gap-1 text-xs font-bold uppercase tracking-wider text-muted-foreground sm:flex-row sm:text-sm">
-            <span>Overall Progress</span>
+            <span>Progress</span>
             <span className="text-primary">{progress}%</span>
           </div>
           <div className="h-3 w-full rounded-full bg-secondary overflow-hidden">
@@ -305,7 +305,7 @@ export default function Kpi() {
         </div>
 
         {/* Tasks section */}
-        <div className="mb-8">
+        <div className="mb-2 sm:mb-6">
           <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-foreground sm:text-base">Tasks</h3>
           <div className="space-y-3 rounded-2xl bg-secondary/30 p-4 border border-border shadow-inner">
             {kpi.tasks?.map((task: any) => (
@@ -321,7 +321,7 @@ export default function Kpi() {
         </div>
 
         {/* Action buttons */}
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+        <div className="mt-6 sm:mt-10 flex flex-col gap-4 sm:flex-row">
           <button
             onClick={handleSave}
             disabled={saving || checked.length === 0 || !canLogTasks}

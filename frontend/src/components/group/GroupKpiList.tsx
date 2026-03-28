@@ -10,10 +10,10 @@ interface Props {
 export default function GroupKpiList({ group }: Props) {
   const navigate = useNavigate();
   return (
-    <div className="bg-card p-8 rounded-3xl shadow-2xl border border-border space-y-8">
+    <div className="bg-card p-4 sm:p-8 rounded-3xl shadow-2xl border border-border space-y-4 sm:space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Group Objectives</h2>
+        <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Group KPIS</h2>
  
         {group.membership.role === "ADMIN" && (
           <button 
@@ -21,7 +21,7 @@ export default function GroupKpiList({ group }: Props) {
             className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-primary/20 cursor-pointer hover:-translate-y-0.5"
           >
             <Plus size={16} />
-            New Group KPI
+            New KPI
           </button>
         )}
       </div>
@@ -39,7 +39,7 @@ export default function GroupKpiList({ group }: Props) {
       )}
  
       {/* KPI Grid */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
         {group.kpis.map(( kpi: any) => (
           <GroupKpiCard key={kpi.id} group={group} kpi={kpi} />
         ))}

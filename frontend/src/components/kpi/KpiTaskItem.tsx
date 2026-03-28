@@ -19,6 +19,7 @@ export default function KpiTaskItem({ task, checked, onToggle, disabled = false 
           checked={checked}
           onChange={() => !disabled && onToggle(task.id)}
           disabled={disabled}
+          onClick={() => !disabled && onToggle(task.id)}
           className="w-5 h-5 rounded-md border-border bg-secondary text-primary focus:ring-primary focus:ring-offset-background cursor-pointer disabled:cursor-not-allowed transition-all"
         />
       </div>

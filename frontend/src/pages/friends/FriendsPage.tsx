@@ -207,7 +207,7 @@ export default function FriendsPage() {
             ) : (
               <div className="space-y-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 inline-block mb-2">
-                  Found {results.length} potentials
+                  Found: {results.length}
                 </p>
                 {results.map((u) => (
                   <div
@@ -281,7 +281,7 @@ export default function FriendsPage() {
         <div className="rounded-3xl bg-card p-8 shadow-2xl border border-border h-full flex flex-col">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
-              Pending Invites
+              Pending Requests
             </h2>
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary font-bold border border-primary/20">
               {friendRequests.length}
@@ -291,7 +291,7 @@ export default function FriendsPage() {
           <div className="flex-1">
             {friendRequests.length === 0 ? (
               <div className="py-12 text-center text-muted-foreground/40 font-medium bg-secondary/10 rounded-2xl border border-dashed border-border h-full flex flex-col items-center justify-center">
-                <p className="italic">No pending invites</p>
+                <p className="italic">No pending requests</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -343,7 +343,7 @@ export default function FriendsPage() {
         <div className="rounded-3xl bg-card p-8 shadow-2xl border border-border h-full flex flex-col">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
-              Connections
+              Friends
             </h2>
             <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400 font-bold border border-green-500/20">
               {friends.length}

@@ -48,5 +48,3 @@ export const deleteGroupKpi = (groupId: number, kpiId: number) =>
 export const getGroupKpiById = (groupId: number, kpiId: number) => 
   api.get(`/groups/${groupId}/kpis/${kpiId}`);
 
-export const searchUsers = (query: string) =>
-  api.get('/users/search', { params: { q: query } });

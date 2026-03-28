@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -17,20 +18,21 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
     if (!form.name || !form.email || !form.password) {
       setError("All fields are required");
+      setLoading(false);
       return;
     }
-
-
-
     try {
       await register(form);
       navigate("/login");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Register failed");
+      setError(err.response?.data?.message || "Register failed, please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,9 +109,10 @@ export default function Register() {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5 cursor-pointer"
+              disabled={loading}
+              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Register
+              {loading ? "Registering..." : "Register"}
             </button>
           </div>
 

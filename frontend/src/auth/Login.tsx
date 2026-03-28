@@ -9,9 +9,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
     try {
@@ -20,7 +23,9 @@ export default function Login() {
       await refresh();
       navigate("/");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Login failed, please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,9 +87,10 @@ export default function Login() {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5 cursor-pointer"
+              disabled={loading}
+              className="group relative flex w-full justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Sign in
+              {loading ? "Logging in..." : "Login"}
             </button>
           </div>
 

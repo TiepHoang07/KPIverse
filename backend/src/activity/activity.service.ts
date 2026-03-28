@@ -48,6 +48,7 @@ export class ActivityService {
         //   },
         // },
       },
+      take: 20,
     });
   }
 
@@ -83,6 +84,7 @@ export class ActivityService {
           },
         },
       },
+      take: 20,
     });
   }
 

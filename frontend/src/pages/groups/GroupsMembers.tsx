@@ -4,10 +4,10 @@ import {
   getGroupMembers,
   removeGroupMember,
   addGroupMember,
-  searchUsers,
   getGroup,
   transferAdmin,
 } from "../../api/group";
+import { getFriends } from "../../api/friend";
 import {
   UserPlus,
   X,
@@ -138,9 +138,12 @@ export default function GroupsMembers() {
 
     try {
       setSearching(true);
-      const res = await searchUsers(query);
-      const memberIds = new Set(members.map((m) => m.id));
-      const filtered = res.data.filter((user: any) => !memberIds.has(user.id));
+      const res = await getFriends();
+      const filtered = res.data.friends.filter(
+        (friend: any) =>
+          friend.name.toLowerCase().includes(query.toLowerCase()) ||
+          friend.email.toLowerCase().includes(query.toLowerCase()),
+      );
       setSearchResults(filtered);
     } catch (error) {
       console.error("Search failed:", error);
@@ -169,91 +172,103 @@ export default function GroupsMembers() {
 
   if (loading || !currentUserId) {
     return (
-      <div className="min-h-screen bg-background p-6">
+      <div className="bg-background min-h-screen p-6">
         <div className="mx-auto max-w-4xl">
-          <div className="h-8 w-48 animate-pulse rounded bg-secondary/50" />
+          <div className="bg-secondary/50 h-8 w-48 animate-pulse rounded" />
           <div className="mt-6 space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 animate-pulse rounded bg-secondary/50" />
+              <div
+                key={i}
+                className="bg-secondary/50 h-16 animate-pulse rounded"
+              />
             ))}
           </div>
         </div>
       </div>
     );
   }
- 
+
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background min-h-screen p-6">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(`/groups/${groupId}`)}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-secondary/50 hover:text-primary"
+              className="border-border bg-card text-muted-foreground hover:bg-secondary/50 hover:text-primary flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border transition"
             >
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-foreground">{groupName}</h1>
-              <p className="text-sm font-medium text-muted-foreground/60">{members.length} members collaborating</p>
+              <h1 className="text-foreground text-3xl font-bold">
+                {groupName}
+              </h1>
+              <p className="text-muted-foreground/60 text-sm font-medium">
+                {members.length} members collaborating
+              </p>
             </div>
           </div>
- 
+
           <button
             onClick={() => setShowAddModal(true)}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold uppercase tracking-widest text-white hover:bg-primary/90 cursor-pointer shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5"
+            className="bg-primary hover:bg-primary/90 shadow-primary/20 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold tracking-widest text-white uppercase shadow-lg transition-all hover:-translate-y-0.5 sm:w-auto"
           >
             <UserPlus size={18} />
             Add Member
           </button>
         </div>
- 
+
         {/* Members List */}
         <div className="space-y-4">
-          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground/40">Team Members</div>
+          <div className="text-muted-foreground/40 mb-2 text-xs font-bold tracking-widest uppercase">
+            Team Members
+          </div>
           {members.map((member) => (
-            <div key={member.id} className="group rounded-2xl bg-card p-5 shadow-xl border border-border transition-all hover:border-primary/30">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-5 w-full sm:w-auto">
+            <div
+              key={member.id}
+              className="group bg-card border-border hover:border-primary/30 rounded-2xl border p-4 shadow-xl transition-all sm:p-5"
+            >
+              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <div className="flex w-full items-center gap-5 sm:w-auto">
                   <div className="relative">
                     <img
                       src={
                         member.avatarUrl ||
-                        `https://ui-avatars.com/api/?name=${member.name}&background=3b82f6&color=fff&size=128`
+                        `https://ui-avatars.com/api/?name=${member.name}&background=3b82f6&color=fff`
                       }
                       alt={member.name}
-                      className="h-14 w-14 rounded-full object-cover ring-2 ring-primary/20"
+                      className="ring-primary/20 h-12 w-12 rounded-full object-cover ring-2"
                     />
                     {member.role === "ADMIN" && (
-                      <div className="absolute -top-1 -right-1 rounded-full bg-primary p-1 shadow-lg border border-background">
+                      <div className="bg-primary border-background absolute -top-1 -right-1 rounded-full border p-1 shadow-lg">
                         <Crown size={10} className="text-white" />
                       </div>
                     )}
                   </div>
- 
+
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-bold text-foreground">
+                      <h3 className="text-foreground text-lg font-bold">
                         {member.name}
                         {member.id === currentUserId && (
-                          <span className="ml-2 text-xs font-medium text-primary/50">
+                          <span className="text-primary/50 ml-2 text-xs font-medium">
                             (you)
                           </span>
                         )}
                       </h3>
                       <span
-                        className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
+                        className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-widest uppercase ${
                           member.role === "ADMIN"
-                            ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                            ? "border-purple-500/20 bg-purple-500/10 text-purple-400"
                             : "bg-primary/10 text-primary border-primary/20"
                         }`}
                       >
                         {member.role}
                       </span>
                     </div>
- 
-                    <div className="mt-1.5 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground/60">
+
+                    <div className="text-muted-foreground/60 mt-1.5 flex flex-wrap items-center gap-4 text-xs font-medium">
                       <span className="flex items-center gap-1.5">
                         <Mail size={14} className="opacity-40" />
                         {member.email}
@@ -265,23 +280,25 @@ export default function GroupsMembers() {
                     </div>
                   </div>
                 </div>
- 
+
                 {/* Admin actions */}
                 {isAdmin && member.id !== currentUserId && (
-                  <div className="flex w-full sm:w-auto gap-3 mt-4 sm:mt-0 justify-end">
+                  <div className="mt-4 flex w-full justify-end gap-3 sm:mt-0 sm:w-auto">
                     {member.role === "MEMBER" && (
                       <button
                         onClick={() => handleTransferAdmin(member)}
                         disabled={processingId === member.id}
-                        className="cursor-pointer rounded-xl border border-purple-500/20 bg-purple-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-purple-400 hover:bg-purple-500 hover:text-white transition-all disabled:opacity-30"
+                        className="cursor-pointer rounded-xl border border-purple-500/20 bg-purple-500/10 px-4 py-2 text-xs font-bold tracking-widest text-purple-400 uppercase transition-all hover:bg-purple-500 hover:text-white disabled:opacity-30"
                       >
-                        {processingId === member.id ? "Working..." : "Make Admin"}
+                        {processingId === member.id
+                          ? "Working..."
+                          : "Make Admin"}
                       </button>
                     )}
- 
+
                     <button
                       onClick={() => setShowRemoveModal(member)}
-                      className="cursor-pointer rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
+                      className="border-destructive/20 bg-destructive/10 text-destructive hover:bg-destructive cursor-pointer rounded-xl border px-4 py-2 text-xs font-bold tracking-widest uppercase transition-all hover:text-white"
                     >
                       Remove
                     </button>
@@ -292,50 +309,58 @@ export default function GroupsMembers() {
           ))}
         </div>
       </div>
- 
+
       {/* Add Member Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl border border-border">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="bg-card border-border w-full max-w-md rounded-2xl border p-8 shadow-2xl">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-foreground">Add New Member</h3>
+              <h3 className="text-foreground text-xl font-bold">
+                Add New Member
+                <p className="text-[10px] text-gray-400">
+                  add your friend to group
+                </p>
+              </h3>
+
               <button
                 onClick={() => {
                   setShowAddModal(false);
                   setSelectedUser(null);
                   setSearchQuery("");
                 }}
-                className="rounded-xl p-2 text-muted-foreground hover:bg-secondary/50 transition-colors cursor-pointer"
+                className="text-muted-foreground hover:bg-secondary/50 cursor-pointer rounded-xl p-2 transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
- 
+
             <div className="relative mb-6">
-              <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted-foreground/40" />
+              <Search className="text-muted-foreground/40 absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search by name or email..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full rounded-xl border border-border bg-secondary/50 py-3.5 pl-12 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/20"
+                className="border-border bg-secondary/50 text-foreground focus:border-primary focus:ring-primary placeholder:text-muted-foreground/20 w-full rounded-xl border py-3.5 pr-4 pl-12 transition focus:ring-1 focus:outline-none"
                 autoFocus
               />
             </div>
- 
-            <div className="max-h-72 space-y-2 overflow-y-auto pr-2 custom-scrollbar">
+
+            <div className="custom-scrollbar max-h-72 space-y-2 overflow-y-auto pr-2">
               {searching && (
-                <div className="py-8 text-center text-muted-foreground/40 font-medium italic">
-                  Searching for users...
+                <div className="text-muted-foreground/40 py-8 text-center font-medium italic">
+                  Searching for friends...
                 </div>
               )}
- 
-              {!searching && searchQuery.length >= 2 && searchResults.length === 0 && (
-                <div className="py-8 text-center text-muted-foreground/40 font-medium italic">
-                  No users found matching "{searchQuery}"
-                </div>
-              )}
- 
+
+              {!searching &&
+                searchQuery.length >= 2 &&
+                searchResults.length === 0 && (
+                  <div className="text-muted-foreground/40 py-8 text-center font-medium italic">
+                    No friends found matching "{searchQuery}"
+                  </div>
+                )}
+
               {!searching &&
                 searchResults.map((user) => (
                   <button
@@ -343,7 +368,7 @@ export default function GroupsMembers() {
                     onClick={() => setSelectedUser(user)}
                     className={`flex w-full items-center gap-4 rounded-xl p-3 transition-all ${
                       selectedUser?.id === user.id
-                        ? "bg-primary/10 border border-primary/30"
+                        ? "bg-primary/10 border-primary/30 border"
                         : "hover:bg-secondary/50 border border-transparent"
                     }`}
                   >
@@ -355,25 +380,29 @@ export default function GroupsMembers() {
                       alt={user.name}
                       className="h-10 w-10 rounded-full"
                     />
-                    <div className="text-left flex-1 overflow-hidden">
-                      <div className="text-sm font-bold text-foreground truncate">{user.name}</div>
-                      <div className="text-xs text-muted-foreground/60 truncate">{user.email}</div>
+                    <div className="flex-1 overflow-hidden text-left">
+                      <div className="text-foreground truncate text-sm font-bold">
+                        {user.name}
+                      </div>
+                      <div className="text-muted-foreground/60 truncate text-xs">
+                        {user.email}
+                      </div>
                     </div>
                   </button>
                 ))}
             </div>
- 
+
             <div className="mt-8 flex gap-3">
               <button
                 onClick={() => setShowAddModal(false)}
-                className="flex-1 rounded-xl border border-border bg-card py-3.5 text-xs font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"
+                className="border-border bg-card text-muted-foreground hover:bg-secondary/50 flex-1 rounded-xl border py-3.5 text-xs font-bold tracking-widest uppercase transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddMember}
                 disabled={!selectedUser || addingMember}
-                className="flex-1 rounded-xl bg-primary py-3.5 text-xs font-bold uppercase tracking-widest text-white hover:bg-primary/90 disabled:opacity-30 shadow-lg shadow-primary/20 transition-all"
+                className="bg-primary hover:bg-primary/90 shadow-primary/20 flex-1 rounded-xl py-3.5 text-xs font-bold tracking-widest text-white uppercase shadow-lg transition-all disabled:opacity-30"
               >
                 {addingMember ? "Adding..." : "Invite to Group"}
               </button>
@@ -381,31 +410,39 @@ export default function GroupsMembers() {
           </div>
         </div>
       )}
- 
+
       {/* Remove Member Modal */}
       {showRemoveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-card p-8 shadow-2xl border border-destructive/20 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="bg-card border-destructive/20 w-full max-w-sm rounded-2xl border p-8 text-center shadow-2xl">
+            <div className="bg-destructive/10 text-destructive mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
               <X size={32} />
             </div>
-            <h3 className="mb-2 text-xl font-bold text-foreground">Remove Member?</h3>
+            <h3 className="text-foreground mb-2 text-xl font-bold">
+              Remove Member?
+            </h3>
             <p className="text-muted-foreground text-sm font-medium">
-              Are you sure you want to remove <span className="text-foreground font-bold">{showRemoveModal.name}</span> from the group? They will lose access to all group KPIs.
+              Are you sure you want to remove{" "}
+              <span className="text-foreground font-bold">
+                {showRemoveModal.name}
+              </span>{" "}
+              from the group? They will lose access to all group KPIs.
             </p>
- 
+
             <div className="mt-8 flex gap-3">
               <button
                 onClick={() => setShowRemoveModal(null)}
-                className="flex-1 rounded-xl border border-border bg-card py-3.5 text-xs font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"
+                className="border-border bg-card text-muted-foreground hover:bg-secondary/50 flex-1 rounded-xl border py-3.5 text-xs font-bold tracking-widest uppercase transition"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleRemoveMember(showRemoveModal)}
-                className="flex-1 rounded-xl bg-destructive py-3.5 text-xs font-bold uppercase tracking-widest text-white hover:bg-destructive/90 transition-all shadow-lg shadow-destructive/20"
+                className="bg-destructive hover:bg-destructive/90 shadow-destructive/20 flex-1 rounded-xl py-3.5 text-xs font-bold tracking-widest text-white uppercase shadow-lg transition-all"
               >
-                {processingId === showRemoveModal.id ? "Removing..." : "Remove Member"}
+                {processingId === showRemoveModal.id
+                  ? "Removing..."
+                  : "Remove Member"}
               </button>
             </div>
           </div>

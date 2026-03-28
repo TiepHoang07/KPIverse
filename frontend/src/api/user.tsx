@@ -14,3 +14,7 @@ export const changeAvatar = (formData: FormData) =>
 
 export const changePassword = (oldPassword: string, newPassword: string) => 
   api.patch("/users/password", { oldPassword, newPassword }); // Fixed parameter names
+
+
+export const searchUsers = (query: string) =>
+  api.get('/users/search', { params: { q: query } });

@@ -22,7 +22,7 @@ export function GroupKpiCard({ group, kpi }: any) {
         </span>
       </div>
 
-      <div className="h-1 w-12 rounded-full bg-linear-to-r from-primary to-purple-500 mt-4 relative z-10" />
+      <div className="h-1 w-12 rounded-full bg-linear-to-r from-primary to-purple-500 mt-2 sm:mt-4 relative z-10" />
 
       {/* Description */}
       {kpi.description && (
