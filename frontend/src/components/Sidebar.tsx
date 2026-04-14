@@ -40,24 +40,24 @@ const iconMap: Record<string, any> = {
 };
 
 interface SidebarProps {
-  onCollapse?: (collapsed: boolean) => void;
+  collapsed: boolean;
+  onToggle: () => void;
 }
 
-export default function Sidebar({ onCollapse }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const [me, setMe] = useState<any>(null);
   const [friendRequests, setFriendRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   const { logout } = useAuth();
-
   const navigate = useNavigate();
 
   const fetchFriendRequests = () => {
     getFriendRequests().then((res) => setFriendRequests(res.data));
   };
+
   useEffect(() => {
     fetchFriendRequests();
   }, []);
@@ -78,13 +78,6 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
     fetchUserData();
   }, []);
 
-  // Handle collapse state changes
-  const toggleCollapse = () => {
-    const newState = !collapsed;
-    setCollapsed(newState);
-    if (onCollapse) onCollapse(newState);
-  };
-
   // Close mobile sidebar when route changes
   useEffect(() => {
     setMobileOpen(false);
@@ -100,7 +93,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
       {/* Mobile menu button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed top-2 left-4 z-40 cursor-pointer rounded-lg border-[1.5px] border-primary bg-primary/10 p-2 text-primary hover:bg-primary/20 lg:hidden"
+        className="fixed top-2 left-4 z-40 cursor-pointer rounded-lg border-[1.5px] border-primary bg-primary/10 p-2 text-primary hover:bg-primary/20 md:hidden"
         aria-label="Open menu"
       >
         <Menu size={20} />
@@ -109,49 +102,46 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar container */}
       <aside
-        className={`fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-border bg-card transition-all duration-300 ${
-          collapsed ? "w-20" : "w-64"
-        } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
+        className={`fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-border/10 bg-white shadow-none transition-all duration-300 overflow-hidden ${
+          collapsed ? "w-26" : "w-64"
+        } ${mobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0"}`}
       >
         {/* Header */}
-        <div className="flex h-16 items-center justify-between border-b border-border">
+        <div className="flex h-20 items-center justify-between px-6 border-b border-border/5">
           {!collapsed && (
-            <img className="ml-5 h-12 w-28" src="/images/logo.png" alt="logo" />
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                <span className="text-lg font-black text-white">K</span>
+              </div>
+              <span className="text-xl font-black tracking-tight text-primary">KPIverse</span>
+            </div>
           )}
           {collapsed && (
             <div className="flex w-full justify-center">
-              <span className="text-2xl font-bold text-primary">K</span>
+              <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                <span className="text-xl font-black text-white">K</span>
+              </div>
             </div>
           )}
 
           {/* Collapse button - hidden on mobile */}
           <button
-            onClick={toggleCollapse}
-            className="hidden rounded-lg p-1.5 text-muted-foreground hover:bg-secondary lg:block"
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            onClick={onToggle}
+            className="hidden rounded-xl p-2 text-muted-foreground hover:bg-accent hover:text-primary md:block transition-all"
           >
-            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-          </button>
-
-          {/* Close button - visible on mobile */}
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="mr-2 cursor-pointer rounded-lg p-1.5 text-muted-foreground hover:bg-secondary lg:hidden"
-            aria-label="Close menu"
-          >
-            <X size={18} />
+            {collapsed ? <ChevronRight size={24} /> : <ChevronLeft size={24} />}
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-4 custom-scrollbar">
           {sidebarItems.map((item) => {
             const Icon = iconMap[item.icon] || LayoutDashboard;
             const isActive = location.pathname === item.path;
@@ -161,74 +151,76 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `group relative flex items-center rounded-lg transition-all ${
-                    collapsed ? "justify-center px-2 py-3" : "px-4 py-2.5"
+                  `group relative flex items-center rounded-xl transition-all duration-200 ${
+                    collapsed ? "justify-center px-0 py-3.5" : "px-4 py-3"
                   } ${
                     isActive
-                      ? "bg-primary/10 text-primary shadow-sm shadow-primary/20"
-                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                      ? "bg-primary text-white shadow-md shadow-primary/20"
+                      : "text-muted-foreground hover:bg-secondary/5 hover:text-secondary"
                   }`
                 }
                 title={collapsed ? item.label : undefined}
               >
-                <div className="relative flex items-center gap-3">
+                <div className={`relative flex items-center ${collapsed ? "" : "gap-4"}`}>
                   <Icon
                     size={20}
-                    className={isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}
+                    className={`${isActive ? "text-white" : "text-muted-foreground group-hover:text-secondary opacity-70 group-hover:opacity-100"} transition-all`}
                   />
                   {!collapsed && (
-                    <span className="text-sm font-medium">{item.label}</span>
+                    <span className="text-xs font-black uppercase tracking-[0.1em]">{item.label}</span>
+                  )}
+                  {mobileOpen && (
+                    <span className="text-xs font-black uppercase tracking-[0.1em]">{item.label}</span>
                   )}
                   {item.label === 'Friends' && friendRequests.length >= 1 && (
-                    <span className="absolute -right-4 top-1 bg-red-500 rounded-full w-2 h-2"></span>
+                    <span className={`absolute ${collapsed ? "-top-1 -right-1" : "-right-2 -top-1"} bg-secondary rounded-full w-2.5 h-2.5 border-2 border-white ring-2 ring-secondary/20`}></span>
                   )}
                 </div>
 
-                {/* Active indicator */}
-                {isActive && !collapsed && (
-                  <div className="absolute right-2 h-2 w-2 rounded-full bg-primary animate-pulse" />
-                )}
 
-                {/* Tooltip for collapsed mode */}
-                {collapsed && (
-                  <div className="absolute left-full ml-4 hidden rounded-xl bg-card border border-border px-3 py-2 text-xs font-bold uppercase tracking-widest text-foreground shadow-2xl group-hover:block z-50 whitespace-nowrap">
-                    {item.label}
-                  </div>
-                )}
               </NavLink>
             );
           })}
         </nav>
 
-        {/* User section - with null check */}
-        <div
-          className={`border-t border-border p-3 ${collapsed ? "text-center" : ""}`}
-        >
+        {/* User section */}
+        <div className="p-4 border-t border-border/5">
           {loading ? (
             <div className="flex justify-center py-2">
-              <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-primary"></div>
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-primary opacity-20"></div>
             </div>
           ) : me?.user ? (
-            <>
+            <div className="space-y-3">
               <div
-                className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}
+                className={`flex items-center gap-3 p-2 rounded-xl transition-colors ${collapsed ? "justify-center" : "bg-accent/30"}`}
               >
-                <div className="relative">
-                  <img
-                    onClick={() => navigate("/profile")}
-                    src={
-                      me.user.avatarUrl ||
-                      `https://ui-avatars.com/api/?name=${me.user.name || "User"}&background=3b82f6&color=fff`
-                    }
-                    alt={me.user.name || "User"}
-                    className="h-8 w-8 cursor-pointer rounded-full object-cover ring-2 ring-primary/20"
-                  />
-                </div>
+                <img
+                  onClick={() => navigate("/profile")}
+                  src={
+                    me.user.avatarUrl ||
+                    `https://ui-avatars.com/api/?name=${me.user.name || "User"}&background=2E4057&color=fff`
+                  }
+                  alt={me.user.name || "User"}
+                  className="h-9 w-9 cursor-pointer rounded-xl object-cover ring-2 ring-white shadow-sm hover:scale-105 transition-transform"
+                />
 
                 {!collapsed && (
-                  <div className="flex-1">
-                    <p className="truncate text-sm font-medium text-foreground">
+                  <div className="flex-1 overflow-hidden">
+                    <p className="truncate text-xs font-black text-primary uppercase tracking-tighter">
                       {me.user.name || "User"}
+                    </p>
+                    <p className="truncate text-[9px] font-extrabold text-muted-foreground uppercase opacity-40">
+                      Operator
+                    </p>
+                  </div>
+                )}
+                {mobileOpen && (
+                  <div className="flex-1 overflow-hidden">
+                    <p className="truncate text-xs font-black text-primary uppercase tracking-tighter">
+                      {me.user.name || "User"}
+                    </p>
+                    <p className="truncate text-[9px] font-extrabold text-muted-foreground uppercase opacity-40">
+                      Operator
                     </p>
                   </div>
                 )}
@@ -237,34 +229,32 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
               {!collapsed && (
                 <button
                   onClick={logout}
-                  className="mt-3 flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-destructive/5 py-3 text-[10px] font-black uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
                 >
-                  <LogOut size={16} />
-                  <span>Logout</span>
+                  <LogOut size={14} />
+                  <span>Termination</span>
                 </button>
               )}
-            </>
-            ) : (
-            <div className="py-4 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
-              <p>Session Expired</p>
+              {mobileOpen && (
+                <button
+                  onClick={logout}
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-destructive/5 py-3 text-[10px] font-black uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
+                >
+                  <LogOut size={14} />
+                  <span>Termination</span>
+                </button>
+              )}
             </div>
-          )}
+          ) : null}
         </div>
       </aside>
 
       {/* Mobile header with current page */}
-      <header className="fixed top-0 right-0 left-0 z-30 border-b border-border bg-card/80 px-4 py-3 shadow-lg backdrop-blur-md lg:hidden">
+      <header className="fixed top-0 right-0 left-0 z-30 border-b border-border bg-card/80 px-4 py-3 shadow-lg backdrop-blur-md md:hidden">
         <div className="flex items-center justify-center">
           <h2 className="text-lg font-semibold text-foreground">{currentPage}</h2>
         </div>
       </header>
-
-      {/* Main content offset - for desktop */}
-      <div
-        className={`hidden transition-all duration-300 lg:block ${
-          collapsed ? "lg:ml-20" : "lg:ml-64"
-        }`}
-      />
     </>
   );
 }

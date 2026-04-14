@@ -9,24 +9,39 @@ export default function ActivityCard({ activity }: Props) {
   const { user } = useAuth();
 
   return (
-    <div className={`space-y-2 p-4 rounded-xl bg-card border border-border shadow-md transition-all hover:bg-secondary/50`}>
-      <div className="flex items-center gap-2">
-        <img
-          src={
-            activity.user.avatarUrl ||
-            `https://ui-avatars.com/api/?name=${activity.user.name}&background=6babff&color=fff`
-          }
-          className="h-8 w-8 rounded-full"
-        />
-        <span className="font-semibold text-foreground">{activity.user.name}{activity.user.id === user?.id ? <span className="text-primary font-bold ml-1 text-blue-500">- You</span> : null}</span>
+    <div className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm border border-border/40 transition-all hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20">
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <img
+              src={
+                activity.user.avatarUrl ||
+                `https://ui-avatars.com/api/?name=${activity.user.name}&background=2E4057&color=fff`
+              }
+              className="h-10 w-10 rounded-xl object-cover ring-2 ring-white shadow-md transition-transform group-hover:scale-105"
+              alt={activity.user.name}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-black uppercase tracking-tighter text-primary">
+                {activity.user.name}
+              </span>
+              {activity.user.id === user?.id && (
+                <span className="rounded-lg bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary">
+                  You
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-sm font-medium leading-relaxed text-foreground/80">
+              {renderActivityText(activity)}
+            </p>
+          </div>
+        </div>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 whitespace-nowrap">
+          {new Date(activity.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+        </span>
       </div>
-
-      <p className="my-3 text-sm text-foreground/90 font-medium">
-        {renderActivityText(activity)}
-      </p>
-      <p className="mt-4 text-[12px] text-muted-foreground">
-        {new Date(activity.createdAt).toLocaleString()}
-      </p>
     </div>
   );
 }

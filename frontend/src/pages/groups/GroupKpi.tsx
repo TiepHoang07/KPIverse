@@ -163,8 +163,8 @@ export default function GroupKpi() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-2xl bg-card p-4 shadow-xl border border-border">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
+      <div className="flex h-48 items-center justify-center rounded-[2.5rem] bg-white p-4 shadow-xl border border-border/40">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border/20 border-t-primary"></div>
       </div>
     );
   }
@@ -172,12 +172,12 @@ export default function GroupKpi() {
   if (!kpi) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center p-6 bg-background">
-        <p className="text-destructive font-bold text-xl">KPI not found</p>
+        <p className="text-destructive font-black text-2xl tracking-tighter">KPI Not Found</p>
         <button
           onClick={handleBack}
-          className="mt-6 cursor-pointer text-primary font-bold hover:underline"
+          className="mt-6 cursor-pointer text-primary font-black uppercase tracking-widest text-xs hover:text-secondary transition-colors"
         >
-          ← Back to Group
+          ← Return to Group
         </button>
       </div>
     );
@@ -185,14 +185,15 @@ export default function GroupKpi() {
 
   const nextAvailableMessage = getNextAvailableMessage();
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-7xl px-6 py-8">
       {/* Header with navigation and delete */}
-      <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+      <div className="mb-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <button
           onClick={handleBack}
-          className="flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all sm:text-base"
+          className="flex cursor-pointer items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-primary hover:text-secondary transition-all"
         >
-          ← Back to Group
+          <div className="rounded-full bg-accent p-2 shadow-sm">←</div>
+          Back to Terminal
         </button>
 
         {/* Only show admin buttons if user is admin */}
@@ -200,80 +201,83 @@ export default function GroupKpi() {
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="w-full cursor-pointer rounded-xl border border-destructive/50 bg-destructive/10 px-4 py-2.5 text-sm font-bold text-destructive transition hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto shadow-lg shadow-destructive/10"
+            className="w-full cursor-pointer rounded-2xl border border-destructive/20 bg-destructive/5 px-6 py-3 text-xs font-black uppercase tracking-widest text-destructive transition-all hover:bg-destructive hover:text-white disabled:opacity-40 sm:w-auto shadow-sm"
           >
-            {deleting ? "Deleting..." : "Delete KPI"}
+            {deleting ? "Decommissioning..." : "Terminate KPI"}
           </button>
         )}
       </div>
 
       {/* Type badge and last logged info */}
-      <div className="mb-6 flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center">
+      <div className="mb-8 flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center">
         <span
-          className={`rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest border ${
-            kpi.type === "DAILY" ? "bg-primary/10 text-primary border-primary/20" : ""
-          } ${kpi.type === "WEEKLY" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" : ""} ${
-            kpi.type === "MONTHLY" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" : ""
+          className={`rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] border ${
+            kpi.type === "DAILY" ? "bg-primary text-white border-primary shadow-lg shadow-primary/20" : ""
+          } ${kpi.type === "WEEKLY" ? "bg-primary text-white border-primary shadow-lg shadow-primary/20" : ""} ${
+            kpi.type === "MONTHLY" ? "bg-secondary text-white border-secondary shadow-lg shadow-secondary/20" : ""
           }`}
         >
-          {kpi.type} KPI
+          {kpi.type} Cycle
         </span>
  
         {lastLoggedDate && (
-          <span className="text-xs font-medium text-muted-foreground sm:text-sm flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30"></div>
-            Last logged: {lastLoggedDate.toLocaleDateString()}
-          </span>
+          <div className="flex items-center gap-3 rounded-full bg-accent px-4 py-2 border border-border/20">
+            <div className="h-1.5 w-1.5 rounded-full bg-primary/40 animate-pulse"></div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
+              Last Sync: {lastLoggedDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
+            </span>
+          </div>
         )}
       </div>
 
       {/* Main KPI card */}
-      <div className="mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-xl relative">
-        <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/80"></div>
+      <div className="mb-12 overflow-hidden rounded-[2.5rem] border border-white bg-white shadow-2xl relative p-10">
+        <div className="absolute top-0 right-0 h-40 w-40 -translate-y-16 translate-x-16 rounded-full bg-primary/5"></div>
+        
         {/* Header section */}
-        <div className="flex flex-col items-start justify-between gap-2 sm:gap-4 px-6 pt-4 sm:pt-6 pb-2 sm:flex-row sm:items-center">
-          <h1 className="text-2xl font-bold text-foreground">
+        <div className="flex flex-col items-start justify-between gap-4 mb-6 sm:flex-row sm:items-center relative z-10">
+          <h1 className="text-4xl font-black text-primary tracking-tighter">
             {kpi.name}
           </h1>
-          <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20 sm:text-sm">
-            {kpi.tasks?.length || 0} tasks
+          <span className="text-[10px] font-black uppercase tracking-[0.25em] text-secondary bg-secondary/10 px-4 py-2 rounded-xl border border-secondary/20 h-fit">
+            {kpi.tasks?.length || 0} OBJECTIVES
           </span>
         </div>
- 
+  
         {/* Description */}
         {kpi.description && (
-          <p className="px-6 sm:pb-2 text-sm text-muted-foreground leading-relaxed">
+          <p className="mb-10 text-lg font-medium text-muted-foreground leading-relaxed max-w-3xl relative z-10">
             {kpi.description}
           </p>
         )}
 
         {/* Next available message */}
         {nextAvailableMessage && (
-          <div className="mx-6 mb-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
-            <p className="text-sm font-medium text-yellow-500 flex items-center gap-2">
-              <span className="text-lg">⏰</span> {nextAvailableMessage}
+          <div className="mb-10 rounded-2xl border border-secondary/20 bg-secondary/5 p-6 animate-in fade-in slide-in-from-top-4">
+            <p className="text-sm font-bold text-secondary uppercase tracking-widest flex items-center gap-3">
+              <span className="text-xl">⏳</span> {nextAvailableMessage}
             </p>
           </div>
         )}
 
         {/* Progress section */}
-        <div className="px-6 pb-6 mt-2">
-          <div className="mb-2 flex flex-col justify-between gap-1 text-xs font-bold uppercase tracking-wider text-muted-foreground sm:flex-row sm:text-sm">
-            <span>Progress</span>
-            <span className="text-primary">{progress}%</span>
+        <div className="mb-12 relative z-10">
+          <div className="mb-4 flex flex-col justify-between gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 sm:flex-row">
+            <span>Operational Progress</span>
+            <span className="text-primary">{progress}% Complete</span>
           </div>
-          <div className="h-3 w-full rounded-full bg-secondary overflow-hidden">
+          <div className="h-4 w-full rounded-full bg-accent overflow-hidden border border-border/20 shadow-inner">
             <div
-              className="h-full rounded-full bg-primary transition-all duration-500 shadow-lg shadow-primary/30"
+              className={`h-full rounded-full transition-all duration-1000 ease-out shadow-lg ${progress === 100 ? "bg-secondary" : "bg-primary"}`}
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Tasks section */}
-        <div className="mx-6 mb-6 rounded-2xl bg-secondary/30 p-4 border border-border shadow-inner sm:p-6">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-foreground sm:text-base">Tasks</h3>
-          <div className="mb-6 space-y-3">
+        <div className="rounded-[2rem] bg-accent/40 p-8 border border-white shadow-inner relative z-10">
+          <h3 className="mb-6 text-[10px] font-black uppercase tracking-[0.25em] text-primary">Mission Directives</h3>
+          <div className="mb-10 space-y-4">
             {kpi.tasks?.map((task: any) => (
               <KpiTaskItem
                 key={task.id}
@@ -284,35 +288,35 @@ export default function GroupKpi() {
               />
             ))}
           </div>
- 
+  
           <button
             disabled={saving || checked.length === 0 || !canLogTasks}
             onClick={handleDone}
-            className={`w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 sm:text-base shadow-lg ${
+            className={`w-full rounded-2xl py-5 text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 shadow-2xl border-none ${
               canLogTasks && checked.length > 0
-                ? "cursor-pointer bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:-translate-y-0.5"
-                : "cursor-not-allowed bg-secondary text-muted-foreground opacity-50"
+                ? "cursor-pointer bg-primary text-white hover:bg-primary/95 shadow-primary/30 hover:-translate-y-1 active:scale-95"
+                : "cursor-not-allowed bg-muted-foreground/10 text-muted-foreground/40"
             }`}
           >
             {saving
-              ? "Saving..."
+              ? "Synchronizing..."
               : !canLogTasks && lastLoggedDate
-                ? "Already logged"
+                ? "Cycle Complete"
                 : checked.length === 0
-                  ? "Select tasks"
-                  : `Mark ${checked.length} task${checked.length > 1 ? "s" : ""} as done`}
+                  ? "Select Objectives"
+                  : `Execute ${checked.length} Assignment${checked.length > 1 ? "s" : ""}`}
           </button>
         </div>
       </div>
 
       {/* Chart section */}
-      <div className="my-6">
+      <div className="my-16">
         <GroupKpiChart groupId={Number(groupId)} kpiId={Number(kpi.id)} />
       </div>
 
       {/* Leaderboard section */}
-      <div className="mt-12">
-        <h2 className="mb-6 text-xl font-bold text-foreground sm:text-2xl">Leaderboard</h2>
+      <div className="mt-20">
+        <h2 className="mb-10 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 text-center">Elite Rankings</h2>
         <div className="overflow-x-auto">
           <GroupLeaderboard groupId={Number(groupId)} kpiId={kpi.id} />
         </div>

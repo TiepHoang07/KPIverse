@@ -244,8 +244,8 @@ export default function Kpi() {
         <span
           className={`inline-block rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border ${
             kpi.type === "DAILY" ? "bg-primary/10 text-primary border-primary/20" : ""
-          } ${kpi.type === "WEEKLY" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" : ""} ${
-            kpi.type === "MONTHLY" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" : ""
+          } ${kpi.type === "WEEKLY" ? "bg-primary/10 text-primary border-primary/20" : ""} ${
+            kpi.type === "MONTHLY" ? "bg-secondary/10 text-secondary border-secondary/20" : ""
           }`}
         >
           {kpi.type} KPI
@@ -261,7 +261,7 @@ export default function Kpi() {
 
       {/* Main KPI card */}
       <div className="mb-6 rounded-2xl border border-border bg-card p-6 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1.5 h-full bg-cyan-500/80"></div>
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/80"></div>
         {/* Header */}
         <div className="flex justify-between gap-4 flex-row items-center">
           <h1 className="text-2xl font-bold text-foreground">
@@ -279,8 +279,8 @@ export default function Kpi() {
 
         {/* Next available message if can't log */}
         {nextAvailableMessage && (
-          <div className="mb-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
-            <p className="flex items-center gap-2 text-sm font-medium text-yellow-500">
+          <div className="mb-6 rounded-xl border border-secondary/20 bg-secondary/10 p-4">
+            <p className="flex items-center gap-2 text-sm font-medium text-secondary">
               <span className="text-lg">⏰</span>
               {nextAvailableMessage}
             </p>

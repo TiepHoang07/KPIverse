@@ -167,38 +167,38 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-2xl bg-card border border-border p-4 shadow-xl">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
+      <div className="flex h-48 items-center justify-center rounded-[2.5rem] bg-white border border-border/40 p-4 shadow-xl">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border/20 border-t-primary"></div>
       </div>
     );
   }
 
   if (!chartData) {
     return (
-      <div className="rounded-2xl bg-card border border-border p-10 text-center shadow-xl">
-        <p className="text-muted-foreground font-medium italic">No activity logs recorded yet</p>
+      <div className="rounded-[2.5rem] bg-white border border-border/40 p-12 text-center shadow-xl">
+        <p className="text-muted-foreground font-black italic opacity-30">No collective achievements yet</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Member Summary Cards */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {userLogs.map((user) => (
           <div
             key={user.userId}
-            className="flex items-center gap-3 rounded-xl bg-card border border-border p-3 shadow-lg hover:border-primary/30 transition-all"
+            className="flex items-center gap-4 rounded-3xl bg-white border border-border/40 p-4 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all group"
           >
             <div
-              className="h-3 w-3 rounded-full ring-2 ring-background shadow-inner"
+              className="h-3 w-3 rounded-full ring-4 ring-background shadow-inner transition-transform group-hover:scale-125"
               style={{ backgroundColor: user.color }}
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-bold text-foreground uppercase tracking-tight">
+              <p className="truncate text-[10px] font-black text-primary uppercase tracking-tighter">
                 {user.userName}
               </p>
-              <p className="text-[10px] font-bold text-primary uppercase">{user.logCount} logs</p>
+              <p className="text-[12px] font-black text-secondary uppercase tracking-widest">{user.logCount} LOGS</p>
             </div>
           </div>
         ))}
@@ -207,13 +207,15 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
       {/* Timeline Chart - Full History */}
       {timelineData && timelineData.datasets.length > 0 && (
         <div
-          className="rounded-2xl bg-card border border-border p-6 shadow-xl"
-          style={{ maxHeight: "40vh" }}
+          className="rounded-[2.5rem] bg-white border border-border/40 p-10 shadow-2xl"
+          style={{ maxHeight: "45vh" }}
         >
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-muted-foreground/80">
-            Activity Timeline
-          </h3>
-          <div style={{ height: "28vh" }}>
+          <div className="mb-8 flex items-center justify-between">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
+              Collective Velocity
+            </h3>
+          </div>
+          <div style={{ height: "30vh" }}>
             <Line
               data={timelineData}
               options={{
@@ -221,30 +223,31 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
                 maintainAspectRatio: false,
                 plugins: {
                   legend: {
-                    position: "top",
+                    position: "bottom",
                     labels: {
-                      boxWidth: 10,
                       usePointStyle: true,
-                      padding: 15,
-                      color: "rgba(255, 255, 255, 0.6)",
-                      font: { size: 10, weight: "bold" },
+                      pointStyle: 'circle',
+                      padding: 25,
+                      color: "rgba(46, 64, 87, 0.6)",
+                      font: { size: 10, weight: "bold", family: "'Outfit', sans-serif" },
                     },
                   },
                   tooltip: {
-                    backgroundColor: "rgba(10, 10, 20, 0.9)",
-                    titleColor: "#fff",
-                    bodyColor: "rgba(255, 255, 255, 0.8)",
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                    borderWidth: 1,
-                    padding: 10,
-                    cornerRadius: 12,
+                    backgroundColor: "#2E4057",
+                    titleColor: "#FB923C",
+                    bodyColor: "#FFFFFF",
+                    titleFont: { weight: 'bold', size: 12 },
+                    bodyFont: { weight: 'bold', size: 10 },
+                    padding: 12,
+                    cornerRadius: 16,
                     mode: "index",
                     intersect: false,
+                    displayColors: true,
                     callbacks: {
                       label: (context) => {
                         const label = context.dataset.label || "";
                         const value = context.raw as number;
-                        return `${label}: ${value} task${value === 1 ? "" : "s"}`;
+                        return `${label}: ${value} ACHIEVEMENTS`;
                       },
                     },
                   },
@@ -254,37 +257,30 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
                     beginAtZero: true,
                     ticks: {
                       stepSize: 1,
-                      color: "rgba(255, 255, 255, 0.4)",
-                      font: { weight: "bold", size: 10 },
-                      callback: (value) => value,
+                      color: "rgba(46, 64, 87, 0.4)",
+                      font: { weight: "black", size: 10 },
                     },
-                    grid: { color: "rgba(255, 255, 255, 0.05)" },
-                    title: {
-                      display: true,
-                      text: "Tasks Completed",
-                      color: "rgba(255, 255, 255, 0.4)",
-                      font: { weight: "bold", size: 11 },
-                    },
+                    grid: { color: "rgba(46, 64, 87, 0.05)" },
                   },
                   x: {
                     grid: { display: false },
                     ticks: {
-                      maxRotation: 45,
-                      minRotation: 45,
-                      color: "rgba(255, 255, 255, 0.4)",
-                      font: { size: 9, weight: "bold" },
-                      maxTicksLimit: 15,
+                      color: "rgba(46, 64, 87, 0.4)",
+                      font: { size: 9, weight: "black" },
+                      maxTicksLimit: 12,
                     },
                   },
                 },
                 elements: {
                   line: {
-                    tension: 0.2,
-                    borderWidth: 2,
+                    tension: 0.4,
+                    borderWidth: 3,
                   },
                   point: {
-                    radius: 2,
-                    hoverRadius: 4,
+                    radius: 0,
+                    hoverRadius: 5,
+                    borderWidth: 2,
+                    hoverBorderWidth: 2,
                   },
                 },
               }}

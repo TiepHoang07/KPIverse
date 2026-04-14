@@ -74,11 +74,11 @@ export default function GroupLeaderboard({
               key={u.userId}
               className={`flex items-center justify-between rounded-xl border-[1.5px] px-4 py-3 transition-all hover:scale-[1.01] ${
                 u.rank === 1
-                  ? "border-orange-600/30 bg-orange-500/5"
+                  ? "border-secondary/30 bg-secondary/5"
                   : u.rank === 2
-                    ? "border-yellow-500/30 bg-yellow-400/5"
+                    ? "border-secondary/20 bg-secondary/5"
                     : u.rank === 3
-                      ? "border-cyan-600/30 bg-cyan-600/5"
+                      ? "border-primary/30 bg-primary/5"
                       : "border-border bg-secondary/20"
               }`}
             >
@@ -92,7 +92,7 @@ export default function GroupLeaderboard({
                 <img
                   src={
                     u.avatarUrl ||
-                    `https://ui-avatars.com/api/?name=${u.name}&background=3b82f6&color=fff`
+                    `https://ui-avatars.com/api/?name=${u.name}&background=2E4057&color=fff`
                   }
                   alt={u.name}
                   className="ring-primary/20 h-10 w-10 rounded-full object-cover ring-2"
@@ -106,11 +106,11 @@ export default function GroupLeaderboard({
               <span
                 className={`w-12 rounded-lg py-1.5 text-center text-sm font-bold shadow-sm ${
                   u.rank === 1
-                    ? "bg-orange-600/20 text-orange-500"
+                    ? "bg-secondary/20 text-secondary"
                     : u.rank === 2
-                      ? "bg-yellow-500/20 text-yellow-400"
+                      ? "bg-secondary/10 text-secondary/80"
                       : u.rank === 3
-                        ? "bg-cyan-600/20 text-cyan-500"
+                        ? "bg-primary/20 text-primary"
                         : "bg-secondary/50 text-muted-foreground"
                 }`}
               >

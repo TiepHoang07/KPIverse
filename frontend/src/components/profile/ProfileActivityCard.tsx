@@ -2,19 +2,19 @@ export default function ProfileActivityCard({ activity }: { activity: any }) {
   const getActivityDetails = () => {
     switch (activity.type) {
       case 'KPI_CREATED':
-        return { icon: '📊', text: `Created KPI: ${activity.kpiName}`, color: 'purple' };
+        return { icon: '📊', text: `Created KPI: ${activity.kpiName}`, color: 'blue' };
       case 'KPI_LOG':
-        return { icon: '✅', text: `Completed ${activity.completedTasks} tasks - ${activity.kpiName}`, color: 'green' };
+        return { icon: '✅', text: `Completed ${activity.completedTasks} tasks - ${activity.kpiName}`, color: 'orange' };
       case 'REQUEST_ADD_FRIEND':
         return { icon: '👋', text: 'Sent friend request to ' + activity.description, color: 'blue' };
       case 'FRIEND_REQUEST_ACCEPTED':
-        return { icon: '🤝', text: `Friend request of ${activity.description} accepted`, color: 'indigo' };
+        return { icon: '🤝', text: `Friend request of ${activity.description} accepted`, color: 'blue' };
       case 'CREATE_GROUP':
         return { icon: '👥', text: `Created group: ${activity.groupName}`, color: 'orange' };
       case 'JOIN_GROUP':
-        return { icon: '🚪', text: `Joined group: ${activity.groupName}`, color: 'teal' };
+        return { icon: '🚪', text: `Joined group: ${activity.groupName}`, color: 'blue' };
       case 'LEAVE_GROUP':
-        return { icon: '🚶', text: `Left group: ${activity.groupName}`, color: 'red' };
+        return { icon: '🚶', text: `Left group: ${activity.groupName}`, color: 'orange' };
       default:
         return { icon: '📌', text: 'Activity', color: 'gray' };
     }
@@ -23,14 +23,9 @@ export default function ProfileActivityCard({ activity }: { activity: any }) {
   const details = getActivityDetails();
 
   const colorClasses = {
-    purple: 'bg-purple-500/10 border-purple-500/20 text-purple-400',
-    green: 'bg-green-500/10 border-green-500/20 text-green-400',
-    blue: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
-    indigo: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400',
-    orange: 'bg-orange-500/10 border-orange-200/20 text-orange-400',
-    teal: 'bg-teal-500/10 border-teal-500/20 text-teal-400',
-    red: 'bg-red-500/10 border-red-500/20 text-red-400',
-    gray: 'bg-secondary/30 border-border text-muted-foreground',
+    blue: 'bg-primary/10 border-primary/20 text-primary',
+    orange: 'bg-secondary/10 border-secondary/20 text-secondary',
+    gray: 'bg-muted border-border text-muted-foreground',
   };
 
   const formatDate = (date: string) => {

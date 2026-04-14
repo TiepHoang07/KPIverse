@@ -42,100 +42,112 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="mx-4 space-y-8">
+    <div className="mx-6 space-y-12 pb-12 pt-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="flex gap-4 text-3xl font-bold text-foreground">
-            Dashboard <TrendingUp className="h-8 w-8 text-primary" />
+          <h1 className="flex items-center gap-4 text-4xl font-extrabold tracking-tight text-primary">
+            Overview <TrendingUp className="h-10 w-10 text-secondary" />
           </h1>
-          <p className="mt-1 text-muted-foreground">
-            Welcome back! Here's your overview
+          <p className="mt-2 text-lg text-muted-foreground font-medium">
+            Ready for your next milestone?
           </p>
         </div>
       </div>
 
       {/* Quick Stats Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 p-4">
-          <p className="text-sm font-medium text-blue-400">Total KPIs</p>
-          <p className="text-2xl font-bold text-blue-300">{stats.totalKpis}</p>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-2xl transition-all hover:-translate-y-1 border border-border/50">
+          <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-primary/5 transition-transform group-hover:scale-110" />
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Total KPIs</p>
+          <p className="mt-2 text-4xl font-black text-primary">{stats.totalKpis}</p>
         </div>
-        <div className="rounded-xl bg-purple-500/10 border border-purple-500/20 p-4">
-          <p className="text-sm font-medium text-purple-400">Friends</p>
-          <p className="text-2xl font-bold text-purple-300">
+        <div className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-2xl transition-all hover:-translate-y-1 border border-border/50">
+          <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-secondary/5 transition-transform group-hover:scale-110" />
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Connections</p>
+          <p className="mt-2 text-4xl font-black text-secondary">
             {stats.totalFriends}
           </p>
         </div>
-        <div className="rounded-xl bg-green-500/10 border border-green-500/20 p-4">
-          <p className="text-sm font-medium text-green-400">Groups</p>
-          <p className="text-2xl font-bold text-green-300">
+        <div className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-2xl transition-all hover:-translate-y-1 border border-border/50">
+          <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-primary/5 transition-transform group-hover:scale-110" />
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Groups</p>
+          <p className="mt-2 text-4xl font-black text-primary">
             {stats.totalGroups}
           </p>
         </div>
       </div>
 
       {/* Navigation Cards */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        {cardsWithStats.map((card) => {
-          const Icon = card.icon;
-          return (
-            <button
-              key={card.path}
-              onClick={() => navigate(card.path)}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-card w-full h-50 p-6 text-left border border-border transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]"
-            >
-              {/* Background Gradient on Hover */}
-              <div
-                className={`absolute inset-0 bg-linear-to-r ${card.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-10`}
-              />
+      <div>
+        <h2 className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+          Quick Access
+        </h2>
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          {cardsWithStats.map((card) => {
+            const Icon = card.icon;
+            return (
+              <button
+                key={card.path}
+                onClick={() => navigate(card.path)}
+                className="group relative cursor-pointer overflow-hidden rounded-3xl bg-card p-6 text-left border border-border/60 transition-all duration-500 hover:-translate-y-2 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/10"
+              >
+                {/* Background Gradient on Hover */}
+                <div
+                  className={`absolute inset-0 bg-linear-to-br ${card.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-10`}
+                />
 
-              <div className="relative flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="mb-3 flex items-center gap-3">
+                <div className="relative z-10">
+                  <div className="mb-6 flex animate-in items-center justify-between">
                     <div
-                      className={`rounded-xl bg-primary/10 p-3 transition-transform duration-300 group-hover:scale-110`}
+                      className="rounded-2xl bg-accent p-4 shadow-inner transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
                     >
-                      <Icon className={`h-6 w-6 text-primary`} />
+                      <Icon className="h-6 w-6 text-primary" />
                     </div>
-                    <h2 className="text-xl font-semibold text-foreground">
-                      {card.title}
-                    </h2>
                   </div>
 
-                  <p className="mb-4 text-sm text-muted-foreground">
+                  <h3 className="mb-2 text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                    {card.title}
+                  </h3>
+
+                  <p className="mb-6 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                     {card.description}
                   </p>
 
                   {card.stats !== null && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <span
-                        className={`text-2xl font-bold text-primary`}
+                        className="text-3xl font-black tracking-tighter text-primary"
                       >
                         {card.stats}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                         {card.statLabel}
                       </span>
                     </div>
                   )}
                 </div>
-              </div>
 
-              {/* Decorative element */}
-              <div
-                className={`absolute bottom-0 left-0 h-1 w-0 bg-linear-to-r ${card.gradient} transition-all duration-500 group-hover:w-full`}
-              />
-            </button>
-          );
-        })}
+                {/* Decorative bar */}
+                <div
+                  className={`absolute bottom-0 left-0 h-1.5 w-0 bg-linear-to-r ${card.gradient} transition-all duration-700 ease-out group-hover:w-full`}
+                />
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Activity Feed */}
-      <div>
-        <h2 className="mb-4 pt-4 text-xl font-bold text-foreground">
-          Recent Activities
-        </h2>
+      {/* Recent Activities */}
+      <div className="rounded-[2.5rem] bg-accent/50 p-10 border border-white">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-2xl font-black text-primary">
+            Feed
+          </h2>
+          <button className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+            View All
+          </button>
+        </div>
         <ActivityFeed />
       </div>
     </div>

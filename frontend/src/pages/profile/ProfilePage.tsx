@@ -64,12 +64,12 @@ export default function ProfilePage() {
           <img
             src={
               userData.avatarUrl ||
-              `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=3b82f6&color=fff`
+              `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=1D4ED8&color=fff`
             }
             alt={userData.name}
             className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
           />
-          <div className="absolute bottom-0 right-0 h-6 w-6 rounded-full border-4 border-card bg-green-500"></div>
+          <div className="absolute bottom-0 right-0 h-6 w-6 rounded-full border-4 border-card bg-secondary"></div>
         </div>
         <h2 className="mt-4 text-2xl font-bold text-foreground">{userData.name}</h2>
         <p className="text-muted-foreground">{userData.email}</p>
@@ -225,7 +225,7 @@ function FriendsList({ friends }: { friends: any[] }) {
               src={
                 friendData.avatarUrl ||
                 `https://ui-avatars.com/api/?name=
-                  ${friendData.name || "User"}&background=3b82f6&color=fff`
+                  ${friendData.name || "User"}&background=1D4ED8&color=fff`
               }
               alt={friendData.name}
               className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/20"
@@ -264,10 +264,10 @@ function GroupsList({ groups }: { groups: any[] }) {
           key={membership.group?.id || index}
           className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 group relative overflow-hidden"
         >
-          <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
+          <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
           <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-4">
             <div>
-              <h4 className="font-semibold text-foreground group-hover:text-purple-400 transition-colors">
+              <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                 {membership.group?.name || "Unknown Group"}
               </h4>
               {membership.group?.description && (
@@ -276,7 +276,7 @@ function GroupsList({ groups }: { groups: any[] }) {
                 </p>
               )}
               <div className="mt-3 flex gap-3 text-[10px] font-bold uppercase tracking-wider">
-                <span className="text-purple-400/80">
+                <span className="text-primary">
                   {membership.role || "MEMBER"}
                 </span>
                 <span className="text-muted-foreground/40">•</span>

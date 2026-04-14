@@ -141,36 +141,18 @@ export default function SettingsPage() {
                     src={
                       previewUrl ||
                       profile.avatarUrl ||
-                      `https://ui-avatars.com/api/?name=${profile.name}&size=128&background=3b82f6&color=fff`
+                      `https://ui-avatars.com/api/?name=${profile.name}&size=128&background=1D4ED8&color=fff`
                     }
                     alt="Avatar"
                     className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
                   />
-                  {/* <input
-                    id="avatar-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
-                  <button
-                    onClick={triggerFileInput}
-                    className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-blue-600 p-2 text-white shadow-lg transition hover:bg-blue-700"
-                  >
-                    <Camera size={16} />
-                  </button> */}
                 </div>
-                {/* <div>
-                  <p className="text-sm font-medium text-gray-700">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
                     Profile picture
                   </p>
-                  <p className="text-xs text-gray-400">JPG, PNG...</p>
-                  {selectedFile && (
-                    <p className="mt-1 text-xs text-green-600">
-                      New image selected
-                    </p>
-                  )}
-                </div> */}
+                  <p className="text-xs text-muted-foreground/60 tracking-tight">JPG, PNG...</p>
+                </div>
               </div>
 
               {/* Name */}

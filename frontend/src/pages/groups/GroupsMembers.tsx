@@ -235,7 +235,7 @@ export default function GroupsMembers() {
                     <img
                       src={
                         member.avatarUrl ||
-                        `https://ui-avatars.com/api/?name=${member.name}&background=3b82f6&color=fff`
+                        `https://ui-avatars.com/api/?name=${member.name}&background=1D4ED8&color=fff`
                       }
                       alt={member.name}
                       className="ring-primary/20 h-12 w-12 rounded-full object-cover ring-2"
@@ -260,8 +260,8 @@ export default function GroupsMembers() {
                       <span
                         className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-widest uppercase ${
                           member.role === "ADMIN"
-                            ? "border-purple-500/20 bg-purple-500/10 text-purple-400"
-                            : "bg-primary/10 text-primary border-primary/20"
+                            ? "border-primary/20 bg-primary/10 text-primary"
+                            : "bg-secondary/10 text-secondary border-secondary/20"
                         }`}
                       >
                         {member.role}
@@ -288,7 +288,7 @@ export default function GroupsMembers() {
                       <button
                         onClick={() => handleTransferAdmin(member)}
                         disabled={processingId === member.id}
-                        className="cursor-pointer rounded-xl border border-purple-500/20 bg-purple-500/10 px-4 py-2 text-xs font-bold tracking-widest text-purple-400 uppercase transition-all hover:bg-purple-500 hover:text-white disabled:opacity-30"
+                        className="cursor-pointer rounded-xl border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-widest text-primary uppercase transition-all hover:bg-primary hover:text-white disabled:opacity-30"
                       >
                         {processingId === member.id
                           ? "Working..."
@@ -375,7 +375,7 @@ export default function GroupsMembers() {
                     <img
                       src={
                         user.avatarUrl ||
-                        `https://ui-avatars.com/api/?name=${user.name}&background=primary&size=128`
+                        `https://ui-avatars.com/api/?name=${user.name}&background=1D4ED8&size=128`
                       }
                       alt={user.name}
                       className="h-10 w-10 rounded-full"

@@ -9,7 +9,7 @@ export const navigationCards = [
     stats: null,
     statLabel: "Active KPIs",
     path: "/kpis",
-    gradient: "from-blue-500 to-blue-600"
+    gradient: "from-orange-100 to-orange-600"
   },
   {
     title: "Groups",
@@ -19,7 +19,7 @@ export const navigationCards = [
     stats: null,
     statLabel: "Groups joined",
     path: "/groups",
-    gradient: "from-purple-500 to-purple-600"
+    gradient: "from-orange-100 to-orange-600"
   },
   {
     title: "Friends",
@@ -29,7 +29,7 @@ export const navigationCards = [
     stats: null,
     statLabel: "Friends",
     path: "/friends",
-    gradient: "from-green-500 to-green-600"
+    gradient: "from-orange-100 to-orange-600"
   },
   {
     title: "Profile",
@@ -39,7 +39,7 @@ export const navigationCards = [
     stats: null,
     statLabel: "",
     path: "/profile",
-    gradient: "from-orange-500 to-orange-600"
+    gradient: "from-orange-100 to-orange-600"
   }
 ];
 
