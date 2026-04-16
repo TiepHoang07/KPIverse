@@ -260,11 +260,11 @@ export default function Kpi() {
       </div>
 
       {/* Main KPI card */}
-      <div className="mb-6 rounded-2xl border border-border bg-card p-6 shadow-xl relative overflow-hidden">
+      <div className="mb-6 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/80"></div>
         {/* Header */}
         <div className="flex justify-between gap-4 flex-row items-center">
-          <h1 className="text-2xl font-bold text-foreground">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">
             {kpi.name}
           </h1>
           <span className="text-xs font-bold uppercase tracking-widest text-secondary bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20 sm:text-sm">
@@ -325,9 +325,9 @@ export default function Kpi() {
           <button
             onClick={handleSave}
             disabled={saving || checked.length === 0 || !canLogTasks}
-            className={`w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 sm:flex-1 sm:text-base shadow-lg ${
+            className={`w-full rounded-xl py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 sm:flex-1 sm:text-base ${
               canLogTasks && checked.length > 0
-                ? "cursor-pointer bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:-translate-y-0.5"
+                ? "cursor-pointer bg-primary text-white hover:bg-primary/90"
                 : "cursor-not-allowed bg-primary/20 text-primary opacity-50"
             }`}
           >

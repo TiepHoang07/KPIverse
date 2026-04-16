@@ -187,13 +187,13 @@ export default function GroupKpi() {
   return (
     <div className="mx-auto w-full max-w-7xl px-6 py-8">
       {/* Header with navigation and delete */}
-      <div className="mb-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+      <div className="mb-6 flex items-start justify-between gap-6 sm:flex-row sm:items-center">
         <button
           onClick={handleBack}
           className="flex cursor-pointer items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-primary hover:text-secondary transition-all"
         >
           <div className="rounded-full bg-accent p-2 shadow-sm">←</div>
-          Back to Terminal
+          Back
         </button>
 
         {/* Only show admin buttons if user is admin */}
@@ -201,9 +201,9 @@ export default function GroupKpi() {
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="w-full cursor-pointer rounded-2xl border border-destructive/20 bg-destructive/5 px-6 py-3 text-xs font-black uppercase tracking-widest text-destructive transition-all hover:bg-destructive hover:text-white disabled:opacity-40 sm:w-auto shadow-sm"
+            className="w-fit cursor-pointer rounded-2xl border border-destructive/20 bg-destructive/5 px-6 py-3 text-xs font-black uppercase tracking-widest text-destructive transition-all hover:bg-destructive hover:text-white disabled:opacity-40 sm:w-auto shadow-sm"
           >
-            {deleting ? "Decommissioning..." : "Terminate KPI"}
+            {deleting ? "Deleting..." : "Delete KPI"}
           </button>
         )}
       </div>
@@ -231,12 +231,12 @@ export default function GroupKpi() {
       </div>
 
       {/* Main KPI card */}
-      <div className="mb-12 overflow-hidden rounded-[2.5rem] border border-white bg-white shadow-2xl relative p-10">
+      <div className="mb-6 overflow-hidden rounded-[2.5rem] border border-white bg-white shadow-md relative p-5 md:p-10">
         <div className="absolute top-0 right-0 h-40 w-40 -translate-y-16 translate-x-16 rounded-full bg-primary/5"></div>
         
         {/* Header section */}
         <div className="flex flex-col items-start justify-between gap-4 mb-6 sm:flex-row sm:items-center relative z-10">
-          <h1 className="text-4xl font-black text-primary tracking-tighter">
+          <h1 className="text-2xl md:text-4xl font-black text-primary tracking-tighter truncate">
             {kpi.name}
           </h1>
           <span className="text-[10px] font-black uppercase tracking-[0.25em] text-secondary bg-secondary/10 px-4 py-2 rounded-xl border border-secondary/20 h-fit">
@@ -246,14 +246,14 @@ export default function GroupKpi() {
   
         {/* Description */}
         {kpi.description && (
-          <p className="mb-10 text-lg font-medium text-muted-foreground leading-relaxed max-w-3xl relative z-10">
+          <p className="mb-6 text-sm md:text-lg font-medium text-muted-foreground leading-relaxed max-w-3xl relative z-10">
             {kpi.description}
           </p>
         )}
 
         {/* Next available message */}
         {nextAvailableMessage && (
-          <div className="mb-10 rounded-2xl border border-secondary/20 bg-secondary/5 p-6 animate-in fade-in slide-in-from-top-4">
+          <div className="mb-6 rounded-2xl border border-secondary/20 bg-secondary/5 p-6 animate-in fade-in slide-in-from-top-4">
             <p className="text-sm font-bold text-secondary uppercase tracking-widest flex items-center gap-3">
               <span className="text-xl">⏳</span> {nextAvailableMessage}
             </p>
@@ -261,7 +261,7 @@ export default function GroupKpi() {
         )}
 
         {/* Progress section */}
-        <div className="mb-12 relative z-10">
+        <div className="mb-6 relative z-10">
           <div className="mb-4 flex flex-col justify-between gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 sm:flex-row">
             <span>Operational Progress</span>
             <span className="text-primary">{progress}% Complete</span>
@@ -275,7 +275,7 @@ export default function GroupKpi() {
         </div>
 
         {/* Tasks section */}
-        <div className="rounded-[2rem] bg-accent/40 p-8 border border-white shadow-inner relative z-10">
+        <div className="rounded-xl bg-accent/40 p-4 md:p-8 border border-white shadow-inner relative z-10">
           <h3 className="mb-6 text-[10px] font-black uppercase tracking-[0.25em] text-primary">Mission Directives</h3>
           <div className="mb-10 space-y-4">
             {kpi.tasks?.map((task: any) => (
@@ -292,30 +292,30 @@ export default function GroupKpi() {
           <button
             disabled={saving || checked.length === 0 || !canLogTasks}
             onClick={handleDone}
-            className={`w-full rounded-2xl py-5 text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 shadow-2xl border-none ${
+            className={`w-full rounded-xl py-5 text-xs font-black uppercase tracking-[0.3em] transition-all duration-500 border-none ${
               canLogTasks && checked.length > 0
-                ? "cursor-pointer bg-primary text-white hover:bg-primary/95 shadow-primary/30 hover:-translate-y-1 active:scale-95"
+                ? "cursor-pointer bg-primary text-white hover:bg-primary/95 active:scale-95"
                 : "cursor-not-allowed bg-muted-foreground/10 text-muted-foreground/40"
             }`}
           >
             {saving
-              ? "Synchronizing..."
+              ? "Logging..."
               : !canLogTasks && lastLoggedDate
-                ? "Cycle Complete"
+                ? "KPI Logged"
                 : checked.length === 0
                   ? "Select Objectives"
-                  : `Execute ${checked.length} Assignment${checked.length > 1 ? "s" : ""}`}
+                  : `Log ${checked.length} Objective${checked.length > 1 ? "s" : ""}`}
           </button>
         </div>
       </div>
 
       {/* Chart section */}
-      <div className="my-16">
+      <div className="my-6">
         <GroupKpiChart groupId={Number(groupId)} kpiId={Number(kpi.id)} />
       </div>
 
       {/* Leaderboard section */}
-      <div className="mt-20">
+      <div className="mt-6">
         <h2 className="mb-10 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 text-center">Elite Rankings</h2>
         <div className="overflow-x-auto">
           <GroupLeaderboard groupId={Number(groupId)} kpiId={kpi.id} />

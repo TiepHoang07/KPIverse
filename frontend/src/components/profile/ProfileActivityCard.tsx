@@ -40,7 +40,7 @@ export default function ProfileActivityCard({ activity }: { activity: any }) {
   };
 
   return (
-    <div className={`flex items-center gap-4 rounded-xl border p-4 transition-all hover:scale-[1.02] ${colorClasses[details.color as keyof typeof colorClasses]}`}>
+    <div className={`flex items-center gap-4 rounded-xl border p-4 transition-all ${colorClasses[details.color as keyof typeof colorClasses]}`}>
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-current/10 shadow-inner">
         <span className="text-xl">{details.icon}</span>
       </div>

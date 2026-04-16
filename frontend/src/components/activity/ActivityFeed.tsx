@@ -20,7 +20,9 @@ export default function ActivityFeed({ view }: { view: 'all' | 'mine' }) {
   return (
     <div className="space-y-4">
       {filteredActivities.length === 0 && (
-        <p className='text-gray-500 text-md'>No activity yet.</p>
+        <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-border shadow-inner shadow-primary/10">
+          <p className="text-muted-foreground font-medium">No activity yet!</p>
+        </div>
       )}
       {filteredActivities.map((a) => (
         <ActivityCard key={a.id} activity={a} />

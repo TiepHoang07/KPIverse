@@ -64,7 +64,7 @@ export default function ProfilePage() {
           <img
             src={
               userData.avatarUrl ||
-              `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=1D4ED8&color=fff`
+              `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=2E4057&color=fff`
             }
             alt={userData.name}
             className="h-24 w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/20"
@@ -165,7 +165,7 @@ function StatCard({
 function KPIList({ kpis }: { kpis: any[] }) {
   if (!kpis || kpis.length === 0) {
     return (
-      <div className="py-12 text-center bg-secondary/10 rounded-2xl border border-dashed border-border">
+      <div className="py-12 text-center bg-primary/10 rounded-2xl border border-dashed border-border">
         <p className="text-muted-foreground font-medium italic">No personal objectives yet</p>
       </div>
     );
@@ -176,7 +176,7 @@ function KPIList({ kpis }: { kpis: any[] }) {
       {kpis.map((kpi) => (
         <div
           key={kpi.id}
-          className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 hover:border-primary/30 group"
+          className="rounded-xl border border-border bg-primary/10 p-4 transition hover:bg-primary/20 hover:border-primary/30 group"
         >
           <div className="flex justify-between items-start mb-1 gap-2">
             <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{kpi.name}</h4>
@@ -203,7 +203,7 @@ function KPIList({ kpis }: { kpis: any[] }) {
 function FriendsList({ friends }: { friends: any[] }) {
   if (!friends || friends.length === 0) {
     return (
-      <div className="py-12 text-center bg-secondary/10 rounded-2xl border border-dashed border-border">
+      <div className="py-12 text-center bg-primary/10 rounded-2xl border border-dashed border-border">
         <p className="text-muted-foreground font-medium italic">No active connections yet</p>
       </div>
     );
@@ -219,7 +219,7 @@ function FriendsList({ friends }: { friends: any[] }) {
         return (
           <div
             key={friendData.id || index}
-            className="flex items-center gap-4 rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40"
+            className="flex items-center gap-4 rounded-xl border border-border bg-primary/10 px-4 py-2 transition hover:bg-primary/20"
           >
             <img
               src={
@@ -251,7 +251,7 @@ function FriendsList({ friends }: { friends: any[] }) {
 function GroupsList({ groups }: { groups: any[] }) {
   if (!groups || groups.length === 0) {
     return (
-      <div className="py-12 text-center bg-secondary/10 rounded-2xl border border-dashed border-border">
+      <div className="py-12 text-center bg-primary/10 rounded-2xl border border-dashed border-border">
         <p className="text-muted-foreground font-medium italic">No group memberships yet</p>
       </div>
     );
@@ -262,7 +262,7 @@ function GroupsList({ groups }: { groups: any[] }) {
       {groups.map((membership, index) => (
         <div
           key={membership.group?.id || index}
-          className="rounded-xl border border-border bg-secondary/20 p-4 transition hover:bg-secondary/40 group relative overflow-hidden"
+          className="rounded-xl border border-border bg-primary/10 p-4 transition hover:bg-primary/20 group relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
           <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-4">

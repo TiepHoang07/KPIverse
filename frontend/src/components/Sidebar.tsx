@@ -173,7 +173,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     <span className="text-xs font-black uppercase tracking-[0.1em]">{item.label}</span>
                   )}
                   {item.label === 'Friends' && friendRequests.length >= 1 && (
-                    <span className={`absolute ${collapsed ? "-top-1 -right-1" : "-right-2 -top-1"} bg-secondary rounded-full w-2.5 h-2.5 border-2 border-white ring-2 ring-secondary/20`}></span>
+                    <span className={`absolute ${collapsed ? "-top-1 -right-1" : "-right-3 -top-1"} bg-secondary rounded-full w-2.5 h-2.5 border-2 border-white ring-2 ring-secondary/20`}></span>
                   )}
                 </div>
 

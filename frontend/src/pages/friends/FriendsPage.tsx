@@ -156,41 +156,39 @@ export default function FriendsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 pb-24 px-6 pt-6">
+    <div className="mx-auto max-w-5xl space-y-8 pb-24 px-6 pt-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-primary">Connections</h1>
-          <p className="mt-2 text-lg text-muted-foreground font-medium">Grow your cosmos of support</p>
+          <h1 className="text-4xl font-extrabold tracking-tight text-primary">Friends</h1>
+          <p className="mt-2 text-lg text-muted-foreground font-medium">Connect with other people</p>
         </div>
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20">
-          <UserPlus size={24} className="text-white" />
+        <div className="flex h-12 w-12 items-center justify-center">
+          <UserPlus size={40} className="text-primary" />
         </div>
       </div>
 
       {/* Search Section */}
-      <div className="rounded-[2.5rem] bg-white p-10 shadow-2xl border border-white relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary to-secondary opacity-50"></div>
-
-        <h2 className="mb-8 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
-          Sync with Friends
+      <div className="rounded-2xl bg-white p-8 shadow-lg border border-white relative overflow-hidden group">
+        <h2 className="mb-8 text-xs font-black uppercase tracking-[0.25em] text-muted-foreground">
+          Find New Friends
         </h2>
         <div className="flex flex-col md:flex-row gap-6">
           <div className="relative flex-1">
             <Search className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground/30" />
             <input
-              placeholder="Search by name or identity..."
+              placeholder="Search by name or email..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyPress}
-              className="w-full rounded-[1.5rem] border border-border/40 bg-accent px-6 py-5 pl-14 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
+              className="w-full rounded-[1.5rem] border border-border/40 bg-accent px-6 py-3 pl-14 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
             />
           </div>
           <button
             onClick={search}
             disabled={searching || !query.trim()}
-            className="cursor-pointer rounded-[1.5rem] bg-primary px-10 py-5 font-black uppercase tracking-[0.2em] text-[10px] text-white transition-all hover:bg-primary/95 hover:-translate-y-1 disabled:opacity-30 shadow-xl shadow-primary/20"
+            className="cursor-pointer rounded-[1.5rem] bg-primary px-8 py-3 font-bold uppercase tracking-[0.2em] text-xs text-white transition-all hover:bg-primary/95 disabled:opacity-30"
           >
-            {searching ? "Searching..." : "Execute Search"}
+            {searching ? "Searching..." : "Search"}
           </button>
         </div>
 
@@ -204,7 +202,7 @@ export default function FriendsPage() {
             results.length === 0 ? (
               <div className="rounded-3xl bg-accent py-14 text-center border border-dashed border-border/40">
                 <p className="text-muted-foreground font-bold italic opacity-40">
-                  No voyagers found matching "{query}"
+                  No users found matching "{query}"
                 </p>
               </div>
             ) : (
@@ -212,13 +210,13 @@ export default function FriendsPage() {
                 <div className="flex items-center gap-3 mb-4">
                   <span className="h-1.5 w-1.5 rounded-full bg-secondary"></span>
                   <p className="text-[10px] font-black uppercase tracking-widest text-secondary">
-                    Matched {results.length} Profiles
+                    Matched {results.length} Users
                   </p>
                 </div>
                 {results.map((u) => (
                   <div
                     key={u.id}
-                    className="flex flex-col sm:flex-row items-center justify-between gap-6 rounded-3xl border border-border/30 bg-white p-6 transition-all hover:shadow-xl hover:border-primary/20"
+                    className="flex flex-col sm:flex-row items-center justify-between gap-6 rounded-3xl border border-border/30 bg-white p-6 transition-all hover:border-primary/20"
                   >
                     <div className="flex items-center gap-6 w-full sm:w-auto">
                       <img
@@ -244,7 +242,7 @@ export default function FriendsPage() {
                       {u.friendshipStatus === "NONE" && (
                         <button
                           onClick={() => sendRequest(u.id)}
-                          className="w-full sm:w-auto flex items-center justify-center gap-3 rounded-2xl bg-secondary px-8 py-3.5 text-[10px] font-black uppercase tracking-widest text-white shadow-xl shadow-secondary/20 transition-all hover:bg-secondary/90 hover:-translate-y-1"
+                          className="w-full sm:w-auto flex items-center justify-center cursor-pointer gap-3 rounded-2xl bg-primary px-8 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-primary/90"
                         >
                           Send Invite
                         </button>
@@ -278,12 +276,12 @@ export default function FriendsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Friend Requests Section */}
-        <div className="rounded-[2.5rem] bg-white p-10 shadow-2xl border border-white h-full flex flex-col">
+        <div className="rounded-2xl bg-white py-6 px-4 md:px-6 shadow-lg border border-white h-full flex flex-col">
           <div className="mb-10 flex items-center justify-between">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
-              Inbound Requests
+            <h2 className="text-xs font-black uppercase tracking-[0.25em] text-muted-foreground">
+              Pending Requests
             </h2>
-            <span className="rounded-xl bg-primary px-3 py-1.5 text-[10px] text-white font-black shadow-lg shadow-primary/20">
+            <span className="rounded-xl bg-primary px-5 py-3 text-xs text-white font-black">
               {friendRequests.length}
             </span>
           </div>
@@ -291,25 +289,25 @@ export default function FriendsPage() {
           <div className="flex-1">
             {friendRequests.length === 0 ? (
               <div className="py-16 text-center text-muted-foreground/30 font-bold bg-accent/40 rounded-3xl border border-dashed border-border/60 h-full flex flex-col items-center justify-center">
-                <p className="italic">Silence in the cosmos</p>
+                <p className="italic">No requests yet</p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {friendRequests.map((f) => (
                   <div
                     key={f.id}
-                    className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-border/30 bg-accent/20 p-6 transition-all"
+                    className="flex items-center justify-between gap-2 rounded-3xl border border-border/30 bg-accent/20 py-4 transition-all"
                   >
-                    <div className="flex flex-col items-center gap-4 text-center">
+                    <div className="flex items-center gap-1 md:gap-4 text-center">
                       <img
                         src={
                           f.requesterUser?.avatarUrl ||
-                          `https://ui-avatars.com/api/?name=${f.requesterUser?.name || 'User'}&background=2E4057&color=fff&size=128`
+                          `https://ui-avatars.com/api/?name=${f.requesterUser?.name || 'User'}&background=2E4057&color=fff&size=50`
                         }
                         alt={f.requesterUser?.name}
-                        className="h-20 w-20 shrink-0 rounded-[1.5rem] object-cover ring-4 ring-white shadow-xl"
+                        className="h-10 w-10 shrink-0 rounded-xl object-cover ring-4 ring-white shadow-xl"
                       />
-                      <div>
+                      <div className="w-full text-start">
                         <p className="font-black text-xl text-primary tracking-tight">
                           {f.requesterUser?.name}
                         </p>
@@ -318,16 +316,16 @@ export default function FriendsPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="flex gap-4 w-full">
+                    <div className="flex gap-1 md:gap-2">
                       <button
                         onClick={() => handleRespond(f.id, "ACCEPTED")}
-                        className="flex-1 rounded-2xl bg-primary py-4 text-[10px] font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90"
+                        className="flex-1 rounded-xl bg-primary p-2 md:p-3 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-primary/90"
                       >
                         Accept
                       </button>
                       <button
                         onClick={() => handleRespond(f.id, "REJECTED")}
-                        className="flex-1 rounded-2xl bg-destructive/10 py-4 text-[10px] font-black uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
+                        className="flex-1 rounded-xl bg-destructive/10 p-2 md:p-3 text-[10px] font-black uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
                       >
                         Decline
                       </button>
@@ -340,12 +338,12 @@ export default function FriendsPage() {
         </div>
 
         {/* Friends List Section */}
-        <div className="rounded-[2.5rem] bg-white p-10 shadow-2xl border border-white h-full flex flex-col">
+        <div className="rounded-2xl bg-white py-6 px-4 md:px-6 shadow-lg border border-white h-full flex flex-col">
           <div className="mb-10 flex items-center justify-between">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
-              Your Network
+            <h2 className="text-xs font-black uppercase tracking-[0.25em] text-muted-foreground">
+              Your Friends
             </h2>
-            <span className="rounded-xl bg-secondary px-3 py-1.5 text-[10px] text-white font-black shadow-lg shadow-secondary/20">
+            <span className="rounded-xl bg-secondary px-5 py-3 text-xs text-white font-black">
               {friends.length}
             </span>
           </div>
@@ -353,29 +351,29 @@ export default function FriendsPage() {
           <div className="flex-1">
             {friends.length === 0 ? (
               <div className="py-16 text-center text-muted-foreground/30 font-bold bg-accent/40 rounded-3xl border border-dashed border-border/60 h-full flex flex-col items-center justify-center">
-                <p className="italic">Start your network today</p>
+                <p className="italic">No friends yet</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {friends.map((f) => (
                   <div
                     key={f.id}
-                    className="flex items-center justify-between gap-6 rounded-3xl border border-border/20 bg-white p-5 transition-all hover:shadow-lg group/friend"
+                    className="flex items-center justify-between gap-2 rounded-2xl border border-border/50 bg-white py-4 transition-all group/friend"
                   >
-                    <div className="flex items-center gap-5 overflow-hidden">
+                    <div className="flex items-center gap-2 md:gap-5 overflow-hidden">
                       <img
                         src={
                           f.avatarUrl ||
                           `https://ui-avatars.com/api/?name=${f.name}&background=2E4057&color=fff&size=128`
                         }
                         alt={f.name}
-                        className="h-14 w-14 shrink-0 rounded-2xl object-cover ring-2 ring-accent transition-transform group-hover/friend:scale-105 shadow-sm"
+                        className="h-10 w-10 shrink-0 rounded-xl object-cover ring-2 ring-accent"
                       />
                       <div className="overflow-hidden">
                         <p className="font-black text-primary tracking-tight truncate">{f.name}</p>
                         {f.friendSince && (
-                          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-muted-foreground/30">
-                            Voyager since {new Date(f.friendSince).toLocaleDateString([], {month: 'short', year: 'numeric'})}
+                          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-muted-foreground/50">
+                            Friend since {new Date(f.friendSince).toLocaleDateString([], {month: 'short', year: 'numeric'})}
                           </p>
                         )}
                       </div>

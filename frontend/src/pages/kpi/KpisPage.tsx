@@ -36,8 +36,11 @@ export default function KpiPage() {
       </div>
       
       {kpis.length === 0 ? (
-        <div className="text-center py-20 bg-card rounded-2xl border-2 border-dashed border-border">
-          <p className="text-muted-foreground">No KPIs found.</p>
+        <div className="text-center py-20 bg-card rounded-2xl border-2 border-dashed border-border shadow-inner shadow-primary/10">
+          <p className="text-muted-foreground font-medium text-sm uppercase tracking-wider">No KPIs yet.</p>
+          <p className="text-xs mt-3 text-primary/60 font-bold uppercase tracking-wider">
+            Start by creating your first KPI!
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

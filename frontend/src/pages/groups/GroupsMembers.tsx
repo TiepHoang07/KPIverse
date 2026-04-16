@@ -139,7 +139,7 @@ export default function GroupsMembers() {
     try {
       setSearching(true);
       const res = await getFriends();
-      const filtered = res.data.friends.filter(
+      const filtered = res.data.filter(
         (friend: any) =>
           friend.name.toLowerCase().includes(query.toLowerCase()) ||
           friend.email.toLowerCase().includes(query.toLowerCase()),
@@ -172,18 +172,8 @@ export default function GroupsMembers() {
 
   if (loading || !currentUserId) {
     return (
-      <div className="bg-background min-h-screen p-6">
-        <div className="mx-auto max-w-4xl">
-          <div className="bg-secondary/50 h-8 w-48 animate-pulse rounded" />
-          <div className="mt-6 space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="bg-secondary/50 h-16 animate-pulse rounded"
-              />
-            ))}
-          </div>
-        </div>
+      <div className="flex h-48 items-center justify-center rounded-xl bg-background p-4 shadow">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-primary"></div>
       </div>
     );
   }
@@ -196,16 +186,16 @@ export default function GroupsMembers() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(`/groups/${groupId}`)}
-              className="border-border bg-card text-muted-foreground hover:bg-secondary/50 hover:text-primary flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border transition"
+              className="border-border bg-card text-muted-foreground hover:bg-primary/10 hover:text-primary flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border transition"
             >
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-foreground text-3xl font-bold">
+              <h1 className="text-primary text-3xl font-bold">
                 {groupName}
               </h1>
               <p className="text-muted-foreground/60 text-sm font-medium">
-                {members.length} members collaborating
+                {members.length} members
               </p>
             </div>
           </div>
@@ -235,14 +225,14 @@ export default function GroupsMembers() {
                     <img
                       src={
                         member.avatarUrl ||
-                        `https://ui-avatars.com/api/?name=${member.name}&background=1D4ED8&color=fff`
+                        `https://ui-avatars.com/api/?name=${member.name}&background=2E4057&color=fff`
                       }
                       alt={member.name}
                       className="ring-primary/20 h-12 w-12 shrink-0 rounded-full object-cover ring-2"
                     />
                     {member.role === "ADMIN" && (
-                      <div className="bg-primary border-background absolute -top-1 -right-1 rounded-full border p-1 shadow-lg">
-                        <Crown size={10} className="text-white" />
+                      <div className="bg-purple-500 border-purple-800 absolute -top-1 -right-1 rounded-full border p-1 shadow-lg">
+                        <Crown size={12} className="text-white" />
                       </div>
                     )}
                   </div>
@@ -260,8 +250,8 @@ export default function GroupsMembers() {
                       <span
                         className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-widest uppercase ${
                           member.role === "ADMIN"
-                            ? "border-primary/20 bg-primary/10 text-primary"
-                            : "bg-secondary/10 text-secondary border-secondary/20"
+                            ? "border-purple-500 bg-purple-500/10 text-purple-500"
+                            : "bg-primary/10 text-primary border-primary/20"
                         }`}
                       >
                         {member.role}
@@ -269,10 +259,6 @@ export default function GroupsMembers() {
                     </div>
 
                     <div className="text-muted-foreground/60 mt-1.5 flex flex-wrap items-center gap-4 text-xs font-medium">
-                      <span className="flex items-center gap-1.5">
-                        <Mail size={14} className="opacity-40" />
-                        {member.email}
-                      </span>
                       <span className="flex items-center gap-1.5">
                         <Calendar size={14} className="opacity-40" />
                         Joined {new Date(member.joinedAt).toLocaleDateString()}
@@ -313,7 +299,7 @@ export default function GroupsMembers() {
       {/* Add Member Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="bg-card border-border w-full max-w-md rounded-2xl border p-8 shadow-2xl">
+          <div className="bg-card border-border w-full max-w-md rounded-2xl border p-8 shadow-xl">
             <div className="mb-6 flex items-center justify-between">
               <h3 className="text-foreground text-xl font-bold">
                 Add New Member
@@ -328,7 +314,7 @@ export default function GroupsMembers() {
                   setSelectedUser(null);
                   setSearchQuery("");
                 }}
-                className="text-muted-foreground hover:bg-secondary/50 cursor-pointer rounded-xl p-2 transition-colors"
+                className="text-muted-foreground hover:bg-primary/10 cursor-pointer rounded-xl p-2 transition-colors"
               >
                 <X size={20} />
               </button>
@@ -341,7 +327,7 @@ export default function GroupsMembers() {
                 placeholder="Search by name or email..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="border-border bg-secondary/50 text-foreground focus:border-primary focus:ring-primary placeholder:text-muted-foreground/20 w-full rounded-xl border py-3.5 pr-4 pl-12 transition focus:ring-1 focus:outline-none"
+                className="border-border bg-primary/10 text-foreground focus:border-primary focus:ring-primary placeholder:text-muted-foreground/20 w-full rounded-xl border py-3.5 pr-4 pl-12 transition focus:ring-1 focus:outline-none"
                 autoFocus
               />
             </div>
@@ -369,16 +355,16 @@ export default function GroupsMembers() {
                     className={`flex w-full items-center gap-4 rounded-xl p-3 transition-all ${
                       selectedUser?.id === user.id
                         ? "bg-primary/10 border-primary/30 border"
-                        : "hover:bg-secondary/50 border border-transparent"
+                        : "hover:bg-primary/10 border border-transparent"
                     }`}
                   >
                     <img
                       src={
                         user.avatarUrl ||
-                        `https://ui-avatars.com/api/?name=${user.name}&background=1D4ED8&size=128`
+                        `https://ui-avatars.com/api/?name=${user.name}&background=2E4057&size=128&color=fff`
                       }
                       alt={user.name}
-                      className="h-10 w-10 shrink-0 rounded-full"
+                      className="h-10 w-10 shrink-0 rounded-xl object-cover"
                     />
                     <div className="flex-1 overflow-hidden text-left">
                       <div className="text-foreground truncate text-sm font-bold">
@@ -395,7 +381,7 @@ export default function GroupsMembers() {
             <div className="mt-8 flex gap-3">
               <button
                 onClick={() => setShowAddModal(false)}
-                className="border-border bg-card text-muted-foreground hover:bg-secondary/50 flex-1 rounded-xl border py-3.5 text-xs font-bold tracking-widest uppercase transition"
+                className="border-border bg-card text-muted-foreground hover:bg-primary/10 flex-1 rounded-xl border py-3.5 text-xs font-bold tracking-widest uppercase transition"
               >
                 Cancel
               </button>
@@ -404,7 +390,7 @@ export default function GroupsMembers() {
                 disabled={!selectedUser || addingMember}
                 className="bg-primary hover:bg-primary/90 shadow-primary/20 flex-1 rounded-xl py-3.5 text-xs font-bold tracking-widest text-white uppercase shadow-lg transition-all disabled:opacity-30"
               >
-                {addingMember ? "Adding..." : "Invite to Group"}
+                {addingMember ? "Adding..." : "Add"}
               </button>
             </div>
           </div>
@@ -414,7 +400,7 @@ export default function GroupsMembers() {
       {/* Remove Member Modal */}
       {showRemoveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="bg-card border-destructive/20 w-full max-w-sm rounded-2xl border p-8 text-center shadow-2xl">
+          <div className="bg-card border-destructive/20 w-full max-w-sm rounded-2xl border p-8 text-center shadow-xl">
             <div className="bg-destructive/10 text-destructive mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
               <X size={32} />
             </div>
@@ -432,7 +418,7 @@ export default function GroupsMembers() {
             <div className="mt-8 flex gap-3">
               <button
                 onClick={() => setShowRemoveModal(null)}
-                className="border-border bg-card text-muted-foreground hover:bg-secondary/50 flex-1 rounded-xl border py-3.5 text-xs font-bold tracking-widest uppercase transition"
+                className="border-border bg-card text-muted-foreground hover:bg-primary/10 flex-1 rounded-xl border py-3.5 text-xs font-bold tracking-widest uppercase transition"
               >
                 Cancel
               </button>

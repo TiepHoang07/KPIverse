@@ -12,7 +12,7 @@ export default function ActivityCard({ activity }: Props) {
     <div className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm border border-border/40 transition-all hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4 min-w-0">
-          <div className="relative h-10 w-10 shrink-0">
+          <div className="relative h-10 w-10 flex-none aspect-square">
             <img
               src={
                 activity.user.avatarUrl ||

@@ -167,7 +167,7 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-[2.5rem] bg-white border border-border/40 p-4 shadow-xl">
+      <div className="flex h-48 items-center justify-center rounded-2xl sm:rounded-[2.5rem] bg-white border border-border/40 p-4 shadow-xl">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-border/20 border-t-primary"></div>
       </div>
     );
@@ -175,7 +175,7 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
 
   if (!chartData) {
     return (
-      <div className="rounded-[2.5rem] bg-white border border-border/40 p-12 text-center shadow-xl">
+      <div className="rounded-2xl sm:rounded-[2.5rem] bg-white border border-border/40 p-6 sm:p-12 text-center shadow-md">
         <p className="text-muted-foreground font-black italic opacity-30">No collective achievements yet</p>
       </div>
     );
@@ -184,21 +184,21 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
   return (
     <div className="space-y-8">
       {/* Member Summary Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {userLogs.map((user) => (
           <div
             key={user.userId}
-            className="flex items-center gap-4 rounded-3xl bg-white border border-border/40 p-4 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all group"
+            className="flex items-center gap-4 rounded-3xl bg-white border border-border/40 p-4 shadow-sm hover:border-primary/20 transition-all group"
           >
             <div
               className="h-3 w-3 rounded-full ring-4 ring-background shadow-inner transition-transform group-hover:scale-125"
               style={{ backgroundColor: user.color }}
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[10px] font-black text-primary uppercase tracking-tighter">
+              <p className="truncate text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-tighter">
                 {user.userName}
               </p>
-              <p className="text-[12px] font-black text-secondary uppercase tracking-widest">{user.logCount} LOGS</p>
+              <p className="text-[10px] sm:text-[12px] font-black text-secondary uppercase tracking-widest">{user.logCount} LOGS</p>
             </div>
           </div>
         ))}
@@ -207,7 +207,7 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
       {/* Timeline Chart - Full History */}
       {timelineData && timelineData.datasets.length > 0 && (
         <div
-          className="rounded-[2.5rem] bg-white border border-border/40 p-10 shadow-2xl"
+          className="rounded-2xl sm:rounded-[2.5rem] bg-white border border-border/40 p-5 sm:p-10"
           style={{ maxHeight: "45vh" }}
         >
           <div className="mb-8 flex items-center justify-between">

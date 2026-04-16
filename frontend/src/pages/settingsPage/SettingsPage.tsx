@@ -141,7 +141,7 @@ export default function SettingsPage() {
                     src={
                       previewUrl ||
                       profile.avatarUrl ||
-                      `https://ui-avatars.com/api/?name=${profile.name}&size=128&background=1D4ED8&color=fff`
+                      `https://ui-avatars.com/api/?name=${profile.name}&size=128&background=2E4057&color=fff`
                     }
                     alt="Avatar"
                     className="h-24 w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/20"
@@ -158,7 +158,7 @@ export default function SettingsPage() {
               {/* Name */}
               <div>
                 <label className="mb-2 block text-sm font-semibold text-foreground">
-                  Display Name
+                  Your Name
                 </label>
                 <input
                   type="text"
@@ -166,7 +166,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setProfile({ ...profile, name: e.target.value })
                   }
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
                   placeholder="Your name"
                 />
               </div>
@@ -183,7 +183,7 @@ export default function SettingsPage() {
                     value={profile.email || ""}
                     readOnly
                     disabled
-                    className="w-full cursor-not-allowed rounded-xl border border-border bg-secondary/30 py-3 pl-10 pr-4 text-muted-foreground"
+                    className="w-full cursor-not-allowed rounded-xl border border-border bg-primary/10 py-3 pl-10 pr-4 text-muted-foreground"
                   />
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground/60 italic">
@@ -202,7 +202,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setProfile({ ...profile, bio: e.target.value })
                   }
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
                   placeholder="Tell us about yourself..."
                 />
                 <p className="mt-2 text-xs text-muted-foreground/60">
@@ -240,7 +240,7 @@ export default function SettingsPage() {
                       current: e.target.value,
                     })
                   }
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
                   placeholder="••••••••"
                 />
               </div>
@@ -255,7 +255,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setPasswordData({ ...passwordData, new: e.target.value })
                   }
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
                   placeholder="••••••••"
                 />
               </div>
@@ -273,7 +273,7 @@ export default function SettingsPage() {
                       confirm: e.target.value,
                     })
                   }
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
                   placeholder="••••••••"
                 />
               </div>

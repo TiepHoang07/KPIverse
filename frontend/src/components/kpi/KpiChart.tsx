@@ -107,7 +107,7 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-[2rem] bg-white border border-border/40 p-4 shadow-xl">
+      <div className="flex h-48 items-center justify-center rounded-2xl sm:rounded-[2rem] bg-white border border-border/40 p-4 shadow-xl">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-border/20 border-t-secondary"></div>
       </div>
     );
@@ -115,14 +115,14 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
 
   if (!chartData) {
     return (
-      <div className="rounded-[2rem] bg-white border border-border/40 p-10 text-center shadow-xl">
+      <div className="rounded-2xl sm:rounded-[2rem] bg-white border border-border/40 p-5 sm:p-10 text-center">
         <p className="text-muted-foreground font-bold italic opacity-30">No activity logs recorded yet</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-[2rem] bg-white border border-border/40 p-8 shadow-2xl" style={{ maxHeight: '45vh' }}>
+    <div className="rounded-2xl sm:rounded-[2rem] bg-white border border-border/40 p-5 sm:p-8" style={{ maxHeight: '45vh' }}>
       <h3 className="mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50">
         Performance Spectrum
       </h3>
