@@ -24,7 +24,7 @@ export default function CreateGroup() {
                 Group Name
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 placeholder="e.g., Study Group, Fitness Squad..."
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -36,7 +36,7 @@ export default function CreateGroup() {
                 Description <span className="text-muted-foreground font-normal">(optional)</span>
               </label>
               <textarea
-                className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 placeholder="What is this group about?"
                 rows={4}
                 value={description}
@@ -47,7 +47,7 @@ export default function CreateGroup() {
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <button
                 onClick={() => navigate('/groups')}
-                className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-3 text-sm font-bold text-muted-foreground transition hover:bg-secondary/50"
+                className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-3 text-sm font-bold text-muted-foreground transition hover:bg-primary/10"
               >
                 Cancel
               </button>
@@ -68,4 +68,4 @@ export default function CreateGroup() {
       </div>
     </div>
   );
-}
+}

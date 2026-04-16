@@ -30,7 +30,7 @@ export default function KpiCard({ kpi }: Props) {
       onClick={handleClick}
       className="relative group bg-card rounded-2xl border border-border cursor-pointer hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
     >
-      <div className='h-2 bg-linear-to-r from-primary to-purple-500'></div>
+      <div className='h-2 bg-linear-to-r from-primary/20 to-primary/50'></div>
       {/* Header */}
       <div className="flex items-start justify-between mb-3 px-5 py-3">
         <div>
@@ -39,7 +39,7 @@ export default function KpiCard({ kpi }: Props) {
             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{kpi.description}</p>
           )}
         </div>
-        <span className="text-xs font-semibold bg-primary/10 text-primary px-3 py-1 rounded-full text-nowrap border border-primary/20">
+        <span className="text-xs font-semibold bg-secondary/10 text-secondary px-3 py-1 rounded-full text-nowrap border border-secondary/20">
           {totalTasks} tasks
         </span>
       </div>

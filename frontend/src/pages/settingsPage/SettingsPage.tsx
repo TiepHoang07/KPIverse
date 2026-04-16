@@ -144,7 +144,7 @@ export default function SettingsPage() {
                       `https://ui-avatars.com/api/?name=${profile.name}&size=128&background=1D4ED8&color=fff`
                     }
                     alt="Avatar"
-                    className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
+                    className="h-24 w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/20"
                   />
                 </div>
                 <div>

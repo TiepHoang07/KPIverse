@@ -66,7 +66,7 @@ export default function CreateGroupKpi() {
         <div className="mb-8 flex items-center gap-4">
           <button
             onClick={() => navigate(`/groups/${groupId}`)}
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-secondary/50 hover:text-primary"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-primary/10 hover:text-primary"
           >
             ←
           </button>
@@ -85,7 +85,7 @@ export default function CreateGroupKpi() {
                   KPI Name <span className="text-destructive">*</span>
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3.5 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/30"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3.5 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/30"
                   placeholder="e.g., Team Daily Sales"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -98,7 +98,7 @@ export default function CreateGroupKpi() {
                   Description <span className="text-muted-foreground/40 font-normal lowercase">(optional)</span>
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3.5 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/30"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3.5 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/30"
                   placeholder="What does this KPI measure?"
                   rows={3}
                   value={description}
@@ -120,7 +120,7 @@ export default function CreateGroupKpi() {
                       className={`min-w-[100px] cursor-pointer rounded-xl border px-4 py-3 text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
                         type === t
                           ? "border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                          : "border-border bg-secondary/30 text-muted-foreground hover:bg-secondary/50"
+                          : "border-border bg-primary/10 text-muted-foreground hover:bg-primary/20"
                       }`}
                     >
                       {t}
@@ -148,7 +148,7 @@ export default function CreateGroupKpi() {
                           {index + 1}.
                         </span>
                         <input
-                          className="w-full rounded-xl border border-border bg-secondary/30 py-3.5 pl-10 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/20"
+                          className="w-full rounded-xl border border-border bg-primary/10 py-3.5 pl-10 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/20"
                           placeholder={`Enter task ${index + 1}...`}
                           value={task.name}
                           onChange={(e) => updateTask(index, e.target.value)}
@@ -189,7 +189,7 @@ export default function CreateGroupKpi() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => navigate(`/groups/${groupId}`)}
-              className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-4 text-sm font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-secondary/50"
+              className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-4 text-sm font-bold uppercase tracking-widest text-muted-foreground transition hover:bg-primary/10"
             >
               Cancel
             </button>

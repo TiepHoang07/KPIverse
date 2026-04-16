@@ -227,7 +227,7 @@ export default function FriendsPage() {
                           `https://ui-avatars.com/api/?name=${u.name}&background=2E4057&color=fff&size=128`
                         }
                         alt={u.name}
-                        className="h-16 w-16 rounded-2xl object-cover ring-2 ring-accent shadow-md transition-transform"
+                        className="h-16 w-16 shrink-0 rounded-2xl object-cover ring-2 ring-accent shadow-md transition-transform"
                       />
                       <div>
                         <p className="font-black text-xl text-primary tracking-tight">{u.name}</p>
@@ -307,7 +307,7 @@ export default function FriendsPage() {
                           `https://ui-avatars.com/api/?name=${f.requesterUser?.name || 'User'}&background=2E4057&color=fff&size=128`
                         }
                         alt={f.requesterUser?.name}
-                        className="h-20 w-20 rounded-[1.5rem] object-cover ring-4 ring-white shadow-xl"
+                        className="h-20 w-20 shrink-0 rounded-[1.5rem] object-cover ring-4 ring-white shadow-xl"
                       />
                       <div>
                         <p className="font-black text-xl text-primary tracking-tight">
@@ -369,7 +369,7 @@ export default function FriendsPage() {
                           `https://ui-avatars.com/api/?name=${f.name}&background=2E4057&color=fff&size=128`
                         }
                         alt={f.name}
-                        className="h-14 w-14 rounded-2xl object-cover ring-2 ring-accent transition-transform group-hover/friend:scale-105 shadow-sm"
+                        className="h-14 w-14 shrink-0 rounded-2xl object-cover ring-2 ring-accent transition-transform group-hover/friend:scale-105 shadow-sm"
                       />
                       <div className="overflow-hidden">
                         <p className="font-black text-primary tracking-tight truncate">{f.name}</p>

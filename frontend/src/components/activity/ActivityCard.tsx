@@ -11,18 +11,18 @@ export default function ActivityCard({ activity }: Props) {
   return (
     <div className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm border border-border/40 transition-all hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20">
       <div className="flex items-start justify-between">
-        <div className="flex items-center gap-4">
-          <div className="relative">
+        <div className="flex items-center gap-4 min-w-0">
+          <div className="relative h-10 w-10 shrink-0">
             <img
               src={
                 activity.user.avatarUrl ||
-                `https://ui-avatars.com/api/?name=${activity.user.name}&background=2E4057&color=fff`
+                `https://ui-avatars.com/api/?name=${activity.user.name}&background=2E4057&color=fff&size=50`
               }
-              className="h-10 w-10 rounded-xl object-cover ring-2 ring-white shadow-md transition-transform group-hover:scale-105"
+              className="h-full w-full block rounded-xl object-cover ring-2 ring-white shadow-md"
               alt={activity.user.name}
             />
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <span className="text-sm font-black uppercase tracking-tighter text-primary">
                 {activity.user.name}
@@ -33,7 +33,7 @@ export default function ActivityCard({ activity }: Props) {
                 </span>
               )}
             </div>
-            <p className="mt-1 text-sm font-medium leading-relaxed text-foreground/80">
+            <p className="mt-1 text-sm font-medium leading-relaxed text-foreground/80 text-wrap">
               {renderActivityText(activity)}
             </p>
           </div>

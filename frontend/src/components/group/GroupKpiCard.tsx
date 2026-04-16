@@ -17,12 +17,12 @@ export function GroupKpiCard({ group, kpi }: any) {
       {/* Header */}
       <div className="flex items-start justify-between relative z-10">
         <h3 className="text-lg font-bold text-foreground leading-tight">{kpi.name}</h3>
-        <span className="text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary px-2.5 py-1 rounded-full border border-primary/20 whitespace-nowrap">
+        <span className="text-[10px] font-bold uppercase tracking-widest bg-secondary/10 text-secondary px-2.5 py-1 rounded-full border border-secondary/40 whitespace-nowrap">
           {kpi.tasks?.length || 0} tasks
         </span>
       </div>
 
-      <div className="h-1 w-12 rounded-full bg-linear-to-r from-primary to-purple-500 mt-2 sm:mt-4 relative z-10" />
+      <div className="h-1 w-20 rounded-full bg-linear-to-r from-secondary/70 to-blue-400 mt-2 relative z-10" />
 
       {/* Description */}
       {kpi.description && (
@@ -54,7 +54,7 @@ export function GroupKpiCard({ group, kpi }: any) {
           e.stopPropagation();
           handleClick();
         }}
-        className="w-full py-3 text-xs font-bold uppercase tracking-widest text-foreground bg-secondary/50 rounded-xl hover:bg-primary hover:text-white transition-all cursor-pointer border border-border group-hover:border-primary/30 shadow-lg"
+        className="w-full py-3 text-xs font-bold uppercase tracking-widest text-foreground bg-primary/5 rounded-xl hover:bg-primary hover:text-white transition-all cursor-pointer border border-border group-hover:border-primary/30"
       >
         Open KPI →
       </button>

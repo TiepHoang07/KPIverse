@@ -166,7 +166,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     size={20}
                     className={`${isActive ? "text-white" : "text-muted-foreground group-hover:text-secondary opacity-70 group-hover:opacity-100"} transition-all`}
                   />
-                  {!collapsed && (
+                  {!collapsed && !mobileOpen && (
                     <span className="text-xs font-black uppercase tracking-[0.1em]">{item.label}</span>
                   )}
                   {mobileOpen && (
@@ -201,16 +201,13 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     `https://ui-avatars.com/api/?name=${me.user.name || "User"}&background=2E4057&color=fff`
                   }
                   alt={me.user.name || "User"}
-                  className="h-9 w-9 cursor-pointer rounded-xl object-cover ring-2 ring-white shadow-sm hover:scale-105 transition-transform"
+                  className="h-9 w-9 shrink-0 cursor-pointer rounded-xl object-cover ring-2 ring-white shadow-sm hover:scale-105 transition-transform"
                 />
 
-                {!collapsed && (
+                {!collapsed && !mobileOpen && (
                   <div className="flex-1 overflow-hidden">
                     <p className="truncate text-xs font-black text-primary uppercase tracking-tighter">
                       {me.user.name || "User"}
-                    </p>
-                    <p className="truncate text-[9px] font-extrabold text-muted-foreground uppercase opacity-40">
-                      Operator
                     </p>
                   </div>
                 )}
@@ -219,20 +216,17 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     <p className="truncate text-xs font-black text-primary uppercase tracking-tighter">
                       {me.user.name || "User"}
                     </p>
-                    <p className="truncate text-[9px] font-extrabold text-muted-foreground uppercase opacity-40">
-                      Operator
-                    </p>
                   </div>
                 )}
               </div>
 
-              {!collapsed && (
+              {!collapsed && !mobileOpen && (
                 <button
                   onClick={logout}
                   className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-destructive/5 py-3 text-[10px] font-black uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
                 >
                   <LogOut size={14} />
-                  <span>Termination</span>
+                  <span>Logout</span>
                 </button>
               )}
               {mobileOpen && (
@@ -241,7 +235,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-destructive/5 py-3 text-[10px] font-black uppercase tracking-widest text-destructive hover:bg-destructive hover:text-white transition-all"
                 >
                   <LogOut size={14} />
-                  <span>Termination</span>
+                  <span>Logout</span>
                 </button>
               )}
             </div>

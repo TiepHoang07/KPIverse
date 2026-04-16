@@ -62,7 +62,7 @@ export default function GroupLeaderboard({
       </div>
 
       {!loading && users.length === 0 && (
-        <div className="text-muted-foreground/50 bg-secondary/10 border-border rounded-xl border border-dashed py-8 text-center text-sm italic">
+        <div className="text-muted-foreground/50 bg-primary/10 border-border rounded-xl border border-dashed py-8 text-center text-sm italic">
           No logs yet for this KPI
         </div>
       )}
@@ -74,12 +74,12 @@ export default function GroupLeaderboard({
               key={u.userId}
               className={`flex items-center justify-between rounded-xl border-[1.5px] px-4 py-3 transition-all hover:scale-[1.01] ${
                 u.rank === 1
-                  ? "border-secondary/30 bg-secondary/5"
+                  ? "border-red-300 bg-red-50"
                   : u.rank === 2
-                    ? "border-secondary/20 bg-secondary/5"
+                    ? "border-orange-300 bg-orange-50"
                     : u.rank === 3
-                      ? "border-primary/30 bg-primary/5"
-                      : "border-border bg-secondary/20"
+                      ? "border-yellow-300 bg-yellow-50"
+                      : "border-border bg-primary/20"
               }`}
             >
               <div className="flex items-center gap-6">
@@ -95,7 +95,7 @@ export default function GroupLeaderboard({
                     `https://ui-avatars.com/api/?name=${u.name}&background=2E4057&color=fff`
                   }
                   alt={u.name}
-                  className="ring-primary/20 h-10 w-10 rounded-full object-cover ring-2"
+                  className="ring-primary/20 h-10 w-10 shrink-0 rounded-full object-cover ring-2"
                 />
 
                 <span className="text-foreground text-sm font-bold">
@@ -104,14 +104,14 @@ export default function GroupLeaderboard({
               </div>
 
               <span
-                className={`w-12 rounded-lg py-1.5 text-center text-sm font-bold shadow-sm ${
+                className={`w-12 rounded-full py-3 text-center text-sm font-bold ${
                   u.rank === 1
-                    ? "bg-secondary/20 text-secondary"
+                    ? "bg-white text-red-500"
                     : u.rank === 2
-                      ? "bg-secondary/10 text-secondary/80"
+                      ? "bg-white text-orange-500"
                       : u.rank === 3
-                        ? "bg-primary/20 text-primary"
-                        : "bg-secondary/50 text-muted-foreground"
+                        ? "bg-white text-yellow-500"
+                        : "bg-primary/20 text-primary"
                 }`}
               >
                 {u.logs}

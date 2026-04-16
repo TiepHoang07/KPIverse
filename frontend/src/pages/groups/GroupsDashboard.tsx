@@ -34,7 +34,7 @@ export default function GroupsDashboard() {
   const getRoleBadgeColor = (role: string) => {
     return role === "ADMIN"
       ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
-      : "bg-secondary text-muted-foreground border-border";
+      : "bg-primary/10 text-primary border-primary/20";
   };
 
   const getRoleIcon = (role: string) => {
@@ -110,7 +110,7 @@ export default function GroupsDashboard() {
                 onClick={() => navigate(`/groups/${group.id}`)}
               >
                 {/* Card Header with Gradient */}
-                <div className="h-2 bg-linear-to-r from-blue-500 to-purple-500" />
+                <div className="h-2 bg-linear-to-r from-secondary/70 to-blue-400" />
 
                 <div className="p-6">
                   {/* Title and Role */}

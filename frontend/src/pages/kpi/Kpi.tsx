@@ -6,6 +6,20 @@ import KpiChart from "../../components/kpi/KpiChart"; // ✅ Added chart import
 import api from "../../api/axios";
 import toast from "react-hot-toast";
 
+// Helper function to get week number
+const getWeekNumber = (date: Date) => {
+  const d = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+  );
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil(
+    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
+  );
+  return { year: d.getUTCFullYear(), week: weekNo };
+};
+
 export default function Kpi() {
   const { kpiId } = useParams<{ kpiId: string }>();
   const navigate = useNavigate();
@@ -49,20 +63,6 @@ export default function Kpi() {
         return true;
     }
   }, [kpi, lastLoggedDate, checked]);
-
-  // Helper function to get week number
-  const getWeekNumber = (date: Date) => {
-    const d = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
-    );
-    const dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    const weekNo = Math.ceil(
-      ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
-    );
-    return { year: d.getUTCFullYear(), week: weekNo };
-  };
 
   // Get next available time message
   const getNextAvailableMessage = () => {
@@ -267,7 +267,7 @@ export default function Kpi() {
           <h1 className="text-2xl font-bold text-foreground">
             {kpi.name}
           </h1>
-          <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20 sm:text-sm">
+          <span className="text-xs font-bold uppercase tracking-widest text-secondary bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20 sm:text-sm">
             {kpi.tasks?.length || 0} tasks
           </span>
         </div>
@@ -293,9 +293,9 @@ export default function Kpi() {
             <span>Progress</span>
             <span className="text-primary">{progress}%</span>
           </div>
-          <div className="h-3 w-full rounded-full bg-secondary overflow-hidden">
+          <div className="h-4 w-full rounded-full bg-accent overflow-hidden border border-border/20 shadow-inner">
             <div
-              className="h-full rounded-full bg-primary transition-all duration-500 shadow-lg shadow-primary/30"
+              className={`h-full rounded-full transition-all duration-1000 ease-out shadow-lg ${progress === 100 ? "bg-secondary" : "bg-primary"}`}
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -307,7 +307,7 @@ export default function Kpi() {
         {/* Tasks section */}
         <div className="mb-2 sm:mb-6">
           <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-foreground sm:text-base">Tasks</h3>
-          <div className="space-y-3 rounded-2xl bg-secondary/30 p-4 border border-border shadow-inner">
+          <div className="space-y-3 rounded-2xl bg-primary/10 p-4 border border-border shadow-inner">
             {kpi.tasks?.map((task: any) => (
               <KpiTaskItem
                 key={task.id}
@@ -328,7 +328,7 @@ export default function Kpi() {
             className={`w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 sm:flex-1 sm:text-base shadow-lg ${
               canLogTasks && checked.length > 0
                 ? "cursor-pointer bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:-translate-y-0.5"
-                : "cursor-not-allowed bg-secondary text-muted-foreground opacity-50"
+                : "cursor-not-allowed bg-primary/20 text-primary opacity-50"
             }`}
           >
             {saving
@@ -345,8 +345,8 @@ export default function Kpi() {
             disabled={!canLogTasks}
             className={`w-full rounded-xl border border-border px-6 py-4 text-sm font-bold uppercase tracking-widest transition-all sm:w-auto ${
               canLogTasks
-                ? "cursor-pointer bg-card text-foreground hover:bg-secondary/50"
-                : "cursor-not-allowed bg-secondary/30 text-muted-foreground opacity-50"
+                ? "cursor-pointer bg-card text-foreground hover:bg-primary/20"
+                : "cursor-not-allowed bg-primary/20 text-primary opacity-50"
             }`}
           >
             Select all
@@ -355,7 +355,7 @@ export default function Kpi() {
 
         {/* Quick actions */}
         {checked.length > 0 &&
-          checked.length < kpi.tasks?.length &&
+          checked.length <= kpi.tasks?.length &&
           canLogTasks && (
             <div className="mt-4 flex justify-end">
               <button

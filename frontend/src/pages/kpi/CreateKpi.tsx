@@ -47,7 +47,7 @@ export default function CreateKpi() {
         <div className="mb-6 flex items-center gap-6">
           <button
             onClick={() => navigate('/kpis')}
-            className="rounded-xl py-2 md:py-3 px-3 md:px-4 bg-card border border-border cursor-pointer text-foreground hover:bg-secondary/50 transition shadow-sm"
+            className="rounded-xl py-2 md:py-3 px-3 md:px-4 bg-card border border-border cursor-pointer text-foreground hover:bg-primary/10 transition shadow-sm"
           >
             ←
           </button>
@@ -64,7 +64,7 @@ export default function CreateKpi() {
                   KPI Name <span className="text-destructive">*</span>
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   placeholder="e.g., Daily Workout, Reading Goals"
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -77,7 +77,7 @@ export default function CreateKpi() {
                   Description <span className="text-muted-foreground font-normal">(optional)</span>
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-xl border border-border bg-primary/10 px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   placeholder="What do you want to achieve?"
                   rows={3}
                   value={description}
@@ -98,7 +98,7 @@ export default function CreateKpi() {
                       onClick={() => setType(t as KPIType)}
                       className={`min-w-[100px] cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-bold transition-all duration-300 ${type === t
                           ? "border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                          : "border-border bg-secondary/30 text-muted-foreground hover:bg-secondary/50"
+                          : "border-border bg-primary/10 text-muted-foreground hover:bg-primary/20"
                         }`}
                     >
                       {t}
@@ -126,7 +126,7 @@ export default function CreateKpi() {
                           {i + 1}.
                         </span>
                         <input
-                          className="w-full rounded-xl border border-border bg-secondary/30 py-3 pl-10 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                          className="w-full rounded-xl border border-border bg-primary/10 py-3 pl-10 pr-4 text-foreground transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                           placeholder={`Task ${i + 1}`}
                           value={task}
                           onChange={e => updateTask(i, e.target.value)}
@@ -162,7 +162,7 @@ export default function CreateKpi() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => navigate('/kpis')}
-              className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-3.5 text-sm font-bold text-muted-foreground transition hover:bg-secondary/50"
+              className="flex-1 cursor-pointer rounded-xl border border-border bg-card px-4 py-3.5 text-sm font-bold text-muted-foreground transition hover:bg-primary/10"
             >
               Cancel
             </button>

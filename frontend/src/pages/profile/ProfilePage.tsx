@@ -67,7 +67,7 @@ export default function ProfilePage() {
               `https://ui-avatars.com/api/?name=${userData.name || "User"}&background=1D4ED8&color=fff`
             }
             alt={userData.name}
-            className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
+            className="h-24 w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/20"
           />
           <div className="absolute bottom-0 right-0 h-6 w-6 rounded-full border-4 border-card bg-secondary"></div>
         </div>
@@ -150,7 +150,7 @@ function StatCard({
       className={`relative cursor-pointer rounded-2xl p-5 text-center transition-all duration-300 border ${
         isActive
           ? "bg-primary text-white shadow-lg shadow-primary/30 border-primary -translate-y-1 scale-105"
-          : "bg-card text-muted-foreground shadow-md border-border hover:bg-secondary/30 hover:border-primary/20"
+          : "bg-card text-muted-foreground shadow-md border-border hover:bg-primary/10 hover:border-primary/20"
       }`}
     >
       <div className={`text-2xl font-bold ${isActive ? "text-white" : "text-foreground"}`}>
@@ -228,7 +228,7 @@ function FriendsList({ friends }: { friends: any[] }) {
                   ${friendData.name || "User"}&background=1D4ED8&color=fff`
               }
               alt={friendData.name}
-              className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/20"
+              className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-primary/20"
             />
             <div className="flex flex-col">
               <h4 className="font-semibold text-foreground">{friendData.name}</h4>

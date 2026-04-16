@@ -11,8 +11,8 @@ export default function GroupHeader({ group }: Props) {
       <div>
         <h1 className="text-2xl font-bold text-foreground">{group.group.name}</h1>
         <p className="text-sm font-medium text-muted-foreground/60 mt-1">{group.group.description}</p>
-        <div className="mt-2 sm:mt-4 flex items-center gap-4 text-xs font-bold uppercase tracking-widest">
-          <span className="rounded-full bg-primary/10 px-3 py-1 text-primary border border-primary/20">
+        <div className="mt-2 sm:mt-4 flex items-center gap-4 text-xs font-semibold uppercase tracking-widest">
+          <span className={`rounded-full px-3 py-1 border ${group.membership.role === "ADMIN" ? "bg-purple-100 text-purple-700 border-purple-300" : "bg-primary/10 text-primary border-primary/20"}`}>
             {group.membership.role}
           </span>
           <span className="text-muted-foreground/40">
@@ -23,7 +23,7 @@ export default function GroupHeader({ group }: Props) {
  
       <button
         onClick={() => navigate(`/groups/${group.group.id}/members`)}
-        className="transform cursor-pointer rounded-xl bg-secondary/50 border border-border px-5 py-3 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-secondary hover:border-primary/30 shadow-lg"
+        className="transform cursor-pointer rounded-xl bg-primary/10 border border-border px-5 py-3 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-primary/20 hover:border-primary/30"
       >
         Members
       </button>

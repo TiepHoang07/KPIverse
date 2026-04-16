@@ -2,6 +2,7 @@ import { useState } from "react";
 import { register } from "../api/auth.api";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import logo from "../assets/logo.png";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -40,17 +41,17 @@ export default function Register() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6 py-12 lg:px-8">
-      <div className="w-full max-w-lg space-y-10 rounded-[2.5rem] bg-white p-12 shadow-2xl border border-white">
+      <div className="w-full max-w-lg space-y-10 rounded-[2.5rem] bg-white py-12 px-6 shadow-2xl border border-white">
         {/* Logo section */}
         <div className="flex flex-col items-center">
-          <div className="h-20 w-20 rounded-[2rem] bg-primary flex items-center justify-center shadow-xl shadow-primary/20 mb-6">
-            <span className="text-3xl font-black text-white">K</span>
+          <div className="py-4 px-6 rounded-[2rem] flex items-center justify-center mb-2">
+            <img src={logo} alt="logo" className="w-46 h-20 md:w-60 md:h-24" />
           </div>
           <h2 className="text-center text-4xl font-black tracking-tighter text-primary">
             Create Account
           </h2>
           <p className="mt-2 text-center text-sm font-bold uppercase tracking-widest text-muted-foreground/40">
-            Join the KPIverse cosmos
+            Join the KPIverse
           </p>
         </div>
 
@@ -73,14 +74,14 @@ export default function Register() {
                 type="text"
                 required
                 className="block w-full rounded-2xl border border-border/40 bg-accent/50 px-6 py-4 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
-                placeholder="John Doe"
+                placeholder="Your Name"
                 value={form.name}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label htmlFor="email-address" className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 ml-4">
-                Identity / Email
+                Email
               </label>
               <input
                 id="email-address"
@@ -88,14 +89,14 @@ export default function Register() {
                 type="email"
                 required
                 className="block w-full rounded-2xl border border-border/40 bg-accent/50 px-6 py-4 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
-                placeholder="commander@kpiverse.com"
+                placeholder="Your Email"
                 value={form.email}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label htmlFor="password" className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 ml-4">
-                Secret / Password
+                Password
               </label>
               <div className="relative">
                 <input
@@ -104,7 +105,7 @@ export default function Register() {
                   type={showPassword ? "text" : "password"}
                   required
                   className="block w-full rounded-2xl border border-border/40 bg-accent/50 pl-6 pr-14 py-4 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
-                  placeholder="••••••••"
+                  placeholder="Your Password"
                   value={form.password}
                   onChange={handleChange}
                 />
@@ -124,19 +125,19 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full justify-center rounded-2xl bg-primary px-6 py-4 text-sm font-black uppercase tracking-[0.25em] text-white shadow-xl shadow-primary/20 transition-all hover:bg-primary/95 hover:-translate-y-1 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+              className="group cursor-pointer relative flex w-full justify-center rounded-2xl bg-primary px-6 py-4 text-sm font-black uppercase tracking-[0.25em] text-white transition-all hover:bg-primary/95 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {loading ? "Registering..." : "Launch Journey"}
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </div>
 
           <div className="text-center">
             <p className="text-sm font-bold text-muted-foreground/60 uppercase tracking-widest">
-              Been here before?{" "}
+              Already have an account?{" "}
               <button
                 type="button"
                 onClick={() => navigate("/login")}
-                className="text-secondary hover:text-secondary/80 transition-all font-black"
+                className="text-secondary hover:text-secondary/80 transition-all font-black underline cursor-pointer"
               >
                 Sign In
               </button>

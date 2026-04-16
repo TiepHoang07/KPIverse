@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import ActivityFeed from "../../components/activity/ActivityFeed";
-import {  TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { navigationCards } from "../../constants/NavigationCards";
 
 export default function DashboardPage() {
@@ -12,6 +12,7 @@ export default function DashboardPage() {
     totalFriends: 0,
     totalGroups: 0,
   });
+  const [view, setView] = useState<'all' | 'mine'>('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -56,21 +57,18 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Stats Summary */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-2xl transition-all hover:-translate-y-1 border border-border/50">
-          <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-primary/5 transition-transform group-hover:scale-110" />
-          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Total KPIs</p>
+      <div className="grid grid-cols-3 gap-3 md:gap-6">
+        <div className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-md border text-center border-border/50">
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">KPIs</p>
           <p className="mt-2 text-4xl font-black text-primary">{stats.totalKpis}</p>
         </div>
-        <div className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-2xl transition-all hover:-translate-y-1 border border-border/50">
-          <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-secondary/5 transition-transform group-hover:scale-110" />
-          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Connections</p>
-          <p className="mt-2 text-4xl font-black text-secondary">
+        <div className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-md border text-center border-border/50">
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Friends</p>
+          <p className="mt-2 text-4xl font-black text-primary">
             {stats.totalFriends}
           </p>
         </div>
-        <div className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-2xl transition-all hover:-translate-y-1 border border-border/50">
-          <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-primary/5 transition-transform group-hover:scale-110" />
+        <div className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-md border text-center border-border/50">
           <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60">Groups</p>
           <p className="mt-2 text-4xl font-black text-primary">
             {stats.totalGroups}
@@ -83,7 +81,7 @@ export default function DashboardPage() {
         <h2 className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
           Quick Access
         </h2>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           {cardsWithStats.map((card) => {
             const Icon = card.icon;
             return (
@@ -98,11 +96,11 @@ export default function DashboardPage() {
                 />
 
                 <div className="relative z-10">
-                  <div className="mb-6 flex animate-in items-center justify-between">
+                  <div className="mb-2 md:mb-6 flex animate-in items-center justify-between">
                     <div
                       className="rounded-2xl bg-accent p-4 shadow-inner transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
                     >
-                      <Icon className="h-6 w-6 text-primary" />
+                      <Icon className="h-6 w-6 text-secondary" />
                     </div>
                   </div>
 
@@ -110,7 +108,7 @@ export default function DashboardPage() {
                     {card.title}
                   </h3>
 
-                  <p className="mb-6 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                  <p className="mb-2 md:mb-6 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                     {card.description}
                   </p>
 
@@ -139,16 +137,22 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Activities */}
-      <div className="rounded-[2.5rem] bg-accent/50 p-10 border border-white">
+      <div className="rounded-[2.5rem] bg-accent/50 border border-white">
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-2xl font-black text-primary">
             Feed
           </h2>
-          <button className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
-            View All
-          </button>
+          <div className="flex items-center gap-4">
+            <button onClick={() => setView('all')} className={`cursor-pointer text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors ${view === 'all' ? 'text-primary' : 'text-muted-foreground'}`}>
+              Show All
+            </button>
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">|</span>
+            <button onClick={() => setView('mine')} className={`cursor-pointer text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors ${view === 'mine' ? 'text-primary' : 'text-muted-foreground'}`}>
+              Show Mine
+            </button>
+          </div>
         </div>
-        <ActivityFeed />
+        <ActivityFeed view={view} />
       </div>
     </div>
   );

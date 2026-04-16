@@ -238,7 +238,7 @@ export default function GroupsMembers() {
                         `https://ui-avatars.com/api/?name=${member.name}&background=1D4ED8&color=fff`
                       }
                       alt={member.name}
-                      className="ring-primary/20 h-12 w-12 rounded-full object-cover ring-2"
+                      className="ring-primary/20 h-12 w-12 shrink-0 rounded-full object-cover ring-2"
                     />
                     {member.role === "ADMIN" && (
                       <div className="bg-primary border-background absolute -top-1 -right-1 rounded-full border p-1 shadow-lg">
@@ -378,7 +378,7 @@ export default function GroupsMembers() {
                         `https://ui-avatars.com/api/?name=${user.name}&background=1D4ED8&size=128`
                       }
                       alt={user.name}
-                      className="h-10 w-10 rounded-full"
+                      className="h-10 w-10 shrink-0 rounded-full"
                     />
                     <div className="flex-1 overflow-hidden text-left">
                       <div className="text-foreground truncate text-sm font-bold">

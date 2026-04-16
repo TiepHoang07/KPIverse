@@ -258,7 +258,7 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
                     ticks: {
                       stepSize: 1,
                       color: "rgba(46, 64, 87, 0.4)",
-                      font: { weight: "black", size: 10 },
+                      font: { weight: "bold", size: 10 },
                     },
                     grid: { color: "rgba(46, 64, 87, 0.05)" },
                   },
@@ -266,7 +266,7 @@ export default function GroupKpiChart({ groupId, kpiId }: GroupKpiChartProps) {
                     grid: { display: false },
                     ticks: {
                       color: "rgba(46, 64, 87, 0.4)",
-                      font: { size: 9, weight: "black" },
+                      font: { size: 9, weight: "bold" },
                       maxTicksLimit: 12,
                     },
                   },
