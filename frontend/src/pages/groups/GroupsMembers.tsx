@@ -14,7 +14,6 @@ import {
   Search,
   ArrowLeft,
   Crown,
-  Mail,
   Calendar,
 } from "lucide-react";
 import api from "../../api/axios";

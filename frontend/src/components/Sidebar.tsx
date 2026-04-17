@@ -18,7 +18,6 @@ import {
   Folder,
   HelpCircle,
   Menu,
-  X,
   GroupIcon,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";

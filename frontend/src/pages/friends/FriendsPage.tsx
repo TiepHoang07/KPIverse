@@ -8,7 +8,7 @@ import {
   DeleteFriend,
   getFriendRequestsSent,
 } from "../../api/friend";
-import { TrendingUp, Search, UserPlus, Trash2 } from "lucide-react";
+import { Search, UserPlus, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function FriendsPage() {
