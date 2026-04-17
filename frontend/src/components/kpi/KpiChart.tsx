@@ -83,8 +83,8 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
             {
               label: 'Tasks Completed',
               data,
-              borderColor: '#2E4057', // Midnight Navy
-              backgroundColor: 'rgba(46, 64, 87, 0.1)',
+              borderColor: '#FB923C', // Muted Coral (Secondary)
+              backgroundColor: 'rgba(241, 214, 192, 0.15)',
               fill: true,
               tension: 0.4,
               pointRadius: 0,
@@ -135,7 +135,7 @@ export default function KpiChart({ kpiId }: KPIChartProps) {
             plugins: {
               legend: { display: false },
               tooltip: {
-                backgroundColor: "#2E4057",
+                backgroundColor: "#FB923C",
                 titleColor: "#FB923C",
                 bodyColor: "#FFFFFF",
                 titleFont: { weight: 'bold', size: 12 },
