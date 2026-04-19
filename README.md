@@ -1,5 +1,7 @@
 ### KPIverse
 
+![KPIverse](frontend/src/assets/WebImages/kpiverse.png)
+
 A full-stack web application for tracking personal and group KPIs (Key Performance Indicators). Built with NestJS, React, and PostgreSQL.
 
 
