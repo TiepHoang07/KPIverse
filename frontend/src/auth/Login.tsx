@@ -37,7 +37,7 @@ export default function Login() {
       <div className="w-full max-w-lg space-y-10 rounded-[2.5rem] bg-white py-12 px-6 shadow-2xl border border-white">
         {/* Logo section */}
         <div className="flex flex-col items-center">
-          <div className="py-4 px-6 rounded-[2rem] flex items-center justify-center mb-2">
+          <div className="py-4 px-6 rounded-4xl flex items-center justify-center mb-2">
             <img src={logo} alt="logo" className="w-46 h-20 md:w-60 md:h-24" />
           </div>
           <h2 className="text-center text-4xl font-black tracking-tighter text-primary">

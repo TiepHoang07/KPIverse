@@ -180,13 +180,13 @@ export default function FriendsPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyPress}
-              className="w-full rounded-[1.5rem] border border-border/40 bg-accent px-6 py-3 pl-14 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
+              className="w-full rounded-3xl border border-border/40 bg-accent px-6 py-3 pl-14 text-primary font-medium placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all"
             />
           </div>
           <button
             onClick={search}
             disabled={searching || !query.trim()}
-            className="cursor-pointer rounded-[1.5rem] bg-primary px-8 py-3 font-bold uppercase tracking-[0.2em] text-xs text-white transition-all hover:bg-primary/95 disabled:opacity-30"
+            className="cursor-pointer rounded-3xl bg-primary px-8 py-3 font-bold uppercase tracking-[0.2em] text-xs text-white transition-all hover:bg-primary/95 disabled:opacity-30"
           >
             {searching ? "Searching..." : "Search"}
           </button>
@@ -372,7 +372,7 @@ export default function FriendsPage() {
                       <div className="overflow-hidden">
                         <p className="font-black text-primary tracking-tight truncate">{f.name}</p>
                         {f.friendSince && (
-                          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-muted-foreground/50">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50">
                             Friend since {new Date(f.friendSince).toLocaleDateString([], {month: 'short', year: 'numeric'})}
                           </p>
                         )}
